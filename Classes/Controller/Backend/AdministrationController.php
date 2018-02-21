@@ -16,20 +16,13 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
-use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\DefinitionTransformer;
 use CuyZ\Notiz\Service\RuntimeService;
 use Throwable;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
-class AdministrationController extends ActionController
+class AdministrationController extends BackendController
 {
-    /**
-     * @var DefinitionService
-     */
-    protected $definitionService;
-
     /**
      * @var DefinitionTransformer
      */
@@ -41,15 +34,12 @@ class AdministrationController extends ActionController
     protected $runtimeService;
 
     /**
-     * Checking if the definition contains errors: if at least one is found, the
-     * action is forwarded to `showDefinition` to inform the user of what is
-     * wrong.
+     * If the definition contains errors the request is forwarded to the action
+     * `showDefinition` to inform the user of what is wrong.
      */
-    public function initializeAction()
+    protected function definitionError()
     {
-        if ($this->definitionService->getValidationResult()->hasErrors()
-            && !in_array($this->request->getControllerActionName(), ['showDefinition', 'showException'])
-        ) {
+        if (!in_array($this->request->getControllerActionName(), ['showDefinition', 'showException'])) {
             $this->forward('showDefinition');
         }
     }
@@ -101,14 +91,6 @@ class AdministrationController extends ActionController
         }
 
         throw $exception;
-    }
-
-    /**
-     * @param DefinitionService $definitionService
-     */
-    public function injectDefinitionService(DefinitionService $definitionService)
-    {
-        $this->definitionService = $definitionService;
     }
 
     /**
