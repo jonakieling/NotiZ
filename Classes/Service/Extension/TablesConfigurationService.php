@@ -75,6 +75,21 @@ class TablesConfigurationService implements SingletonInterface
         ExtensionUtility::registerModule(
             'CuyZ.Notiz',
             'notiz',
+            'notiz_index',
+            '',
+            [
+                'Backend\Index' => 'index'
+            ],
+            [
+                'access' => 'user,group',
+                'icon' => NotizConstants::EXTENSION_ICON_MODULE_PATH,
+                'labels' => "LLL:EXT:{$this->extensionKey}/Resources/Private/Language/Backend/Module/Index/Module.xlf",
+            ]
+        );
+
+        ExtensionUtility::registerModule(
+            'CuyZ.Notiz',
+            'notiz',
             'notiz_administration',
             '',
             [
