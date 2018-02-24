@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2018
+ * Copyright (C) 2017
  *
  * Romain Canon <romain.hydrocanon@gmail.com>
  * Nathan Boiron <nathan.boiron@gmail.com>
