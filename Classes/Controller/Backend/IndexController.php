@@ -1,12 +1,11 @@
 <?php
 
 /*
- * Copyright (C) 2017
- *
- * Romain Canon <romain.hydrocanon@gmail.com>
+ * Copyright (C) 2018
  * Nathan Boiron <nathan.boiron@gmail.com>
+ * Romain Canon <romain.hydrocanon@gmail.com>
  *
- * This file is part of the NotiZ project.
+ * This file is part of the TYPO3 NotiZ project.
  * It is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License, either
  * version 3 of the License, or any later version.
@@ -21,7 +20,6 @@ class IndexController extends BackendController
 {
     public function indexAction()
     {
-
     }
 
     /**
@@ -29,6 +27,5 @@ class IndexController extends BackendController
      */
     protected function definitionError()
     {
-
     }
 }
