@@ -20,6 +20,7 @@ class IndexController extends BackendController
 {
     public function indexAction()
     {
+        $this->view->assign('definition', $notifications = $this->definitionService->getDefinition());
     }
 
     /**
