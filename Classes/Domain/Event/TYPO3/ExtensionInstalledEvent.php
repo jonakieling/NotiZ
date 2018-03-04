@@ -58,6 +58,14 @@ class ExtensionInstalledEvent extends AbstractEvent
     protected $version;
 
     /**
+     * @label Hellol
+     * @email
+     *
+     * @var string
+     */
+    protected $test;
+
+    /**
      * @var ListUtility
      */
     protected $listUtility;

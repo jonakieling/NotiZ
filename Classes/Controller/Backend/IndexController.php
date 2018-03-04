@@ -16,11 +16,30 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
+use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
+use CuyZ\Notiz\Domain\Property\Email;
+
 class IndexController extends BackendController
 {
     public function indexAction()
     {
         $this->view->assign('definition', $notifications = $this->definitionService->getDefinition());
+        $this->view->assign('user', $GLOBALS['BE_USER']->user);
+
+        // tmp
+        /** @var EntityEmailNotification $email */
+        $email = $this->definitionService
+            ->getDefinition()
+            ->getNotification('entityEmail')
+            ->getProcessor()
+            ->getNotificationFromIdentifier(1);
+
+        $this->view->assign('myEmail', $email);
+        
+        $eventDefinition = $email->getEventDefinition();
+        $emailProperties = $eventDefinition->getPropertiesDefinition(Email::class, $email);
+
+        $this->view->assign('emailProperties', $emailProperties);
     }
 
     /**

@@ -16,15 +16,30 @@
 
 namespace CuyZ\Notiz\Domain\Notification;
 
+use CuyZ\Notiz\Core\Definition\DefinitionService;
+use CuyZ\Notiz\Core\Definition\Tree\Definition;
+use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
+use CuyZ\Notiz\Core\Definition\Tree\EventGroup\EventGroup;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\Channel\ChannelDefinition;
 use CuyZ\Notiz\Core\Notification\MultipleChannelsNotification;
 use CuyZ\Notiz\Core\Notification\Notification;
+use CuyZ\Notiz\Service\Container;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 
 abstract class EntityNotification extends AbstractEntity implements Notification, MultipleChannelsNotification
 {
+    /**
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * @var string
+     */
+    protected $event;
+
     /**
      * @var string
      */
@@ -39,6 +54,38 @@ abstract class EntityNotification extends AbstractEntity implements Notification
      * @var array
      */
     protected $eventConfiguration;
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * @param string $event
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
+    }
 
     /**
      * @return string
@@ -62,6 +109,34 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     public function setEventConfigurationFlex($eventConfigurationFlex)
     {
         $this->eventConfigurationFlex = $eventConfigurationFlex;
+    }
+
+    /**
+     * @return EventGroup|null
+     */
+    public function getEventGroupDefinition()
+    {
+        $definition = $this->getDefinition();
+
+        list($eventGroup) = explode('.', $this->getEvent());
+
+        return $definition->hasEventGroup($eventGroup)
+            ? $definition->getEventGroup($eventGroup)
+            : null;
+    }
+
+    /**
+     * @return EventDefinition|null
+     */
+    public function getEventDefinition()
+    {
+        $eventGroup = $this->getEventGroupDefinition();
+
+        list(, $event) = explode('.', $this->getEvent());
+
+        return $eventGroup && $eventGroup->hasEvent($event)
+            ? $eventGroup->getEvent($event)
+            : null;
     }
 
     /**
@@ -89,5 +164,16 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     public function shouldDispatch(ChannelDefinition $definition)
     {
         return $definition->getClassName() === $this->getChannel();
+    }
+
+    /**
+     * @return Definition
+     */
+    protected function getDefinition()
+    {
+        /** @var DefinitionService $definitionService */
+        $definitionService = Container::get(DefinitionService::class);
+
+        return $definitionService->getDefinition();
     }
 }
