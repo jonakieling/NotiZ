@@ -10,7 +10,7 @@
 <f:section name="Content">
     <div class="container">
         <div class="page-header">
-            <h1>Notifications</h1>
+            <h2>Notifications</h2>
         </div>
 
         <div class="row">
@@ -42,6 +42,37 @@
         </div>
 
         <div class="page-header">
+            <h2>Events</h2>
+        </div>
+
+        <ul class="list-unstyled">
+            <f:for each="{definition.eventGroups}" as="eventGroup">
+                <li>
+                    {eventGroup.label}
+
+                    <ul>
+                        <f:for each="{eventGroup.events}" as="event">
+                            <li class="{f:if(condition: event.notificationNumber, else: 'text-muted')}">
+                                <f:link.action action="test"><core:icon identifier="actions-add" /></f:link.action>
+
+                                <f:if condition="{event.notificationNumber}">
+                                    <f:then>
+                                        <f:link.action action="test">
+                                            {event.label}&nbsp;({event.notificationNumber})
+                                        </f:link.action>
+                                    </f:then>
+                                    <f:else>
+                                        {event.label}
+                                    </f:else>
+                                </f:if>
+                            </li>
+                        </f:for>
+                    </ul>
+                </li>
+            </f:for>
+        </ul>
+
+        <div class="page-header">
             <h1>Test</h1>
         </div>
 
@@ -66,7 +97,7 @@
                                 <strong>{email.uid}</strong>
                             </td>
                             <td>{email.title}</td>
-                            <td>{email.eventDefinition.label} ({email.eventGroupDefinition.label})</td>
+                            <td>{email.eventDefinition.label} ({email.eventDefinition.group.label})</td>
                             <td align="right">
                                 <div class="btn-group" role="group">
                                     <f:link.action action="test" class="btn btn-default">
@@ -80,6 +111,53 @@
                         </tr>
                     </f:for>
                 </table>
+
+
+
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Collapsible Group Item #1
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Collapsible Group Item #2
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Collapsible Group Item #3
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -99,7 +177,7 @@
             <table class="table">
                 <tr>
                     <td>Event</td>
-                    <td>{myEmail.eventDefinition.label} ({myEmail.eventGroupDefinition.label})</td>
+                    <td>{myEmail.eventDefinition.label} ({myEmail.eventDefinition.group.label})</td>
                 </tr>
                 <tr>
                     <td>Recipients (To)</td>

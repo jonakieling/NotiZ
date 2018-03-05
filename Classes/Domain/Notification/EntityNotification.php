@@ -19,11 +19,9 @@ namespace CuyZ\Notiz\Domain\Notification;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
-use CuyZ\Notiz\Core\Definition\Tree\EventGroup\EventGroup;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\Channel\ChannelDefinition;
 use CuyZ\Notiz\Core\Notification\MultipleChannelsNotification;
 use CuyZ\Notiz\Core\Notification\Notification;
-use CuyZ\Notiz\Service\Container;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
@@ -112,31 +110,11 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
-     * @return EventGroup|null
-     */
-    public function getEventGroupDefinition()
-    {
-        $definition = $this->getDefinition();
-
-        list($eventGroup) = explode('.', $this->getEvent());
-
-        return $definition->hasEventGroup($eventGroup)
-            ? $definition->getEventGroup($eventGroup)
-            : null;
-    }
-
-    /**
-     * @return EventDefinition|null
+     * @return EventDefinition
      */
     public function getEventDefinition()
     {
-        $eventGroup = $this->getEventGroupDefinition();
-
-        list(, $event) = explode('.', $this->getEvent());
-
-        return $eventGroup && $eventGroup->hasEvent($event)
-            ? $eventGroup->getEvent($event)
-            : null;
+        return $this->getDefinition()->getEventFromFullIdentifier($this->getEvent());
     }
 
     /**
@@ -171,9 +149,6 @@ abstract class EntityNotification extends AbstractEntity implements Notification
      */
     protected function getDefinition()
     {
-        /** @var DefinitionService $definitionService */
-        $definitionService = Container::get(DefinitionService::class);
-
-        return $definitionService->getDefinition();
+        return DefinitionService::get()->getDefinition();
     }
 }
