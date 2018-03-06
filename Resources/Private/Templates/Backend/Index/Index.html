@@ -89,7 +89,7 @@
                     </tr>
                     </thead>
                     <f:for each="{definition.notifications.entityEmail.processor.allNotifications}" as="email">
-                        <tr>
+                        <tr id="{email.tableName}-{email.uid}">
                             <td>
                                 <b:avatar backendUser="{user.uid}" />
                             </td>
@@ -100,9 +100,9 @@
                             <td>{email.eventDefinition.label} ({email.eventDefinition.group.label})</td>
                             <td align="right">
                                 <div class="btn-group" role="group">
-                                    <f:link.action action="test" class="btn btn-default">
+                                    <a href="{email.editUri}" class="btn btn-default">
                                         <core:icon identifier="actions-open" />
-                                    </f:link.action>
+                                    </a>
                                     <f:link.action action="test" class="btn btn-default">
                                         <core:icon identifier="actions-view" />
                                     </f:link.action>

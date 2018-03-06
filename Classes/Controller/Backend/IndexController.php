@@ -18,6 +18,7 @@ namespace CuyZ\Notiz\Controller\Backend;
 
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Property\Email;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class IndexController extends BackendController
 {
