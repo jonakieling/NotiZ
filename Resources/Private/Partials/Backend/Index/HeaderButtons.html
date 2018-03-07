@@ -1,8 +1,17 @@
 <f:section name="Buttons">
-    <f:link.action action="index" class="btn btn-default" title="{nz:t(key: 'Backend/Module/Administration/Layout:menu.index')}">
-        <strong>
-            <core:icon identifier="actions-online-media-add" />
-            <nz:t key="Backend/Module/Administration/Layout:menu.index" />
-        </strong>
-    </f:link.action>
+    <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/Layout:show_notifications\')}'}">
+        <f:link.action action="listNotificationTypes" class="btn btn-default" title="{label}">
+            <strong>
+                <core:icon identifier="tx-notiz-icon" />&nbsp;{label}
+            </strong>
+        </f:link.action>
+    </f:alias>
+
+    <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/Layout:show_events\')}'}">
+        <f:link.action action="listEvents" class="btn btn-default" title="{label}">
+            <strong>
+                <core:icon identifier="module-system" />&nbsp;{label}
+            </strong>
+        </f:link.action>
+    </f:alias>
 </f:section>

@@ -78,7 +78,7 @@ class TablesConfigurationService implements SingletonInterface
             'notiz_index',
             '',
             [
-                'Backend\Index' => 'index'
+                'Backend\Index' => 'listNotificationTypes, listNotifications, showNotification, listEvents, showEvent'
             ],
             [
                 'access' => 'user,group',

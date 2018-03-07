@@ -292,4 +292,12 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     {
         return EntityEmailSettings::class;
     }
+
+    /**
+     * @return string
+     */
+    public static function getNotificationIdentifier()
+    {
+        return 'entityEmail';
+    }
 }

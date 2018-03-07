@@ -48,4 +48,9 @@ interface Notification
      * @return array
      */
     public function getEventConfiguration();
+
+    /**
+     * @return string
+     */
+    public static function getNotificationIdentifier();
 }

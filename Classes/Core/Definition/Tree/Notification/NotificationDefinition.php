@@ -33,6 +33,7 @@ use Romm\ConfigurationObject\Service\Items\DataPreProcessor\DataPreProcessor;
 use Romm\ConfigurationObject\Service\Items\DataPreProcessor\DataPreProcessorInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Error;
 
@@ -88,16 +89,18 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
 
     /**
      * @param string $identifier
+     * @param string $className
      */
-    public function __construct($identifier)
+    public function __construct($identifier, $className)
     {
         $this->identifier = $identifier;
+        $this->className = $className;
 
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = Container::get(ConfigurationManagerInterface::class);
         $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 
-        $this->tableName = ArrayUtility::getValueByPath($configuration, 'persistence/classes/' . static::class . '/mapping/tableName');
+        $this->tableName = ArrayUtility::getValueByPath($configuration, "persistence/classes/$this->className/mapping/tableName");
     }
 
     /**
@@ -169,13 +172,21 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
         return NotificationProcessorFactory::get()->getFromNotificationClassName($this->getClassName());
     }
 
+    /**
+     * @todo
+     *
+     * @return string
+     */
     public function getCreateUri()
     {
         $tableName = $this->getTableName();
 
         return BackendUtility::getModuleUrl(
             'record_edit',
-            ["edit[$tableName][0]" => 'new']
+            [
+                "edit[$tableName][0]" => 'new',
+                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
+            ]
         );
     }
 
