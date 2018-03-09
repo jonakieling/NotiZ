@@ -17,6 +17,7 @@
 namespace CuyZ\Notiz\Controller\Backend;
 
 use CuyZ\Notiz\Core\Definition\DefinitionService;
+use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 abstract class BackendController extends ActionController
@@ -34,6 +35,14 @@ abstract class BackendController extends ActionController
         if ($this->definitionService->getValidationResult()->hasErrors()) {
             $this->definitionError();
         }
+    }
+
+    /**
+     * @return Definition
+     */
+    protected function getDefinition()
+    {
+        return $this->definitionService->getDefinition();
     }
 
     /**

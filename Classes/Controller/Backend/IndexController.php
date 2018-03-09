@@ -18,6 +18,7 @@ namespace CuyZ\Notiz\Controller\Backend;
 
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Exception\EntryNotFoundException;
+use CuyZ\Notiz\Domain\Property\Email;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class IndexController extends BackendController
@@ -35,11 +36,6 @@ class IndexController extends BackendController
     public function listNotificationTypesAction()
     {
         $this->view->assign('user', $GLOBALS['BE_USER']->user);
-
-//        $eventDefinition = $email->getEventDefinition();
-//        $emailProperties = $eventDefinition->getPropertiesDefinition(Email::class, $email);
-//
-//        $this->view->assign('emailProperties', $emailProperties);
     }
 
     /**
@@ -56,25 +52,6 @@ class IndexController extends BackendController
         }
 
         $this->view->assign('notificationDefinition', $definition->getNotification($notificationIdentifier));
-    }
-
-    /**
-     * @param string $notificationDefinitionIdentifier
-     * @param string $notificationIdentifier
-     */
-    public function showNotificationAction($notificationDefinitionIdentifier, $notificationIdentifier)
-    {
-        $definition = $this->getDefinition();
-
-        if (!$definition->hasNotification($notificationDefinitionIdentifier)) {
-            throw new \Exception('@todo'); // @todo
-        }
-
-        $notificationDefinition = $definition->getNotification($notificationDefinitionIdentifier);
-        $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($notificationIdentifier);
-
-        $this->view->assign('notificationDefinition', $notificationDefinition);
-        $this->view->assign('notification', $notification);
     }
 
     public function listEventsAction()
@@ -105,14 +82,6 @@ class IndexController extends BackendController
 
         $this->view->assign('eventDefinition', $eventDefinition);
         $this->view->assign('notifications', $notifications);
-    }
-
-    /**
-     * @return Definition
-     */
-    protected function getDefinition()
-    {
-        return $this->definitionService->getDefinition();
     }
 
     /**

@@ -74,6 +74,11 @@ final class NotizConstants
     const BACKEND_MODULE_ADMINISTRATION = 'NotizNotiz_NotizNotizAdministration';
 
     /**
+     * Identifier for the index backend module.
+     */
+    const BACKEND_MODULE_INDEX = 'NotizNotiz_NotizNotizIndex';
+
+    /**
      * The default format for event markers.
      *
      * @see \CuyZ\Notiz\Core\Event\Event

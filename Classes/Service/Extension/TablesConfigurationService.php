@@ -16,9 +16,13 @@
 
 namespace CuyZ\Notiz\Service\Extension;
 
+use CuyZ\Notiz\Core\Definition\Builder\DefinitionBuilder;
+use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Support\NotizConstants;
 use CuyZ\Notiz\Service\Traits\SelfInstantiateTrait;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 /**
@@ -37,11 +41,17 @@ class TablesConfigurationService implements SingletonInterface
     protected $extensionKey;
 
     /**
+     * @var Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * Manual dependency injection.
      */
     public function __construct()
     {
         $this->extensionKey = NotizConstants::EXTENSION_KEY;
+        $this->dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
     }
 
     /**
@@ -50,6 +60,7 @@ class TablesConfigurationService implements SingletonInterface
     public function process()
     {
         $this->registerBackendModule();
+        $this->registerShowNotificationControllers();
     }
 
     /**
@@ -78,7 +89,7 @@ class TablesConfigurationService implements SingletonInterface
             'notiz_index',
             '',
             [
-                'Backend\Index' => 'listNotificationTypes, listNotifications, showNotification, listEvents, showEvent'
+                'Backend\Index' => 'listNotificationTypes, listNotifications, listEvents, showEvent'
             ],
             [
                 'access' => 'user,group',
@@ -100,6 +111,24 @@ class TablesConfigurationService implements SingletonInterface
                 'icon' => NotizConstants::EXTENSION_ICON_MODULE_PATH,
                 'labels' => "LLL:EXT:{$this->extensionKey}/Resources/Private/Language/Backend/Module/Administration/Module.xlf",
             ]
+        );
+    }
+
+    /**
+     * @todo
+     */
+    protected function registerShowNotificationControllers()
+    {
+        $this->dispatcher->connect(
+            DefinitionBuilder::class,
+            DefinitionBuilder::DEFINITION_BUILT_SIGNAL,
+            function (Definition $definition) {
+                foreach ($definition->getNotifications() as $notification) {
+                    $controllerName = 'Backend\\Notification\\Show' . ucfirst($notification->getIdentifier());
+
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][NotizConstants::BACKEND_MODULE_INDEX]['controllers'][$controllerName] = ['actions' => ['show']];
+                }
+            }
         );
     }
 }

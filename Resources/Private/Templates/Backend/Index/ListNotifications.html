@@ -53,7 +53,8 @@
                             </td>
 
                             <td>
-                                <f:link.action action="showNotification"
+                                <f:link.action controller="Backend\Notification\ShowEntityEmail"
+                                               action="show"
                                                title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
                                                arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
                                     <strong>{notification.uid}</strong>
