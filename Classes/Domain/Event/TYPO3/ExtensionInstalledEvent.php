@@ -61,6 +61,8 @@ class ExtensionInstalledEvent extends AbstractEvent
      * @label Hellol
      * @email
      *
+     * @todo remove
+     *
      * @var string
      */
     protected $test;
@@ -81,6 +83,8 @@ class ExtensionInstalledEvent extends AbstractEvent
         $this->title = $extension['title'];
         $this->version = $extension['version'];
         $this->description = $extension['description'];
+
+        $this->test = 'test@test.com';
     }
 
     /**

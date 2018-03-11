@@ -132,6 +132,11 @@ class EmailChannel extends AbstractChannel
             ->setBcc($this->addressMapper->getSendBcc())
             ->setContentType('text/html');
 
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->addressMapper->getSendTo(), __CLASS__ . ':' . __LINE__ . ' $this->addressMapper->getSendTo()');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->addressMapper->getSendCc(), __CLASS__ . ':' . __LINE__ . ' $this->addressMapper->getSendCc()');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->addressMapper->getSendBcc(), __CLASS__ . ':' . __LINE__ . ' $this->addressMapper->getSendBcc()');
+        die('!!');
+        
         $this->dispatchEmailSignal($mailMessage);
 
         $mailMessage->send();

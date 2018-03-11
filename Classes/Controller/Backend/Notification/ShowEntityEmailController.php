@@ -22,12 +22,19 @@ use CuyZ\Notiz\Domain\Property\Email;
 class ShowEntityEmailController extends ShowNotificationController
 {
     /**
+     * @var EntityEmailNotification
+     */
+    protected $notification;
+
+    /**
      * @param string $notificationIdentifier
      */
     public function showAction($notificationIdentifier)
     {
         parent::showAction($notificationIdentifier);
 
+        $aze = $this->notification->getSendToProvided();
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($aze, __CLASS__ . ':' . __LINE__ . ' $aze');
         $eventDefinition = $this->notification->getEventDefinition();
         $emailProperties = $eventDefinition->getPropertiesDefinition(Email::class, $this->notification);
 

@@ -47,7 +47,7 @@ abstract class BackendController extends ActionController
 
     /**
      * If the definition contain errors, this method will be called. It should
-     * do things like forwar the request or display an error message.
+     * do things like forwarding the request or display an error message.
      *
      * @return void
      */
