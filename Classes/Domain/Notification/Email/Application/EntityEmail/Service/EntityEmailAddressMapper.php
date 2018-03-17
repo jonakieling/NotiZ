@@ -17,10 +17,9 @@
 namespace CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service;
 
 use CuyZ\Notiz\Core\Channel\Payload;
+use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Settings\EntityEmailSettings;
-use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Settings\GlobalRecipients\Recipient;
-use CuyZ\Notiz\Domain\Property\Email;
 use CuyZ\Notiz\Service\StringService;
 
 class EntityEmailAddressMapper
@@ -36,14 +35,19 @@ class EntityEmailAddressMapper
     protected $notificationSettings;
 
     /**
-     * @var Email[]
+     * @var Event
      */
-    protected $eventRecipients;
+    protected $event;
 
-    /**
-     * @var Recipient[]
-     */
-    protected $globalRecipients;
+//    /**
+//     * @var Email[]
+//     */
+//    protected $eventRecipients;
+//
+//    /**
+//     * @var Recipient[]
+//     */
+//    protected $globalRecipients;
 
     /**
      * @param Payload $payload
@@ -53,8 +57,10 @@ class EntityEmailAddressMapper
         $this->notification = $payload->getNotification();
         $this->notificationSettings = $payload->getNotificationDefinition()->getSettings();
 
-        $this->eventRecipients = $payload->getEvent()->getProperties(Email::class);
-        $this->globalRecipients = $this->notificationSettings->getGlobalRecipients()->getRecipients();
+        $this->event = $payload->getEvent();
+
+//        $this->eventRecipients = $payload->getEvent()->getProperties(Email::class);
+//        $this->globalRecipients = $this->notificationSettings->getGlobalRecipients()->getRecipients();
     }
 
     /**
@@ -78,8 +84,8 @@ class EntityEmailAddressMapper
     public function getSendTo()
     {
         return $this->getMergedRecipients(
-            $this->notification->getSendTo(),
-            $this->notification->getSendToProvided()
+            $this->notification->getSendToProcessed(),
+            $this->notification->getSendToProvidedProcessed($this->event)
         );
     }
 
@@ -92,8 +98,8 @@ class EntityEmailAddressMapper
     public function getSendCc()
     {
         return $this->getMergedRecipients(
-            $this->notification->getSendCc(),
-            $this->notification->getSendCcProvided()
+            $this->notification->getSendCcProcessed(),
+            $this->notification->getSendCcProvidedProcessed($this->event)
         );
     }
 
@@ -106,25 +112,20 @@ class EntityEmailAddressMapper
     public function getSendBcc()
     {
         return $this->getMergedRecipients(
-            $this->notification->getSendBcc(),
-            $this->notification->getSendBccProvided()
+            $this->notification->getSendBccProcessed(),
+            $this->notification->getSendBccProvidedProcessed($this->event)
         );
     }
 
     /**
      * Returns an array of recipients merged and cleaned up.
      *
-     * @param string $manual
-     * @param string $provided
+     * @param array $manual
+     * @param array $provided
      * @return array
      */
-    protected function getMergedRecipients($manual, $provided)
+    protected function getMergedRecipients(array $manual, array $provided)
     {
-        $manual = $this->recipientStringToArray($manual);
-        $provided = $this->recipientStringToArray($provided);
-
-        $provided = $this->mapRecipients($provided);
-
         $manual = $this->parseRecipientsStrings($manual);
         $provided = $this->parseRecipientsStrings($provided);
 
@@ -133,22 +134,6 @@ class EntityEmailAddressMapper
         $recipients = $this->cleanupRecipients($recipients);
 
         return $this->prepareRecipientsForMailMessage($recipients);
-    }
-
-    /**
-     * This methods takes a comma or semi-colon separated list of recipients and
-     * returns it as an array.
-     *
-     * @param $recipients
-     * @return array
-     */
-    protected function recipientStringToArray($recipients)
-    {
-        $recipients = trim($recipients);
-        $recipients = str_replace(',', ';', $recipients);
-        $recipients = explode(';', $recipients);
-
-        return $recipients;
     }
 
     /**
@@ -166,32 +151,6 @@ class EntityEmailAddressMapper
             [StringService::get(), 'formatEmailAddress'],
             $recipients
         );
-    }
-
-    /**
-     * This method takes an array of recipient identifiers and returns the
-     * desired mapped values.
-     *
-     * @param array $recipientsIdentifiers
-     * @return array
-     */
-    protected function mapRecipients(array $recipientsIdentifiers)
-    {
-        $recipients = [];
-
-        foreach ($this->eventRecipients as $recipient) {
-            if (in_array($recipient->getName(), $recipientsIdentifiers)) {
-                $recipients[] = $recipient->getValue();
-            }
-        }
-
-        foreach ($this->globalRecipients as $recipient) {
-            if (in_array($recipient->getIdentifier(), $recipientsIdentifiers)) {
-                $recipients[] = $recipient->getRawValue();
-            }
-        }
-
-        return $recipients;
     }
 
     /**

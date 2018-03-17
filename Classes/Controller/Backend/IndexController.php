@@ -16,30 +16,72 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
-use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
+use CuyZ\Notiz\Core\Definition\Tree\Definition;
+use CuyZ\Notiz\Core\Exception\EntryNotFoundException;
 use CuyZ\Notiz\Domain\Property\Email;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class IndexController extends BackendController
 {
-    public function indexAction()
+    /**
+     * @todo
+     *
+     * @param ViewInterface $view
+     */
+    public function initializeView(ViewInterface $view)
     {
-        $this->view->assign('definition', $notifications = $this->definitionService->getDefinition());
+        $this->view->assign('definition', $this->getDefinition());
+    }
+
+    public function listNotificationTypesAction()
+    {
         $this->view->assign('user', $GLOBALS['BE_USER']->user);
+    }
 
-        // tmp
-        /** @var EntityEmailNotification $email */
-        $email = $this->definitionService
-            ->getDefinition()
-            ->getNotification('entityEmail')
-            ->getProcessor()
-            ->getNotificationFromIdentifier(1);
+    /**
+     * @param string $notificationIdentifier
+     * @param string $filterEvent
+     * @throws \Exception
+     */
+    public function listNotificationsAction($notificationIdentifier, $filterEvent = null)
+    {
+        $definition = $this->getDefinition();
 
-        $this->view->assign('myEmail', $email);
-        
-        $eventDefinition = $email->getEventDefinition();
-        $emailProperties = $eventDefinition->getPropertiesDefinition(Email::class, $email);
+        if (!$definition->hasNotification($notificationIdentifier)) {
+            throw new \Exception('@todo'); // @todo
+        }
 
-        $this->view->assign('emailProperties', $emailProperties);
+        $this->view->assign('notificationDefinition', $definition->getNotification($notificationIdentifier));
+    }
+
+    public function listEventsAction()
+    {
+    }
+
+    /**
+     * @param string $eventIdentifier
+     */
+    public function showEventAction($eventIdentifier)
+    {
+        $definition = $this->getDefinition();
+
+        try {
+            $eventDefinition = $definition->getEventFromFullIdentifier($eventIdentifier);
+        } catch (EntryNotFoundException $exception) {
+            throw new \Exception('@todo'); // @todo
+        }
+
+        $notifications = [];
+
+        foreach ($definition->getNotifications() as $notification) {
+            $notifications[] = [
+                'definition' => $notification,
+                'count' => $notification->getProcessor()->countNotificationsFromEventDefinition($eventDefinition),
+            ];
+        }
+
+        $this->view->assign('eventDefinition', $eventDefinition);
+        $this->view->assign('notifications', $notifications);
     }
 
     /**

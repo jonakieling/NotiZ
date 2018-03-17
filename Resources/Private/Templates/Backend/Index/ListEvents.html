@@ -1,0 +1,81 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+{namespace b = TYPO3\CMS\Backend\ViewHelpers}
+
+<f:layout name="Backend/Default" />
+
+<f:section name="HeaderButtons">
+    <f:render partial="Backend/Index/HeaderButtons" section="Buttons" arguments="{_all}" />
+</f:section>
+
+<f:section name="Content">
+    <div class="container">
+        <div class="page-header">
+            <h2>Events</h2>
+        </div>
+
+        <ul class="list-unstyled">
+            <f:for each="{definition.eventGroups}" as="eventGroup">
+                <li>
+                    {eventGroup.label}
+
+                    <ul>
+                        <f:for each="{eventGroup.events}" as="event">
+                            <li class="{f:if(condition: event.notificationNumber, else: 'text-muted')}">
+                                <f:spaceless>
+                                    <a href="#" data-toggle="modal" data-target="#myModal" data-event-label="{event.label}">
+                                        <core:icon identifier="actions-add" />
+                                    </a>
+                                </f:spaceless>
+
+                                <f:if condition="{event.notificationNumber}">
+                                    <f:then>
+                                        <f:link.action action="showEvent"
+                                                       arguments="{eventIdentifier: event.fullIdentifier}">
+                                            {event.label}&nbsp;({event.notificationNumber})
+                                        </f:link.action>
+                                    </f:then>
+                                    <f:else>
+                                        {event.label}
+                                    </f:else>
+                                </f:if>
+                            </li>
+                        </f:for>
+                    </ul>
+                </li>
+            </f:for>
+        </ul>
+
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                        <h4 class="modal-title" id="myModalLabel">Create new event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Choose your notification type:</p>
+
+                        <f:for each="{definition.notifications}" as="notification">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="todo" value="{notification.identifier}">
+
+                                    <core:icon identifier="{notification.iconIdentifier}" />
+                                    {notification.label}
+                                </label>
+                            </div>
+                        </f:for>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Create event</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>

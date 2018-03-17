@@ -16,11 +16,13 @@
 
 namespace CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail;
 
+use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Core\Notification\CustomSettingsNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Processor\EntityEmailNotificationProcessor;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Settings\EntityEmailSettings;
 use CuyZ\Notiz\Domain\Notification\Email\EmailNotification;
 use CuyZ\Notiz\Domain\Notification\EntityNotification;
+use CuyZ\Notiz\Domain\Property\Email;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 
@@ -143,6 +145,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     }
 
     /**
+     * @return array
+     */
+    public function getSendToProcessed()
+    {
+        return $this->recipientStringToArray($this->sendTo);
+    }
+
+    /**
      * @param string $sendTo
      */
     public function setSendTo($sendTo)
@@ -156,6 +166,18 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     public function getSendToProvided()
     {
         return $this->sendToProvided;
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    public function getSendToProvidedProcessed(Event $event)
+    {
+        return $this->mapRecipients(
+            $this->recipientStringToArray($this->sendToProvided),
+            $event->getProperties(Email::class)
+        );
     }
 
     /**
@@ -175,6 +197,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     }
 
     /**
+     * @return array
+     */
+    public function getSendCcProcessed()
+    {
+        return $this->recipientStringToArray($this->sendCc);
+    }
+
+    /**
      * @param string $sendCc
      */
     public function setSendCc($sendCc)
@@ -188,6 +218,18 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     public function getSendCcProvided()
     {
         return $this->sendCcProvided;
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    public function getSendCcProvidedProcessed(Event $event)
+    {
+        return $this->mapRecipients(
+            $this->recipientStringToArray($this->sendCcProvided),
+            $event->getProperties(Email::class)
+        );
     }
 
     /**
@@ -207,6 +249,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     }
 
     /**
+     * @return array
+     */
+    public function getSendBccProcessed()
+    {
+        return $this->recipientStringToArray($this->sendBcc);
+    }
+
+    /**
      * @param string $sendBcc
      */
     public function setSendBcc($sendBcc)
@@ -220,6 +270,18 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     public function getSendBccProvided()
     {
         return $this->sendBccProvided;
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    public function getSendBccProvidedProcessed(Event $event)
+    {
+        return $this->mapRecipients(
+            $this->recipientStringToArray($this->sendBccProvided),
+            $event->getProperties(Email::class)
+        );
     }
 
     /**
@@ -291,5 +353,59 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     public static function getSettingsClassName()
     {
         return EntityEmailSettings::class;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getNotificationIdentifier()
+    {
+        return 'entityEmail';
+    }
+
+    /**
+     * This methods takes a comma or semi-colon separated list of recipients and
+     * returns it as an array.
+     *
+     * @param $recipients
+     * @return array
+     */
+    protected function recipientStringToArray($recipients)
+    {
+        $recipients = trim($recipients);
+        $recipients = str_replace(',', ';', $recipients);
+        $recipients = explode(';', $recipients);
+
+        return $recipients;
+    }
+
+    /**
+     * This method takes an array of recipient identifiers and returns the
+     * desired mapped values.
+     *
+     * @param array $recipientsIdentifiers
+     * @param Email[] $eventRecipients
+     * @return array
+     */
+    protected function mapRecipients(array $recipientsIdentifiers, array $eventRecipients)
+    {
+        $recipients = [];
+
+        /** @var EntityEmailSettings $settings */
+        $settings = $this->getNotificationDefinition()->getSettings();
+
+        foreach ($eventRecipients as $recipient) {
+            if (in_array($recipient->getName(), $recipientsIdentifiers)) {
+                $recipients[] = $recipient->getValue();
+            }
+        }
+
+        foreach ($settings->getGlobalRecipients()->getRecipients() as $recipient) {
+            if (in_array($recipient->getIdentifier(), $recipientsIdentifiers)) {
+                $recipients[] = $recipient->getRawValue();
+            }
+        }
+
+        return $recipients;
     }
 }

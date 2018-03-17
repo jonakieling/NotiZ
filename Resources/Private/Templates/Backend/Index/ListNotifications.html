@@ -1,0 +1,102 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+{namespace b = TYPO3\CMS\Backend\ViewHelpers}
+
+<f:layout name="Backend/Default" />
+
+<f:section name="HeaderButtons">
+    <f:render partial="Backend/Index/HeaderButtons" section="Buttons" arguments="{_all}" />
+</f:section>
+
+<f:section name="Content">
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                <core:icon identifier="{notificationDefinition.iconIdentifier}" size="default" />
+                {notificationDefinition.label}
+
+                <a href="{notificationDefinition.createUri}" title="{nz:t(key: 'Backend/Module/Index/ListNotifications:create_notification.label')}">
+                    <core:icon identifier="actions-add" />
+                </a>
+            </h1>
+        </div>
+
+        <p>
+            <f:link.action action="listNotificationTypes"
+                           class="btn btn-default">
+                <core:icon identifier="actions-view-go-back" />
+                Go back to all notification types
+            </f:link.action>
+        </p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th width="32"></th>
+                        <th width="32">#</th>
+                        <th>
+                            <nz:t key="Backend/Module/Index/ListNotifications:table.header.title" />
+                        </th>
+                        <th>
+                            <nz:t key="Backend/Module/Index/ListNotifications:table.header.event" />
+                        </th>
+                        <th class="text-right">
+                            <nz:t key="Backend/Module/Index/ListNotifications:table.header.action" />
+                        </th>
+                    </tr>
+                    </thead>
+                    <f:for each="{notificationDefinition.processor.allNotifications}" as="notification">
+                        <tr id="{notification.notificationIdentifier}-{notification.uid}">
+                            <td>
+                                <b:avatar backendUser="{user.uid}" />
+                            </td>
+
+                            <td>
+                                <f:link.action controller="Backend\Notification\ShowEntityEmail"
+                                               action="show"
+                                               title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
+                                               arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
+                                    <strong>{notification.uid}</strong>
+                                </f:link.action>
+                            </td>
+
+                            <td>
+                                <f:link.action action="showNotification"
+                                               title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
+                                               arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
+                                    {notification.title}
+                                </f:link.action>
+                            </td>
+
+                            <td>
+                                <f:link.action action="showEvent"
+                                               title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_event_details', args: {0: notification.eventDefinition.label})}"
+                                               arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}">
+                                    {notification.eventDefinition.label} ({notification.eventDefinition.group.label})
+                                </f:link.action>
+                            </td>
+
+                            <td align="right">
+                                <div class="btn-group" role="group">
+                                    <a href="{notification.editUri}"
+                                       class="btn btn-default"
+                                       title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.edit', args: {0: notification.title})}">
+                                        <core:icon identifier="actions-open" />
+                                    </a>
+
+                                    <f:link.action action="showNotification"
+                                                   class="btn btn-default"
+                                                   title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
+                                                   arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
+                                        <core:icon identifier="actions-view" />
+                                    </f:link.action>
+                                </div>
+                            </td>
+                        </tr>
+                    </f:for>
+                </table>
+            </div>
+        </div>
+    </div>
+</f:section>

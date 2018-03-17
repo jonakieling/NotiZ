@@ -1,0 +1,26 @@
+<f:section name="Content">
+    <div class="page-header">
+        <h1>
+            <core:icon identifier="{notificationDefinition.iconIdentifier}" size="default" />
+
+            {notification.title}
+
+            <small title="LLL:uid">({notification.uid})</small>
+
+            <a href="{notification.editUri}"
+               title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.edit', args: {0: notification.title})}">
+                <core:icon identifier="actions-open" />
+            </a>
+        </h1>
+    </div>
+
+    <p>
+        <f:link.action action="listNotifications"
+                       controller="Backend\Index"
+                       class="btn btn-default"
+                       arguments="{notificationIdentifier: notificationDefinition.identifier}">
+            <core:icon identifier="actions-view-go-back" />
+            Go back to list view
+        </f:link.action>
+    </p>
+</f:section>

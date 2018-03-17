@@ -17,6 +17,7 @@
 namespace CuyZ\Notiz\Controller\Backend;
 
 use CuyZ\Notiz\Core\Definition\DefinitionService;
+use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 abstract class BackendController extends ActionController
@@ -37,8 +38,16 @@ abstract class BackendController extends ActionController
     }
 
     /**
+     * @return Definition
+     */
+    protected function getDefinition()
+    {
+        return $this->definitionService->getDefinition();
+    }
+
+    /**
      * If the definition contain errors, this method will be called. It should
-     * do things like forwar the request or display an error message.
+     * do things like forwarding the request or display an error message.
      *
      * @return void
      */

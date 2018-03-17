@@ -19,11 +19,11 @@ namespace CuyZ\Notiz\Domain\Notification;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
-use CuyZ\Notiz\Core\Definition\Tree\EventGroup\EventGroup;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\Channel\ChannelDefinition;
+use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 use CuyZ\Notiz\Core\Notification\MultipleChannelsNotification;
 use CuyZ\Notiz\Core\Notification\Notification;
-use CuyZ\Notiz\Service\Container;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
@@ -112,31 +112,11 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
-     * @return EventGroup|null
-     */
-    public function getEventGroupDefinition()
-    {
-        $definition = $this->getDefinition();
-
-        list($eventGroup) = explode('.', $this->getEvent());
-
-        return $definition->hasEventGroup($eventGroup)
-            ? $definition->getEventGroup($eventGroup)
-            : null;
-    }
-
-    /**
-     * @return EventDefinition|null
+     * @return EventDefinition
      */
     public function getEventDefinition()
     {
-        $eventGroup = $this->getEventGroupDefinition();
-
-        list(, $event) = explode('.', $this->getEvent());
-
-        return $eventGroup && $eventGroup->hasEvent($event)
-            ? $eventGroup->getEvent($event)
-            : null;
+        return $this->getDefinition()->getEventFromFullIdentifier($this->getEvent());
     }
 
     /**
@@ -167,13 +147,38 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
+     * @todo
+     *
+     * @return string
+     */
+    public function getEditUri()
+    {
+        $identifier = static::getNotificationIdentifier();
+        $tableName = $this->getNotificationDefinition()->getTableName();
+        $uid = $this->getUid();
+
+        return BackendUtility::getModuleUrl(
+            'record_edit',
+            [
+                "edit[$tableName][$uid]" => 'edit',
+                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . "#$identifier-$uid",
+            ]
+        );
+    }
+
+    /**
      * @return Definition
      */
     protected function getDefinition()
     {
-        /** @var DefinitionService $definitionService */
-        $definitionService = Container::get(DefinitionService::class);
+        return DefinitionService::get()->getDefinition();
+    }
 
-        return $definitionService->getDefinition();
+    /**
+     * @return NotificationDefinition
+     */
+    protected function getNotificationDefinition()
+    {
+        return $this->getDefinition()->getNotification(static::getNotificationIdentifier());
     }
 }

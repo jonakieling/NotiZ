@@ -26,10 +26,15 @@ use CuyZ\Notiz\Core\Notification\Processor\NotificationProcessor;
 use CuyZ\Notiz\Core\Notification\Processor\NotificationProcessorFactory;
 use CuyZ\Notiz\Core\Notification\Settings\NotificationSettings;
 use CuyZ\Notiz\Core\Support\NotizConstants;
+use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\IconService;
 use CuyZ\Notiz\Service\LocalizationService;
 use Romm\ConfigurationObject\Service\Items\DataPreProcessor\DataPreProcessor;
 use Romm\ConfigurationObject\Service\Items\DataPreProcessor\DataPreProcessorInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Error;
 
 class NotificationDefinition extends AbstractDefinitionComponent implements DataPreProcessorInterface
@@ -78,11 +83,24 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
     protected $iconPath;
 
     /**
-     * @param string $identifier
+     * @var string
      */
-    public function __construct($identifier)
+    private $tableName;
+
+    /**
+     * @param string $identifier
+     * @param string $className
+     */
+    public function __construct($identifier, $className)
     {
         $this->identifier = $identifier;
+        $this->className = $className;
+
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = Container::get(ConfigurationManagerInterface::class);
+        $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+
+        $this->tableName = ArrayUtility::getValueByPath($configuration, "persistence/classes/$this->className/mapping/tableName");
     }
 
     /**
@@ -152,6 +170,35 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
     public function getProcessor()
     {
         return NotificationProcessorFactory::get()->getFromNotificationClassName($this->getClassName());
+    }
+
+    /**
+     * @todo
+     *
+     * @return string
+     */
+    public function getCreateUri()
+    {
+        $tableName = $this->getTableName();
+
+        return BackendUtility::getModuleUrl(
+            'record_edit',
+            [
+                "edit[$tableName][0]" => 'new',
+                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
+            ]
+        );
+    }
+
+    /**
+     * Returns the name of the table for this notification. It is fetched in the
+     * global TypoScript configuration.
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
     }
 
     /**

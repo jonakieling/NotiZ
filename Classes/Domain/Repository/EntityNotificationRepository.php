@@ -50,4 +50,19 @@ class EntityNotificationRepository extends Repository
 
         return $query->execute();
     }
+
+    /**
+     * @param EventDefinition $eventDefinition
+     * @return int
+     */
+    public function countFromEventDefinition(EventDefinition $eventDefinition)
+    {
+        $query = $this->createQuery();
+
+        $query->matching(
+            $query->equals('event', $eventDefinition->getFullIdentifier())
+        );
+
+        return $query->count();
+    }
 }

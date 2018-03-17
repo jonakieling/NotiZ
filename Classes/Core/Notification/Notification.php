@@ -16,12 +16,19 @@
 
 namespace CuyZ\Notiz\Core\Notification;
 
+use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
+
 /**
  * This interface must be implemented by notification classes that are
  * registered in the definition.
  */
 interface Notification
 {
+    /**
+     * @return EventDefinition
+     */
+    public function getEventDefinition();
+
     /**
      * Must return a processor class name that does extend the abstract class:
      *
@@ -41,4 +48,9 @@ interface Notification
      * @return array
      */
     public function getEventConfiguration();
+
+    /**
+     * @return string
+     */
+    public static function getNotificationIdentifier();
 }

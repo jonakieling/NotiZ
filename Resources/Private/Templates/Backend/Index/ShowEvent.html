@@ -1,0 +1,44 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+{namespace b = TYPO3\CMS\Backend\ViewHelpers}
+
+<f:layout name="Backend/Default" />
+
+<f:section name="HeaderButtons">
+    <f:render partial="Backend/Index/HeaderButtons" section="Buttons" arguments="{_all}" />
+</f:section>
+
+<f:section name="Content">
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                {eventDefinition.label}
+            </h1>
+        </div>
+
+        <blockquote>
+            <p>Bacon ipsum dolor amet prosciutto pork loin jowl ribeye, burgdoggen swine filet mignon. Pork belly shank ham hock corned beef frankfurter.</p>
+
+            <p>Prosciutto boudin pork chop filet mignon, sausage pork belly kielbasa meatball capicola short ribs rump chuck shoulder. Pork belly prosciutto kielbasa landjaeger hamburger tongue drumstick.</p>
+        </blockquote>
+
+        <h2>Notifications using this event</h2>
+
+        <ul class="list-unstyled">
+            <f:for each="{notifications}" as="notification">
+                <li>
+                    <f:link.action action="listNotifications"
+                                   title="@todo"
+                                   arguments="{notificationIdentifier: notification.definition.identifier, filterEvent: eventDefinition.identifier}">
+                        <core:icon identifier="{notification.definition.iconIdentifier}" />
+
+                        {notification.definition.label}
+
+                        <f:if condition="{notification.count}">
+                            ({notification.count})
+                        </f:if>
+                    </f:link.action>
+                </li>
+            </f:for>
+        </ul>
+    </div>
+</f:section>

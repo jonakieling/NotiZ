@@ -47,6 +47,7 @@ CREATE TABLE tx_notiz_domain_model_entityemailnotification (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY event (event),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY language (l10n_parent,sys_language_uid)
 );
@@ -91,6 +92,7 @@ CREATE TABLE tx_notiz_domain_model_entitylognotification (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY event (event),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY language (l10n_parent,sys_language_uid)
 );
