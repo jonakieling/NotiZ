@@ -18,6 +18,7 @@ namespace CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail;
 
 use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Core\Notification\CustomSettingsNotification;
+use CuyZ\Notiz\Core\Property\PropertyEntry;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Processor\EntityEmailNotificationProcessor;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Settings\EntityEmailSettings;
 use CuyZ\Notiz\Domain\Notification\Email\EmailNotification;
@@ -169,6 +170,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     }
 
     /**
+     * @return Email[]
+     */
+    public function getSelectedSendToProvided()
+    {
+        return $this->getSelectedProvidedRecipients($this->sendToProvided);
+    }
+
+    /**
      * @param Event $event
      * @return array
      */
@@ -221,6 +230,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     }
 
     /**
+     * @return Email[]
+     */
+    public function getSelectedSendCcProvided()
+    {
+        return $this->getSelectedProvidedRecipients($this->sendCcProvided);
+    }
+
+    /**
      * @param Event $event
      * @return array
      */
@@ -270,6 +287,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     public function getSendBccProvided()
     {
         return $this->sendBccProvided;
+    }
+
+    /**
+     * @return Email[]
+     */
+    public function getSelectedSendBccProvided()
+    {
+        return $this->getSelectedProvidedRecipients($this->sendBccProvided);
     }
 
     /**
@@ -407,5 +432,29 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
         }
 
         return $recipients;
+    }
+
+    /**
+     * @param string $providedRecipients
+     * @return Email[]
+     */
+    protected function getSelectedProvidedRecipients($providedRecipients)
+    {
+        $providedRecipients = GeneralUtility::trimExplode(',', $providedRecipients);
+
+        return array_filter(
+            $this->getEmailProperties(),
+            function (Email $email) use ($providedRecipients) {
+                return in_array($email->getName(), $providedRecipients);
+            }
+        );
+    }
+
+    /**
+     * @return PropertyEntry[]|Email[]
+     */
+    protected function getEmailProperties()
+    {
+        return $this->getEventDefinition()->getPropertiesDefinition(Email::class, $this);
     }
 }
