@@ -1,6 +1,9 @@
 <f:section name="Buttons">
     <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/Layout:show_notifications\')}'}">
-        <f:link.action action="listNotificationTypes" class="btn btn-default" title="{label}">
+        <f:link.action controller="Backend\Index"
+                       action="listNotificationTypes"
+                       class="btn btn-default"
+                       title="{label}">
             <strong>
                 <core:icon identifier="tx-notiz-icon" />&nbsp;{label}
             </strong>

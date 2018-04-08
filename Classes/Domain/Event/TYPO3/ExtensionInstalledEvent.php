@@ -58,7 +58,7 @@ class ExtensionInstalledEvent extends AbstractEvent
     protected $version;
 
     /**
-     * @label Hellol
+     * @label Test 1
      * @email
      *
      * @todo remove
@@ -66,6 +66,16 @@ class ExtensionInstalledEvent extends AbstractEvent
      * @var string
      */
     protected $test;
+
+    /**
+     * @label Test 2
+     * @email
+     *
+     * @todo remove
+     *
+     * @var string
+     */
+    protected $test2;
 
     /**
      * @var ListUtility

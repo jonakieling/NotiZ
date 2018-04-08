@@ -11,8 +11,6 @@
     <div class="container">
         <f:render partial="Backend/Notification/Show/Header" section="Content" arguments="{_all}" />
 
-        <f:debug>{emailProperties}</f:debug>
-
         <div class="panel panel-default">
             <div class="panel-heading">Panel heading</div>
 
@@ -30,10 +28,18 @@
                     <td>Recipients (To)</td>
                     <td>{notification.sendTo}</td>
                 </tr>
-                <tr>
-                    <td>Recipients (To)</td>
-                    <td>{notification.sendToProvided}</td>
-                </tr>
+                <f:if condition="{notification.selectedSendToProvided}">
+                    <tr>
+                        <td>Provided recipients (To)</td>
+                        <td>
+                            <ul>
+                                <f:for each="{notification.selectedSendToProvided}" as="recipient">
+                                    <li>{recipient.label}</li>
+                                </f:for>
+                            </ul>
+                        </td>
+                    </tr>
+                </f:if>
             </table>
 
             <ul class="list-group">

@@ -21,7 +21,8 @@
         </div>
 
         <p>
-            <f:link.action action="listNotificationTypes"
+            <f:link.action controller="Backend\Index"
+                           action="listNotificationTypes"
                            class="btn btn-default">
                 <core:icon identifier="actions-view-go-back" />
                 Go back to all notification types
@@ -46,6 +47,7 @@
                         </th>
                     </tr>
                     </thead>
+                    <f:debug>{notificationDefinition}</f:debug>
                     <f:for each="{notificationDefinition.processor.allNotifications}" as="notification">
                         <tr id="{notification.notificationIdentifier}-{notification.uid}">
                             <td>
@@ -53,7 +55,7 @@
                             </td>
 
                             <td>
-                                <f:link.action controller="Backend\Notification\ShowEntityEmail"
+                                <f:link.action controller="Backend\Notification\Show{notificationDefinition.identifier -> f:format.case(mode: 'capital')}"
                                                action="show"
                                                title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
                                                arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
@@ -62,7 +64,8 @@
                             </td>
 
                             <td>
-                                <f:link.action action="showNotification"
+                                <f:link.action controller="Backend\Notification\Show{notificationDefinition.identifier -> f:format.case(mode: 'capital')}"
+                                               action="show"
                                                title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
                                                arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
                                     {notification.title}
@@ -85,7 +88,8 @@
                                         <core:icon identifier="actions-open" />
                                     </a>
 
-                                    <f:link.action action="showNotification"
+                                    <f:link.action controller="Backend\Notification\Show{notificationDefinition.identifier -> f:format.case(mode: 'capital')}"
+                                                   action="show"
                                                    class="btn btn-default"
                                                    title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}"
                                                    arguments="{notificationDefinitionIdentifier: notificationDefinition.identifier, notificationIdentifier: notification.uid}">
