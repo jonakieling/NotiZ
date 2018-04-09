@@ -7,6 +7,19 @@
             <trans-unit id="module.title">
                 <source>Notification types</source>
             </trans-unit>
+
+            <trans-unit id="introduction">
+                <source><![CDATA[
+                    Here you can find the list of every notification type that can be managed within this module.
+
+                    Use the provided buttons to list existing notifications or create new ones.
+                ]]></source>
+            </trans-unit>
+
+            <trans-unit id="notification.no_description">
+                <source>No description available…</source>
+            </trans-unit>
+
             <trans-unit id="show_notifications">
                 <source>Show %s notification(s)</source>
             </trans-unit>

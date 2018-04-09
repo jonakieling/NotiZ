@@ -55,6 +55,11 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
 
     /**
      * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
      *
      * @validate NotEmpty
      * @validate Romm.ConfigurationObject:ClassImplements(interface=CuyZ\Notiz\Core\Notification\Notification)
@@ -119,6 +124,14 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
         return $this->label
             ? LocalizationService::localize($this->label)
             : $this->identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return LocalizationService::localize($this->description);
     }
 
     /**
