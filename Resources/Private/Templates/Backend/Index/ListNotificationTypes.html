@@ -15,6 +15,15 @@
             </h1>
         </div>
 
+        <f:be.infobox>
+            <p>
+                <nz:t key="Backend/Module/Index/ListNotificationTypes:intro.1" />
+            </p>
+            <p>
+                <nz:t key="Backend/Module/Index/ListNotificationTypes:intro.2" />
+            </p>
+        </f:be.infobox>
+
         <div class="row">
             <f:if condition="{definition.notifications}">
                 <f:for each="{definition.notifications}" as="notification">
@@ -40,20 +49,38 @@
             </div>
 
             <div class="panel-body">
-                <p>Bacon ipsum dolor amet prosciutto pork loin jowl ribeye, burgdoggen swine filet mignon. Pork belly shank ham hock corned beef frankfurter.</p>
-
-                <p>Prosciutto boudin pork chop filet mignon, sausage pork belly kielbasa meatball capicola short ribs rump chuck shoulder. Pork belly prosciutto kielbasa landjaeger hamburger tongue drumstick.</p>
+                <p>
+                    <f:if condition="{notification.description}">
+                        <f:then>
+                            <f:format.nl2br>{notification.description}</f:format.nl2br>
+                        </f:then>
+                        <f:else>
+                            <em>
+                                <nz:t key="Backend/Module/Index/ListNotificationTypes:notification.no_description" />
+                            </em>
+                        </f:else>
+                    </f:if>
+                </p>
             </div>
 
             <div class="panel-footer text-center">
                 <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/ListNotificationTypes:show_notifications\', args: {0: notification.processor.totalNumber})}'}">
-                    <f:link.action action="listNotifications"
-                                   class="btn btn-default"
-                                   title="{label}"
-                                   arguments="{notificationIdentifier: notification.identifier}">
-                        <core:icon identifier="actions-system-list-open" />
-                        {label}
-                    </f:link.action>
+                    <a href="{notification.createUri}"
+                       class="btn btn-default"
+                       title="{nz:t(key: 'Backend/Module/Index/ListNotificationTypes:create_notification')}">
+                        <core:icon identifier="actions-add" />
+                        <nz:t key="Backend/Module/Index/ListNotificationTypes:create_notification" />
+                    </a>
+
+                    <f:if condition="{notification.processor.totalNumber}">
+                        <f:link.action action="listNotifications"
+                                       class="btn btn-default"
+                                       title="{label}"
+                                       arguments="{notificationIdentifier: notification.identifier}">
+                            <core:icon identifier="actions-system-list-open" />
+                            {label}
+                        </f:link.action>
+                    </f:if>
                 </f:alias>
             </div>
         </div>
