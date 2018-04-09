@@ -4,10 +4,6 @@
         <header/>
         <body>
 
-            <trans-unit id="create_notification.label">
-                <source>Create new notification</source>
-            </trans-unit>
-
             <trans-unit id="table.header.title">
                 <source>Title</source>
             </trans-unit>

@@ -131,7 +131,7 @@ class NotificationDefinition extends AbstractDefinitionComponent implements Data
      */
     public function getDescription()
     {
-        return trim(LocalizationService::localize($this->description));
+        return LocalizationService::localize($this->description);
     }
 
     /**
