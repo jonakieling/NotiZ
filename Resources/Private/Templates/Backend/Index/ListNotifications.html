@@ -43,7 +43,6 @@
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
-                        <th width="32"></th>
                         <th width="32">#</th>
                         <th>
                             <nz:t key="Backend/Module/Index/ListNotifications:table.header.title" />
@@ -59,10 +58,6 @@
                     <f:debug>{notificationDefinition}</f:debug>
                     <f:for each="{notificationDefinition.processor.allNotifications}" as="notification">
                         <tr id="{notification.notificationIdentifier}-{notification.uid}">
-                            <td>
-                                <b:avatar backendUser="{user.uid}" />
-                            </td>
-
                             <td>
                                 <f:link.action controller="Backend\Notification\Show{notificationDefinition.identifier -> f:format.case(mode: 'capital')}"
                                                action="show"

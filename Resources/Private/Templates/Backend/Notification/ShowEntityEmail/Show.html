@@ -12,12 +12,12 @@
         <f:render partial="Backend/Notification/Show/Header" section="Content" arguments="{_all}" />
 
         <div class="panel panel-default">
-            <div class="panel-heading">Panel heading</div>
+            <div class="panel-heading">@todo</div>
 
             <table class="table">
                 <tr>
                     <td>Event</td>
-                    <td>
+                    <td colspan="2">
                         <f:link.action action="showEvent"
                                        arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}">
                             {notification.eventDefinition.label} ({notification.eventDefinition.group.label})
@@ -25,29 +25,68 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Recipients (To)</td>
+                    <td>Created by</td>
+                    <td colspan="2">
+                        <b:avatar backendUser="{user.uid}" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td rowspan="4">Recipients</td>
+                </tr>
+                <tr>
+                    <td>To</td>
                     <td>{notification.sendTo}</td>
                 </tr>
-                <f:if condition="{notification.selectedSendToProvided}">
-                    <tr>
-                        <td>Provided recipients (To)</td>
-                        <td>
+                <tr>
+                    <td>Cc</td>
+                    <td>{notification.sendCc}</td>
+                </tr>
+                <tr>
+                    <td>Bcc</td>
+                    <td>{notification.sendBcc}</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="4">Provided recipients</td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>
+                        <f:if condition="{notification.selectedSendToProvided}">
                             <ul>
                                 <f:for each="{notification.selectedSendToProvided}" as="recipient">
                                     <li>{recipient.label}</li>
                                 </f:for>
                             </ul>
-                        </td>
-                    </tr>
-                </f:if>
+                        </f:if>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cc</td>
+                    <td>
+                        <f:if condition="{notification.selectedSendCcProvided}">
+                            <ul>
+                                <f:for each="{notification.selectedSendCcProvided}" as="recipient">
+                                    <li>{recipient.label}</li>
+                                </f:for>
+                            </ul>
+                        </f:if>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Bcc</td>
+                    <td>
+                        <f:if condition="{notification.selectedSendBccProvided}">
+                            <ul>
+                                <f:for each="{notification.selectedSendBccProvided}" as="recipient">
+                                    <li>{recipient.label}</li>
+                                </f:for>
+                            </ul>
+                        </f:if>
+                    </td>
+                </tr>
             </table>
-
-            <ul class="list-group">
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
         </div>
     </div>
 </f:section>
