@@ -6,11 +6,6 @@
             {notification.title}
 
             <small title="LLL:uid">({notification.uid})</small>
-
-            <a href="{notification.editUri}"
-               title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.edit', args: {0: notification.title})}">
-                <core:icon identifier="actions-open" />
-            </a>
         </h1>
     </div>
 
@@ -20,7 +15,14 @@
                        class="btn btn-default"
                        arguments="{notificationIdentifier: notificationDefinition.identifier}">
             <core:icon identifier="actions-view-go-back" />
-            Go back to list view
+            <nz:t key="Backend/Module/Index/Global:go_back_list_view" />
         </f:link.action>
+
+        <a href="{notification.editUri}"
+           class="btn btn-default"
+           title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
+            <core:icon identifier="actions-open" />
+            <nz:t key="Backend/Module/Index/Global:edit_notification" />
+        </a>
     </p>
 </f:section>

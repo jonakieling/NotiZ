@@ -14,9 +14,6 @@
                 <source>Action</source>
             </trans-unit>
 
-            <trans-unit id="action.edit">
-                <source>Edit notification “%s”</source>
-            </trans-unit>
             <trans-unit id="action.show">
                 <source>Show details of the notification “%s”</source>
             </trans-unit>

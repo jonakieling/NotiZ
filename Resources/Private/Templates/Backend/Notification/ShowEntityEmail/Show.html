@@ -19,7 +19,8 @@
                     <td>Event</td>
                     <td colspan="2">
                         <f:link.action action="showEvent"
-                                       arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}">
+                                       arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}"
+                                       title="{nz:t(key: 'Backend/Module/Index/Global:show_event_details', args: {0: notification.eventDefinition.label})}">
                             {notification.eventDefinition.label} ({notification.eventDefinition.group.label})
                         </f:link.action>
                     </td>
@@ -27,7 +28,11 @@
                 <tr>
                     <td>Created by</td>
                     <td colspan="2">
-                        <b:avatar backendUser="{user.uid}" />
+                        <b:avatar backendUser="{notification.backendUser.uid}" />
+                        <f:if condition="{notification.backendUser.realName}">
+                            <f:then>{notification.backendUser.realName}</f:then>
+                            <f:else>{notification.backendUser.userName}</f:else>
+                        </f:if>
                     </td>
                 </tr>
 

@@ -78,7 +78,7 @@
 
                             <td>
                                 <f:link.action action="showEvent"
-                                               title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_event_details', args: {0: notification.eventDefinition.label})}"
+                                               title="{nz:t(key: 'Backend/Module/Index/Global:show_event_details', args: {0: notification.eventDefinition.label})}"
                                                arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}">
                                     {notification.eventDefinition.label} ({notification.eventDefinition.group.label})
                                 </f:link.action>
@@ -88,7 +88,7 @@
                                 <div class="btn-group" role="group">
                                     <a href="{notification.editUri}"
                                        class="btn btn-default"
-                                       title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.edit', args: {0: notification.title})}">
+                                       title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
                                         <core:icon identifier="actions-open" />
                                     </a>
 

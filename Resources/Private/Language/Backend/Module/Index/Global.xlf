@@ -7,6 +7,17 @@
             <trans-unit id="create_notification">
                 <source>Create a new notification</source>
             </trans-unit>
+            <trans-unit id="edit_notification">
+                <source>Edit notification</source>
+            </trans-unit>
+
+            <trans-unit id="show_event_details">
+                <source>Show details of the event “%s”</source>
+            </trans-unit>
+
+            <trans-unit id="go_back_list_view">
+                <source>Go back to list view</source>
+            </trans-unit>
 
         </body>
     </file>
