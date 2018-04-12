@@ -95,7 +95,7 @@ class EntryNotFoundException extends NotizException
             [$identifier, EventGroup::class]
         );
     }
-    
+
     /**
      * @param string $fullIdentifier
      * @return static

@@ -10,7 +10,7 @@
 <f:section name="Content">
     <div class="container">
         <div class="page-header">
-            <h1>Events</h1>
+            <h1>Available events</h1>
         </div>
 
         <f:be.infobox>
@@ -64,19 +64,15 @@
                         <p>Choose your notification type:</p>
 
                         <f:for each="{definition.notifications}" as="notification">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="todo" value="{notification.identifier}">
-
+                            <div class="center-block">
+                                <a href="{notification.createUri}&selectedEvent=scheduler.schedulerTaskWasExecuted"
+                                   class="btn btn-default btn-block"
+                                   title="@todo">
                                     <core:icon identifier="{notification.iconIdentifier}" />
                                     {notification.label}
-                                </label>
+                                </a>
                             </div>
                         </f:for>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary">Create event</button>
                     </div>
                 </div>
             </div>

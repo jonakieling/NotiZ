@@ -20,6 +20,7 @@ use CuyZ\Notiz\Backend\ToolBarItems\NotificationsToolbarItem;
 use CuyZ\Notiz\Core\Definition\Builder\DefinitionBuilder;
 use CuyZ\Notiz\Core\Support\NotizConstants;
 use CuyZ\Notiz\Domain\Definition\Builder\Component\DefaultDefinitionComponents;
+use CuyZ\Notiz\FormEngine\SelectEvent;
 use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\ExtensionConfigurationService;
 use CuyZ\Notiz\Service\Hook\EventDefinitionRegisterer;
@@ -82,6 +83,7 @@ class LocalConfigurationService implements SingletonInterface, TableConfiguratio
         $this->registerNotificationFlexFormProcessorHook();
         $this->registerInternalCache();
         $this->registerIcons();
+        $this->registerFormEngineComponents();
         $this->resetTypeConvertersArray();
         $this->overrideScheduler();
     }
@@ -221,5 +223,18 @@ class LocalConfigurationService implements SingletonInterface, TableConfiguratio
         if (ExtensionManagementUtility::isLoaded('scheduler')) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][Scheduler::class] = ['className' => \CuyZ\Notiz\Service\Scheduler\Scheduler::class];
         }
+    }
+
+    /**
+     * Registers components for TYPO3 form engine.
+     */
+    protected function registerFormEngineComponents()
+    {
+        // Overrides TYPO3 "select single" element for the event field.
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1523545627] = [
+            'nodeName' => 'notizSelectEvent',
+            'priority' => 50,
+            'class' => SelectEvent::class,
+        ];
     }
 }
