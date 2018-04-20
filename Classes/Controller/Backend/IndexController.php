@@ -16,9 +16,6 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
-use CuyZ\Notiz\Core\Definition\Tree\Definition;
-use CuyZ\Notiz\Core\Exception\EntryNotFoundException;
-use CuyZ\Notiz\Domain\Property\Email;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class IndexController extends BackendController
@@ -65,11 +62,11 @@ class IndexController extends BackendController
     {
         $definition = $this->getDefinition();
 
-        try {
-            $eventDefinition = $definition->getEventFromFullIdentifier($eventIdentifier);
-        } catch (EntryNotFoundException $exception) {
+        if (!$definition->hasEventFromFullIdentifier($eventIdentifier)) {
             throw new \Exception('@todo'); // @todo
         }
+
+        $eventDefinition = $definition->getEventFromFullIdentifier($eventIdentifier);
 
         $notifications = [];
 
