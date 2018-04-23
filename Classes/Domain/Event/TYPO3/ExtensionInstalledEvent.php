@@ -17,13 +17,14 @@
 namespace CuyZ\Notiz\Domain\Event\TYPO3;
 
 use CuyZ\Notiz\Core\Event\AbstractEvent;
+use CuyZ\Notiz\Core\Event\ProvidesExampleMarkers;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
  * Event triggered when an extension is installed via the extension manager.
  */
-class ExtensionInstalledEvent extends AbstractEvent
+class ExtensionInstalledEvent extends AbstractEvent implements ProvidesExampleMarkers
 {
     /**
      * @label Event/TYPO3/ExtensionInstalled:marker.key
@@ -121,5 +122,15 @@ class ExtensionInstalledEvent extends AbstractEvent
     public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExampleMarkers()
+    {
+        return [
+            'key' => 'my_extension',
+        ];
     }
 }
