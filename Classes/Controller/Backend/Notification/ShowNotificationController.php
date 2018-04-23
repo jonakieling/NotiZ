@@ -19,6 +19,7 @@ namespace CuyZ\Notiz\Controller\Backend\Notification;
 use CuyZ\Notiz\Controller\Backend\BackendController;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 use CuyZ\Notiz\Core\Notification\Notification;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 abstract class ShowNotificationController extends BackendController
 {
@@ -33,9 +34,11 @@ abstract class ShowNotificationController extends BackendController
     protected $notification;
 
     /**
-     * @param string $notificationIdentifier
+     * @todo
+     *
+     * @throws \Exception
      */
-    public function showAction($notificationIdentifier)
+    public function initializeAction()
     {
         $definition = $this->getDefinition();
         $notificationDefinitionIdentifier = $this->getNotificationDefinitionIdentifier();
@@ -44,11 +47,28 @@ abstract class ShowNotificationController extends BackendController
             throw new \Exception('@todo'); // @todo
         }
 
-        $this->notificationDefinition = $definition->getNotification($notificationDefinitionIdentifier);
-        $this->notification = $this->notificationDefinition->getProcessor()->getNotificationFromIdentifier($notificationIdentifier);
+        if ($this->request->hasArgument('notificationIdentifier')) {
+            $notificationIdentifier = $this->request->getArgument('notificationIdentifier');
 
+            $this->notificationDefinition = $definition->getNotification($notificationDefinitionIdentifier);
+            $this->notification = $this->notificationDefinition->getProcessor()->getNotificationFromIdentifier($notificationIdentifier);
+        }
+    }
+
+    /**
+     * @param ViewInterface $view
+     */
+    public function initializeView(ViewInterface $view)
+    {
         $this->view->assign('notificationDefinition', $this->notificationDefinition);
         $this->view->assign('notification', $this->notification);
+    }
+
+    /**
+     * @param string $notificationIdentifier
+     */
+    public function showAction($notificationIdentifier)
+    {
     }
 
     /**

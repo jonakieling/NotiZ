@@ -100,6 +100,20 @@
                     </f:if>
                 </td>
             </tr>
+
+            <thead>
+                <tr>
+                    <th colspan="3">Preview</th>
+                </tr>
+            </thead>
+
+            <tr>
+                <td colspan="3">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{f:uri.action(action: 'preview', arguments: {notificationIdentifier: notification.uid})}"></iframe>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
 </f:section>
