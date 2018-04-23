@@ -16,7 +16,11 @@
 
 namespace CuyZ\Notiz\Controller\Backend\Notification;
 
+use CuyZ\Notiz\Core\Channel\Payload;
+use CuyZ\Notiz\Core\Event\ExampleEvent;
+use CuyZ\Notiz\Core\Event\Service\EventFactory;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
+use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service\EntityEmailTemplateBuilder;
 use CuyZ\Notiz\Domain\Property\Email;
 
 class ShowEntityEmailController extends ShowNotificationController
@@ -25,6 +29,11 @@ class ShowEntityEmailController extends ShowNotificationController
      * @var EntityEmailNotification
      */
     protected $notification;
+
+    /**
+     * @var EventFactory
+     */
+    protected $eventFactory;
 
     /**
      * @param string $notificationIdentifier
@@ -44,10 +53,35 @@ class ShowEntityEmailController extends ShowNotificationController
     }
 
     /**
+     * @param string $notificationIdentifier
+     */
+    public function previewAction($notificationIdentifier)
+    {
+//        $event = $this->eventFactory->create($this->notification->getEventDefinition(), $this->notification);
+
+        $event = $this->objectManager->get(ExampleEvent::class, $this->notification->getEventDefinition(), $this->notification);
+
+        $payload = new Payload($this->notification, $this->notificationDefinition, $event);
+
+        /** @var EntityEmailTemplateBuilder $entityEmailTemplateBuilder */
+        $entityEmailTemplateBuilder = $this->objectManager->get(EntityEmailTemplateBuilder::class, $payload);
+
+        return $entityEmailTemplateBuilder->getBody();
+    }
+
+    /**
      * @return string
      */
     public function getNotificationDefinitionIdentifier()
     {
         return EntityEmailNotification::getNotificationIdentifier();
+    }
+
+    /**
+     * @param EventFactory $eventFactory
+     */
+    public function injectEventFactory(EventFactory $eventFactory)
+    {
+        $this->eventFactory = $eventFactory;
     }
 }

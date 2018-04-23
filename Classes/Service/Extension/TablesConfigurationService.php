@@ -126,7 +126,7 @@ class TablesConfigurationService implements SingletonInterface
                 foreach ($definition->getNotifications() as $notification) {
                     $controllerName = 'Backend\\Notification\\Show' . ucfirst($notification->getIdentifier());
 
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][NotizConstants::BACKEND_MODULE_INDEX]['controllers'][$controllerName] = ['actions' => ['show']];
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][NotizConstants::BACKEND_MODULE_INDEX]['controllers'][$controllerName] = ['actions' => ['show', 'preview']];
                 }
             }
         );
