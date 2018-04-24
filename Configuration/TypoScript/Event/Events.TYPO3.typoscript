@@ -35,6 +35,7 @@ notiz {
                  */
                 cachesCleared {
                     label = Event/TYPO3/CacheCleared:title
+                    description = Event/TYPO3/CacheCleared:description
 
                     className = CuyZ\Notiz\Domain\Event\TYPO3\CachesClearedEvent
 

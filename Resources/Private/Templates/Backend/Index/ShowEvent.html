@@ -8,6 +8,10 @@
 </f:section>
 
 <f:section name="Content">
+    <f:render partial="Backend/Index/CreateNotificationModal"
+              section="Content"
+              arguments="{definition: definition, event: eventDefinition.fullIdentifier}" />
+
     <div class="container">
         <div class="page-header">
             <h1>
@@ -22,21 +26,32 @@
                 <core:icon identifier="actions-view-go-back" />
                 <nz:t key="Backend/Module/Index/Global:go_back_list_view" />
             </f:link.action>
+
+            <a href="#"
+               class="btn btn-default"
+               data-toggle="modal"
+               data-target="#create-notification">
+
+                <core:icon identifier="actions-add" />
+                <nz:t key="Backend/Module/Index/Global:create_notification" />
+            </a>
         </p>
 
-        <blockquote>
-            <p>Bacon ipsum dolor amet prosciutto pork loin jowl ribeye, burgdoggen swine filet mignon. Pork belly shank ham hock corned beef frankfurter.</p>
+        <f:if condition="{eventDefinition.description}">
+            <blockquote>
+                <nz:format.nl2brTrim>{eventDefinition.description}</nz:format.nl2brTrim>
+            </blockquote>
+        </f:if>
 
-            <p>Prosciutto boudin pork chop filet mignon, sausage pork belly kielbasa meatball capicola short ribs rump chuck shoulder. Pork belly prosciutto kielbasa landjaeger hamburger tongue drumstick.</p>
-        </blockquote>
-
-        <h2>Notifications using this event</h2>
+        <h2>
+            <nz:t key="Backend/Module/Index/ShowEvent:notifications_bound_to_event" />
+        </h2>
 
         <ul class="list-unstyled">
             <f:for each="{notifications}" as="notification">
                 <li>
                     <f:link.action action="listNotifications"
-                                   title="@todo"
+                                   title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_notifications_bound_to_event', args: '{0: notification.definition.label}')}"
                                    arguments="{notificationIdentifier: notification.definition.identifier, filterEvent: eventDefinition.identifier}">
                         <core:icon identifier="{notification.definition.iconIdentifier}" />
 

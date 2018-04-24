@@ -103,17 +103,25 @@ class Definition extends AbstractDefinitionComponent implements ConfigurationObj
      */
     public function getEventFromFullIdentifier($fullIdentifier)
     {
-        list($eventGroup, $event) = explode('.', $fullIdentifier);
-
-        if ($this->hasEventGroup($eventGroup)) {
-            $eventGroup = $this->getEventGroup($eventGroup);
-
-            if ($eventGroup->hasEvent($event)) {
-                return $eventGroup->getEvent($event);
-            }
+        if (!$this->hasEventFromFullIdentifier($fullIdentifier)) {
+            throw EntryNotFoundException::definitionEventFullIdentifierNotFound($fullIdentifier);
         }
 
-        throw EntryNotFoundException::definitionEventFullIdentifierNotFound($fullIdentifier);
+        list($eventGroup, $event) = explode('.', $fullIdentifier);
+
+        return $this->getEventGroup($eventGroup)->getEvent($event);
+    }
+
+    /**
+     * @param string $fullIdentifier
+     * @return bool
+     */
+    public function hasEventFromFullIdentifier($fullIdentifier)
+    {
+        list($eventGroup, $event) = explode('.', $fullIdentifier);
+
+        return $this->hasEventGroup($eventGroup)
+            && $this->getEventGroup($eventGroup)->hasEvent($event);
     }
 
     /**

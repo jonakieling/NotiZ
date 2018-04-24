@@ -8,13 +8,19 @@
 </f:section>
 
 <f:section name="Content">
+    <f:render partial="Backend/Index/CreateNotificationModal"
+              section="Content"
+              arguments="{definition: definition}" />
+
     <div class="container">
         <div class="page-header">
             <h1>Available events</h1>
         </div>
 
         <f:be.infobox>
-            <p>aze</p>
+            <nz:format.nl2brTrim>
+                <nz:t key="Backend/Module/Index/ListEvents:introduction" />
+            </nz:format.nl2brTrim>
         </f:be.infobox>
 
         <ul class="list-unstyled">
@@ -27,6 +33,7 @@
                             <li class="{f:if(condition: event.notificationNumber, else: 'text-muted')}">
                                 <f:spaceless>
                                     <a href="#"
+                                       title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}"
                                        class="link-create-notification"
                                        data-toggle="modal"
                                        data-target="#create-notification"
@@ -39,7 +46,9 @@
                                 <f:if condition="{event.notificationNumber}">
                                     <f:then>
                                         <f:link.action action="showEvent"
-                                                       arguments="{eventIdentifier: event.fullIdentifier}">
+                                                       arguments="{eventIdentifier: event.fullIdentifier}"
+                                                       title="{nz:t(key: 'Backend/Module/Index/ListEvents:show_event_details')}">
+
                                             {event.label}&nbsp;({event.notificationNumber})
                                         </f:link.action>
                                     </f:then>
@@ -53,37 +62,5 @@
                 </li>
             </f:for>
         </ul>
-
-
-        <div class="modal fade" id="create-notification" tabindex="-1" role="dialog" aria-labelledby="create-notification-label">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-
-                        <h4 class="modal-title" id="create-notification-label">Create new event</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <p>Choose your notification type:</p>
-
-                        <f:for each="{definition.notifications}" as="notification">
-                            <div class="center-block">
-                                <a href="{notification.createUri}"
-                                   data-href="{notification.createUri}&selectedEvent=#EVENT#"
-                                   class="btn btn-default btn-block link-create-notification-event"
-                                   title="@todo">
-
-                                    <core:icon identifier="{notification.iconIdentifier}" />
-                                    {notification.label}
-                                </a>
-                            </div>
-                        </f:for>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </f:section>

@@ -8,6 +8,13 @@
                 <source>Event&#160;&#8211;&#160;%s</source>
             </trans-unit>
 
+            <trans-unit id="show_notifications_bound_to_event">
+                <source>Show notifications of type “%s” that are bound to this event.</source>
+            </trans-unit>
+            <trans-unit id="notifications_bound_to_event">
+                <source>Notifications bound to this event</source>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>
