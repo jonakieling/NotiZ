@@ -17,7 +17,7 @@
 namespace CuyZ\Notiz\Domain\Event\TYPO3;
 
 use CuyZ\Notiz\Core\Event\AbstractEvent;
-use CuyZ\Notiz\Core\Event\ProvidesExampleMarkers;
+use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 

@@ -17,8 +17,10 @@
 namespace CuyZ\Notiz\Controller\Backend\Notification;
 
 use CuyZ\Notiz\Core\Channel\Payload;
-use CuyZ\Notiz\Core\Event\ExampleEvent;
+use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Core\Event\Service\EventFactory;
+use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
+use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service\EntityEmailTemplateBuilder;
 use CuyZ\Notiz\Domain\Property\Email;
@@ -57,11 +59,27 @@ class ShowEntityEmailController extends ShowNotificationController
      */
     public function previewAction($notificationIdentifier)
     {
-//        $event = $this->eventFactory->create($this->notification->getEventDefinition(), $this->notification);
+        $fakeEvent = $this->eventFactory->create($this->notification->getEventDefinition(), $this->notification);
 
-        $event = $this->objectManager->get(ExampleEvent::class, $this->notification->getEventDefinition(), $this->notification);
+        if ($fakeEvent instanceof ProvidesExampleMarkers) {
+            $this->signalSlotDispatcher->connect(
+                'aze',
+                'test',
+                function (PropertyContainer $container, Event $event) use ($fakeEvent) {
+                    if ($event === $fakeEvent) {
+                        $exampleMarkers = $fakeEvent->getExampleMarkers();
 
-        $payload = new Payload($this->notification, $this->notificationDefinition, $event);
+                        foreach ($container->getEntries() as $marker) {
+                            if (isset($exampleMarkers[$marker->getName()])) {
+                                $marker->setValue($exampleMarkers[$marker->getName()]);
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        $payload = new Payload($this->notification, $this->notificationDefinition, $fakeEvent);
 
         /** @var EntityEmailTemplateBuilder $entityEmailTemplateBuilder */
         $entityEmailTemplateBuilder = $this->objectManager->get(EntityEmailTemplateBuilder::class, $payload);

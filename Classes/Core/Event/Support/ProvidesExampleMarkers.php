@@ -14,11 +14,16 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-namespace CuyZ\Notiz\Core\Event;
+namespace CuyZ\Notiz\Core\Event\Support;
 
+/**
+ * @todo
+ */
 interface ProvidesExampleMarkers
 {
     /**
+     * @todo
+     *
      * @return array
      */
     public function getExampleMarkers();
