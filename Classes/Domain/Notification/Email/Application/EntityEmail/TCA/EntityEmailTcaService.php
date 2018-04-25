@@ -74,7 +74,7 @@ class EntityEmailTcaService extends NotificationTcaService
                     'value' => $recipient->getName(),
                 ];
             },
-            $eventDefinition->getPropertiesDefinition(Email::class, $notification)
+            $eventDefinition->getPropertyDefinition(Email::class, $notification)->getEntries()
         );
 
         $globalRecipients = array_map(
@@ -198,7 +198,7 @@ class EntityEmailTcaService extends NotificationTcaService
         $notification = $this->getNotification($row);
 
         /** @var Email[] $recipients */
-        $recipients = $eventDefinition->getPropertiesDefinition(Email::class, $notification);
+        $recipients = $eventDefinition->getPropertyDefinition(Email::class, $notification)->getEntries();
 
         $globalRecipients = $this->getNotificationSettings()
             ->getGlobalRecipients()
