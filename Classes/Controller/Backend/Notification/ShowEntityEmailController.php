@@ -55,6 +55,12 @@ class ShowEntityEmailController extends ShowNotificationController
     }
 
     /**
+     * This action is called to show a preview of the given email notification.
+     *
+     * An event is simulated in order to render the original Fluid template used
+     * by the notification. Example values may be added to simulate fake markers
+     * in the view.
+     *
      * @param string $notificationIdentifier
      */
     public function previewAction($notificationIdentifier)
