@@ -40,16 +40,6 @@ class EntityEmailAddressMapper
      */
     protected $event;
 
-//    /**
-//     * @var Email[]
-//     */
-//    protected $eventRecipients;
-//
-//    /**
-//     * @var Recipient[]
-//     */
-//    protected $globalRecipients;
-
     /**
      * @param Payload $payload
      * @param PropertyFactory $propertyFactory
@@ -60,9 +50,6 @@ class EntityEmailAddressMapper
         $this->notificationSettings = $payload->getNotificationDefinition()->getSettings();
 
         $this->event = $payload->getEvent();
-
-//        $this->eventRecipients = $propertyFactory->getProperties(Email::class, $payload->getEvent());
-//        $this->globalRecipients = $this->notificationSettings->getGlobalRecipients()->getRecipients();
     }
 
     /**

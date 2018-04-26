@@ -18,6 +18,7 @@ namespace CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail;
 
 use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Core\Notification\CustomSettingsNotification;
+use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
 use CuyZ\Notiz\Core\Property\PropertyEntry;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Processor\EntityEmailNotificationProcessor;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Settings\EntityEmailSettings;
@@ -185,7 +186,7 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     {
         return $this->mapRecipients(
             $this->recipientStringToArray($this->sendToProvided),
-            $event->getProperties(Email::class)
+            $event
         );
     }
 
@@ -245,7 +246,7 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     {
         return $this->mapRecipients(
             $this->recipientStringToArray($this->sendCcProvided),
-            $event->getProperties(Email::class)
+            $event
         );
     }
 
@@ -305,7 +306,7 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     {
         return $this->mapRecipients(
             $this->recipientStringToArray($this->sendBccProvided),
-            $event->getProperties(Email::class)
+            $event
         );
     }
 
@@ -409,12 +410,14 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
      * desired mapped values.
      *
      * @param array $recipientsIdentifiers
-     * @param Email[] $eventRecipients
+     * @param Event $event
      * @return array
      */
-    protected function mapRecipients(array $recipientsIdentifiers, array $eventRecipients)
+    protected function mapRecipients(array $recipientsIdentifiers, Event $event)
     {
         $recipients = [];
+
+        $eventRecipients = PropertyFactory::get()->getProperties(Email::class, $event);
 
         /** @var EntityEmailSettings $settings */
         $settings = $this->getNotificationDefinition()->getSettings();

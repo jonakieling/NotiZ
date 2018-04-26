@@ -18,6 +18,7 @@ namespace CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\TCA;
 
 use CuyZ\Notiz\Core\Notification\Service\NotificationTcaService;
 use CuyZ\Notiz\Core\Notification\Settings\NotificationSettings;
+use CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\EntitySlackNotification;
 use CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\Settings\EntitySlackSettings;
 
 class EntitySlackTcaService extends NotificationTcaService
@@ -27,7 +28,7 @@ class EntitySlackTcaService extends NotificationTcaService
      */
     protected function getNotificationIdentifier()
     {
-        return 'entitySlack';
+        return EntitySlackNotification::getNotificationIdentifier();
     }
 
     /**
