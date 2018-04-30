@@ -45,7 +45,7 @@ class ShowEntityEmailController extends ShowNotificationController
         parent::showAction($notificationIdentifier);
 
         $eventDefinition = $this->notification->getEventDefinition();
-        $emailProperties = $eventDefinition->getPropertiesDefinition(Email::class, $this->notification);
+        $emailProperties = $eventDefinition->getPropertyDefinition(Email::class, $this->notification);
 
         $aze = $this->notification->getSendToProvided();
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($aze, __CLASS__ . ':' . __LINE__ . ' $aze!!');

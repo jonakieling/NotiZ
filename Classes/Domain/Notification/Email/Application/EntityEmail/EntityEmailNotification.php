@@ -458,6 +458,8 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
      */
     protected function getEmailProperties()
     {
-        return $this->getEventDefinition()->getPropertiesDefinition(Email::class, $this);
+        return $this->getEventDefinition()
+            ->getPropertyDefinition(Email::class, $this)
+            ->getEntries();
     }
 }
