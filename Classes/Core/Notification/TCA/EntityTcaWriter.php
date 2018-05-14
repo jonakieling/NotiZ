@@ -345,7 +345,6 @@ abstract class EntityTcaWriter implements SingletonInterface
                 'l10n_display' => 'defaultAsReadonly',
                 'config' => [
                     'type' => 'select',
-                    'renderType' => 'notizSelectEvent',
                     'size' => 8,
                     'itemsProcFunc' => $this->getNotificationTcaServiceClass() . '->getEventsList',
                     'eval' => 'required',
