@@ -45,7 +45,7 @@ class ShowEntityEmailController extends ShowNotificationController
         parent::showAction($notificationIdentifier);
 
         $eventDefinition = $this->notification->getEventDefinition();
-        $emailProperties = $eventDefinition->getPropertiesDefinition(Email::class, $this->notification);
+        $emailProperties = $eventDefinition->getPropertyDefinition(Email::class, $this->notification);
 
         $aze = $this->notification->getSendToProvided();
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($aze, __CLASS__ . ':' . __LINE__ . ' $aze!!');
@@ -55,6 +55,12 @@ class ShowEntityEmailController extends ShowNotificationController
     }
 
     /**
+     * This action is called to show a preview of the given email notification.
+     *
+     * An event is simulated in order to render the original Fluid template used
+     * by the notification. Example values may be added to simulate fake markers
+     * in the view.
+     *
      * @param string $notificationIdentifier
      */
     public function previewAction($notificationIdentifier)

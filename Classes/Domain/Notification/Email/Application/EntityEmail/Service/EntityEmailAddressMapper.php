@@ -17,6 +17,7 @@
 namespace CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service;
 
 use CuyZ\Notiz\Core\Channel\Payload;
+use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
 use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Settings\EntityEmailSettings;
@@ -39,28 +40,16 @@ class EntityEmailAddressMapper
      */
     protected $event;
 
-//    /**
-//     * @var Email[]
-//     */
-//    protected $eventRecipients;
-//
-//    /**
-//     * @var Recipient[]
-//     */
-//    protected $globalRecipients;
-
     /**
      * @param Payload $payload
+     * @param PropertyFactory $propertyFactory
      */
-    public function __construct(Payload $payload)
+    public function __construct(Payload $payload, PropertyFactory $propertyFactory)
     {
         $this->notification = $payload->getNotification();
         $this->notificationSettings = $payload->getNotificationDefinition()->getSettings();
 
         $this->event = $payload->getEvent();
-
-//        $this->eventRecipients = $payload->getEvent()->getProperties(Email::class);
-//        $this->globalRecipients = $this->notificationSettings->getGlobalRecipients()->getRecipients();
     }
 
     /**
