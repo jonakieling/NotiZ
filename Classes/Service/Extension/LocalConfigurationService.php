@@ -20,12 +20,14 @@ use CuyZ\Notiz\Backend\ToolBarItems\NotificationsToolbarItem;
 use CuyZ\Notiz\Core\Definition\Builder\DefinitionBuilder;
 use CuyZ\Notiz\Core\Support\NotizConstants;
 use CuyZ\Notiz\Domain\Definition\Builder\Component\DefaultDefinitionComponents;
-use CuyZ\Notiz\FormEngine\SelectEvent;
+use CuyZ\Notiz\FormEngine\DataProvider\DefaultEventFromGet;
 use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\ExtensionConfigurationService;
 use CuyZ\Notiz\Service\Hook\EventDefinitionRegisterer;
 use CuyZ\Notiz\Service\Hook\NotificationFlexFormProcessor;
 use CuyZ\Notiz\Service\Traits\SelfInstantiateTrait;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
@@ -230,11 +232,16 @@ class LocalConfigurationService implements SingletonInterface, TableConfiguratio
      */
     protected function registerFormEngineComponents()
     {
-        // Overrides TYPO3 "select single" element for the event field.
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1523545627] = [
-            'nodeName' => 'notizSelectEvent',
-            'priority' => 50,
-            'class' => SelectEvent::class,
-        ];
+        /*
+         * A new data provider is registered for the form engine.
+         *
+         * It will be used to select a default value for the field `event` of a
+         * notification record, if an argument `selectedEvent` exists in the
+         * request and matches a valid event identifier.
+         */
+        $databaseRowDefaultValues = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][DatabaseRowDefaultValues::class];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][DefaultEventFromGet::class] = $databaseRowDefaultValues;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][DatabaseRecordOverrideValues::class]['depends'][] = DefaultEventFromGet::class;
     }
 }

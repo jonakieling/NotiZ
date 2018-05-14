@@ -2,6 +2,7 @@ notiz {
     notifications {
         entityLog {
             label = Notification/Log/Entity:title
+            description = Notification/Log/Entity:description
 
             description = Notification/Log/Entity:description
 

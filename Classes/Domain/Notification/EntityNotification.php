@@ -97,6 +97,38 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     /**
      * @return string
      */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * @param string $event
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
+    }
+
+    /**
+     * @return string
+     */
     public function getChannel()
     {
         return $this->channel;
