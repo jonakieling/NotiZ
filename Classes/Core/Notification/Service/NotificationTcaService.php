@@ -162,12 +162,6 @@ abstract class NotificationTcaService implements SingletonInterface
             if ($definition->hasEventFromFullIdentifier($eventValue)) {
                 $event = $definition->getEventFromFullIdentifier($eventValue);
             }
-        } else {
-            $selectedEvent = GeneralUtility::_GP('selectedEvent');
-
-            if ($definition->hasEventFromFullIdentifier($selectedEvent)) {
-                $event = $definition->getEventFromFullIdentifier($selectedEvent);
-            }
         }
 
         return $event;

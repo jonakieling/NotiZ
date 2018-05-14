@@ -74,13 +74,11 @@ class EventDefinition extends AbstractDefinitionComponent implements DataPreProc
     /**
      * @param string $identifier
      * @param string $className
-     * @param string $description
      */
-    public function __construct($identifier, $className, $description = null)
+    public function __construct($identifier, $className)
     {
         $this->identifier = $identifier;
         $this->className = $className;
-        $this->description = $description;
     }
 
     /**
