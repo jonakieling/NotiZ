@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Factory for getting both properties definitions and values, that are defined
@@ -166,6 +167,9 @@ class PropertyFactory implements SingletonInterface
 
         if ($this->eventHasProperties($event->getDefinition())) {
             $event->fillPropertyEntries($propertyContainer);
+
+            $slots = \CuyZ\Notiz\Service\Container::get(Dispatcher::class);
+            $slots->dispatch('aze', 'test', [$propertyContainer, $event]);
 
             $propertyContainer->freeze();
         }
