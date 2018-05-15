@@ -94,8 +94,8 @@ HTML;
     /**
      * @return string
      */
-    protected function getNotificationIdentifier()
+    protected function getDefinitionIdentifier()
     {
-        return EntityLogNotification::getNotificationIdentifier();
+        return EntityLogNotification::getDefinitionIdentifier();
     }
 }

@@ -75,7 +75,7 @@ class EntityLogNotification extends EntityNotification implements LogNotificatio
     /**
      * @return string
      */
-    public static function getNotificationIdentifier()
+    public static function getDefinitionIdentifier()
     {
         return 'entityLog';
     }

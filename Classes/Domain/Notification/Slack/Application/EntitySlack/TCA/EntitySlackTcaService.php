@@ -24,14 +24,6 @@ use CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\Settings\Entity
 class EntitySlackTcaService extends NotificationTcaService
 {
     /**
-     * @return string
-     */
-    protected function getNotificationIdentifier()
-    {
-        return EntitySlackNotification::getNotificationIdentifier();
-    }
-
-    /**
      * Loads all bots provided by the notification and stores them as an array
      * to be used in the TCA.
      *
@@ -137,5 +129,13 @@ class EntitySlackTcaService extends NotificationTcaService
     protected function getNotificationSettings()
     {
         return $this->getNotificationDefinition()->getSettings();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefinitionIdentifier()
+    {
+        return EntitySlackNotification::getDefinitionIdentifier();
     }
 }

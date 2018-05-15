@@ -219,7 +219,7 @@ class EntitySlackNotification extends EntityNotification implements SlackNotific
     /**
      * @return string
      */
-    public static function getNotificationIdentifier()
+    public static function getDefinitionIdentifier()
     {
         return 'entitySlack';
     }

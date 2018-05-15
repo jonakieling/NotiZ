@@ -123,7 +123,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
      */
     public function getNotificationDefinition()
     {
-        return $this->getDefinition()->getNotification(static::getNotificationIdentifier());
+        return $this->getDefinition()->getNotification(static::getDefinitionIdentifier());
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
      */
     public function getEditUri()
     {
-        $identifier = static::getNotificationIdentifier();
+        $identifier = static::getDefinitionIdentifier();
         $tableName = $this->getNotificationDefinition()->getTableName();
         $uid = $this->getUid();
 
@@ -184,7 +184,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     /**
      * @return string
      */
-    abstract protected static function getNotificationIdentifier();
+    abstract public static function getDefinitionIdentifier();
 
     /**
      * @return Definition

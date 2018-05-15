@@ -218,8 +218,8 @@ class EntityEmailTcaService extends NotificationTcaService
     /**
      * @return string
      */
-    protected function getNotificationIdentifier()
+    protected function getDefinitionIdentifier()
     {
-        return EntityEmailNotification::getNotificationIdentifier();
+        return EntityEmailNotification::getDefinitionIdentifier();
     }
 }
