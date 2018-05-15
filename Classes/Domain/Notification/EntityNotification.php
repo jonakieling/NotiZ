@@ -119,6 +119,14 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
+     * @return NotificationDefinition
+     */
+    public function getNotificationDefinition()
+    {
+        return $this->getDefinition()->getNotification(static::getNotificationIdentifier());
+    }
+
+    /**
      * @return EventDefinition
      */
     public function getEventDefinition()
@@ -174,19 +182,16 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
+     * @return string
+     */
+    abstract protected static function getNotificationIdentifier();
+
+    /**
      * @return Definition
      */
     protected function getDefinition()
     {
         return DefinitionService::get()->getDefinition();
-    }
-
-    /**
-     * @return NotificationDefinition
-     */
-    protected function getNotificationDefinition()
-    {
-        return $this->getDefinition()->getNotification(static::getNotificationIdentifier());
     }
 
     /**
