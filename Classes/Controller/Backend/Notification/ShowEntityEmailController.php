@@ -21,6 +21,7 @@ use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Core\Event\Service\EventFactory;
 use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
 use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
+use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service\EntityEmailTemplateBuilder;
 use CuyZ\Notiz\Domain\Property\Email;
@@ -69,8 +70,8 @@ class ShowEntityEmailController extends ShowNotificationController
 
         if ($fakeEvent instanceof ProvidesExampleMarkers) {
             $this->signalSlotDispatcher->connect(
-                'aze',
-                'test',
+                PropertyFactory::class,
+                PropertyFactory::SIGNAL_PROPERTY_FILLING,
                 function (PropertyContainer $container, Event $event) use ($fakeEvent) {
                     if ($event === $fakeEvent) {
                         $exampleMarkers = $fakeEvent->getExampleMarkers();
