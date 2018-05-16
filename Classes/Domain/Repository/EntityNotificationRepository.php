@@ -44,13 +44,7 @@ class EntityNotificationRepository extends Repository
      */
     public function findFromEventDefinition(EventDefinition $eventDefinition)
     {
-        $query = $this->createQuery();
-
-        $query->matching(
-            $query->equals('event', $eventDefinition->getFullIdentifier())
-        );
-
-        return $query->execute();
+        return $this->getQueryForEvent($eventDefinition)->execute();
     }
 
     /**
@@ -59,13 +53,7 @@ class EntityNotificationRepository extends Repository
      */
     public function countFromEventDefinition(EventDefinition $eventDefinition)
     {
-        $query = $this->createQuery();
-
-        $query->matching(
-            $query->equals('event', $eventDefinition->getFullIdentifier())
-        );
-
-        return $query->count();
+        return $this->getQueryForEvent($eventDefinition)->count();
     }
 
     /**
@@ -96,6 +84,21 @@ class EntityNotificationRepository extends Repository
         $query = $this->createQuery();
         $query->getQuerySettings()
             ->setIgnoreEnableFields(true);
+
+        return $query;
+    }
+
+    /**
+     * @param EventDefinition $eventDefinition
+     * @return QueryInterface
+     */
+    protected function getQueryForEvent(EventDefinition $eventDefinition)
+    {
+        $query = $this->createQuery();
+
+        $query->matching(
+            $query->equals('event', $eventDefinition->getFullIdentifier())
+        );
 
         return $query;
     }
