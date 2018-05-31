@@ -1,3 +1,5 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+
 <f:section name="Content">
     <div class="page-header">
         <h1>
@@ -18,11 +20,11 @@
             <nz:t key="Backend/Module/Index/Global:go_back_list_view" />
         </f:link.action>
 
-        <a href="{notification.editUri}"
-           class="btn btn-default"
-           title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
+        <nz:backend.notification.editLink notification="{notification}"
+                                          class="btn btn-default"
+                                          title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
             <core:icon identifier="actions-open" />
             <nz:t key="Backend/Module/Index/Global:edit_notification" />
-        </a>
+        </nz:backend.notification.editLink>
     </p>
 </f:section>

@@ -69,35 +69,7 @@ class TablesConfigurationService implements SingletonInterface
     {
         $this->registerBackendModule();
         $this->registerShowNotificationControllers();
-
-        $this->dispatcher->connect(
-            EditDocumentController::class,
-            'initAfter',
-            function (EditDocumentController $controller) {
-                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($controller, __CLASS__ . ':' . __LINE__ . ' $controller');
-                $iconFactory = Container::get(IconFactory::class);
-                $backendUriBuilder = Container::get(BackendUriBuilder::class);
-
-                $reflection = new ReflectionClass($controller);
-                $property = $reflection->getProperty('moduleTemplate');
-                $property->setAccessible(true);
-
-                /** @var ModuleTemplate $moduleTemplate */
-                $moduleTemplate = $property->getValue($controller);
-
-                $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-                $test = $buttonBar->makeLinkButton()
-                    ->setShowLabelText(true)
-                    ->setHref($backendUriBuilder->uriFor('showDefinition'))
-                    ->setTitle('View details')
-                    ->setIcon($iconFactory->getIcon(
-                        'actions-view',
-                        Icon::SIZE_SMALL
-                    ));
-                $buttonBar->addButton($test, ButtonBar::BUTTON_POSITION_LEFT, -1);
-            }
-        );
+        $this->registerDetailViewButton();
     }
 
     /**
@@ -165,6 +137,42 @@ class TablesConfigurationService implements SingletonInterface
 
                     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][NotizConstants::BACKEND_MODULE_INDEX]['controllers'][$controllerName] = ['actions' => ['show', 'preview']];
                 }
+            }
+        );
+    }
+
+    /**
+     * Adds a button "View details" to the button bar when editing a
+     * notification record.
+     */
+    protected function registerDetailViewButton()
+    {
+        $this->dispatcher->connect(
+            EditDocumentController::class,
+            'initAfter',
+            function (EditDocumentController $controller) {
+                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($controller, __CLASS__ . ':' . __LINE__ . ' $controller');
+                $iconFactory = Container::get(IconFactory::class);
+                $backendUriBuilder = Container::get(BackendUriBuilder::class);
+
+                $reflection = new ReflectionClass($controller);
+                $property = $reflection->getProperty('moduleTemplate');
+                $property->setAccessible(true);
+
+                /** @var ModuleTemplate $moduleTemplate */
+                $moduleTemplate = $property->getValue($controller);
+
+                $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+                $button = $buttonBar->makeLinkButton()
+                    ->setShowLabelText(true)
+                    ->setHref($backendUriBuilder->uriFor('showDefinition'))
+                    ->setTitle('View details')
+                    ->setIcon($iconFactory->getIcon(
+                        'actions-view',
+                        Icon::SIZE_SMALL
+                    ));
+                $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 50);
             }
         );
     }

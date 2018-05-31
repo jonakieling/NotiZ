@@ -24,12 +24,12 @@
                 Go back to all notification types
             </f:link.action>
 
-            <a href="{notificationDefinition.createUri}"
-               title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}"
-               class="btn btn-default">
+            <nz:backend.notification.createLink notificationDefinition="{notificationDefinition}"
+                                                class="btn btn-default"
+                                                title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}">
                 <core:icon identifier="actions-add" />
                 <nz:t key="Backend/Module/Index/Global:create_notification" />
-            </a>
+            </nz:backend.notification.createLink>
         </p>
 
         <f:be.infobox>
@@ -86,11 +86,11 @@
 
                             <td align="right">
                                 <div class="btn-group" role="group">
-                                    <a href="{notification.editUri}"
-                                       class="btn btn-default"
-                                       title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
+                                    <nz:backend.notification.editLink notification="{notification}"
+                                                                      class="btn btn-default"
+                                                                      title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
                                         <core:icon identifier="actions-open" />
-                                    </a>
+                                    </nz:backend.notification.editLink>
 
                                     <f:link.action controller="Backend\Notification\Show{notificationDefinition.identifier -> f:format.case(mode: 'capital')}"
                                                    action="show"

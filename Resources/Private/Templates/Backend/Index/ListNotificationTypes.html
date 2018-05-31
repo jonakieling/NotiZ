@@ -76,26 +76,25 @@ TODO
             </div>
 
             <div class="panel-footer text-center">
-                    <a href="{notification.createUri}"
-                       class="btn btn-default"
-                       title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}">
+                <nz:backend.notification.createLink notificationDefinition="{notification}"
+                                                    class="btn btn-default"
+                                                    title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}">
+                    <core:icon identifier="actions-add" />
+                    <nz:t key="Backend/Module/Index/Global:create_notification" />
+                </nz:backend.notification.createLink>
 
-                        <core:icon identifier="actions-add" />
-                        <nz:t key="Backend/Module/Index/Global:create_notification" />
-                    </a>
+                <f:if condition="{notification.processor.totalNumber}">
+                    <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/ListNotificationTypes:show_notifications\', args: {0: notification.processor.totalNumber})}'}">
+                        <f:link.action action="listNotifications"
+                                       class="btn btn-default"
+                                       title="{label}"
+                                       arguments="{notificationIdentifier: notification.identifier}">
 
-                    <f:if condition="{notification.processor.totalNumber}">
-                        <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/ListNotificationTypes:show_notifications\', args: {0: notification.processor.totalNumber})}'}">
-                            <f:link.action action="listNotifications"
-                                           class="btn btn-default"
-                                           title="{label}"
-                                           arguments="{notificationIdentifier: notification.identifier}">
-
-                                <core:icon identifier="actions-system-list-open" />
-                                {label}
-                            </f:link.action>
-                        </f:alias>
-                    </f:if>
+                            <core:icon identifier="actions-system-list-open" />
+                            {label}
+                        </f:link.action>
+                    </f:alias>
+                </f:if>
             </div>
         </div>
     </div>

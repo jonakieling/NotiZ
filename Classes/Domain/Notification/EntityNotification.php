@@ -23,8 +23,10 @@ use CuyZ\Notiz\Core\Definition\Tree\Notification\Channel\ChannelDefinition;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 use CuyZ\Notiz\Core\Notification\MultipleChannelsNotification;
 use CuyZ\Notiz\Core\Notification\Notification;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use CuyZ\Notiz\Service\Container;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
@@ -123,7 +125,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
      */
     public function getNotificationDefinition()
     {
-        return $this->getDefinition()->getNotification(static::getDefinitionIdentifier());
+        return self::getDefinition()->getNotification(static::getDefinitionIdentifier());
     }
 
     /**
@@ -131,7 +133,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
      */
     public function getEventDefinition()
     {
-        return $this->getDefinition()->getEventFromFullIdentifier($this->getEvent());
+        return self::getDefinition()->getEventFromFullIdentifier($this->getEvent());
     }
 
     /**
@@ -162,23 +164,22 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
-     * @todo
+     * Returns the name of the table for this notification. It is fetched in the
+     * global TypoScript configuration.
      *
      * @return string
      */
-    public function getEditUri()
+    public static function getTableName()
     {
-        $identifier = static::getDefinitionIdentifier();
-        $tableName = $this->getNotificationDefinition()->getTableName();
-        $uid = $this->getUid();
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = Container::get(ConfigurationManagerInterface::class);
+        $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 
-        return BackendUtility::getModuleUrl(
-            'record_edit',
-            [
-                "edit[$tableName][$uid]" => 'edit',
-                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . "#$identifier-$uid",
-            ]
-        );
+        $className = self::getDefinition()
+            ->getNotification(static::getDefinitionIdentifier())
+            ->getClassName();
+
+        return ArrayUtility::getValueByPath($configuration, "persistence/classes/$className/mapping/tableName");
     }
 
     /**
@@ -189,7 +190,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     /**
      * @return Definition
      */
-    protected function getDefinition()
+    protected static function getDefinition()
     {
         return DefinitionService::get()->getDefinition();
     }

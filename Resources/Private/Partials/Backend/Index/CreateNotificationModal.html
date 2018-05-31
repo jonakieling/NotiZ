@@ -1,3 +1,5 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+
 <f:section name="Content">
 
     <div class="modal fade" id="create-notification" tabindex="-1" role="dialog" aria-labelledby="create-notification-label">
@@ -14,16 +16,16 @@
                 <div class="modal-body">
                     <p>Choose your notification type:</p>
 
-                    <f:for each="{definition.notifications}" as="notification">
+                    <f:for each="{definition.notifications}" as="notificationDefinition">
                         <div class="center-block">
-                            <a href="{notification.createUri}{f:if(condition: event, then: '&selectedEvent={event}')}"
-                               data-href="{notification.createUri}&selectedEvent=#EVENT#"
-                               class="btn btn-default btn-block link-create-notification-event"
-                               title="@todo">
-
-                                <core:icon identifier="{notification.iconIdentifier}" />
-                                {notification.label}
-                            </a>
+                            <nz:backend.notification.createLink notificationDefinition="{notificationDefinition}"
+                                                                eventDefinition="{eventDefinition}"
+                                                                addUriTemplate="true"
+                                                                class="btn btn-default btn-block link-create-notification-event"
+                                                                title="@todo">
+                                <core:icon identifier="{notificationDefinition.iconIdentifier}" />
+                                {notificationDefinition.label}
+                            </nz:backend.notification.createLink>
                         </div>
                     </f:for>
                 </div>
