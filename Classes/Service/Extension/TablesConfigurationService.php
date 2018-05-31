@@ -17,8 +17,10 @@
 namespace CuyZ\Notiz\Service\Extension;
 
 use CuyZ\Notiz\Core\Definition\Builder\DefinitionBuilder;
+use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Support\NotizConstants;
+use CuyZ\Notiz\Domain\Notification\EntityNotification;
 use CuyZ\Notiz\Service\BackendUriBuilder;
 use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\Traits\SelfInstantiateTrait;
@@ -54,12 +56,18 @@ class TablesConfigurationService implements SingletonInterface
     protected $dispatcher;
 
     /**
+     * @var DefinitionService
+     */
+    protected $definitionService;
+
+    /**
      * Manual dependency injection.
      */
     public function __construct()
     {
         $this->extensionKey = NotizConstants::EXTENSION_KEY;
         $this->dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $this->definitionService = DefinitionService::get();
     }
 
     /**
@@ -142,8 +150,10 @@ class TablesConfigurationService implements SingletonInterface
     }
 
     /**
-     * Adds a button "View details" to the button bar when editing a
-     * notification record.
+     * Adds a button "View details" to the button bar at the top of the screen
+     * when editing a notification record.
+     *
+     * @todo in external service class
      */
     protected function registerDetailViewButton()
     {
@@ -151,28 +161,57 @@ class TablesConfigurationService implements SingletonInterface
             EditDocumentController::class,
             'initAfter',
             function (EditDocumentController $controller) {
-                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($controller, __CLASS__ . ':' . __LINE__ . ' $controller');
-                $iconFactory = Container::get(IconFactory::class);
-                $backendUriBuilder = Container::get(BackendUriBuilder::class);
+                foreach ($this->definitionService->getDefinition()->getNotifications() as $notificationDefinition) {
+                    /** @var EntityNotification $className */
+                    $className = $notificationDefinition->getClassName();
 
-                $reflection = new ReflectionClass($controller);
-                $property = $reflection->getProperty('moduleTemplate');
-                $property->setAccessible(true);
+                    if (!in_array(EntityNotification::class, class_parents($className))) {
+                        continue;
+                    }
 
-                /** @var ModuleTemplate $moduleTemplate */
-                $moduleTemplate = $property->getValue($controller);
+                    $tableName = $className::getTableName();
 
-                $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+                    if (!isset($controller->editconf[$tableName])) {
+                        continue;
+                    }
 
-                $button = $buttonBar->makeLinkButton()
-                    ->setShowLabelText(true)
-                    ->setHref($backendUriBuilder->uriFor('showDefinition'))
-                    ->setTitle('View details')
-                    ->setIcon($iconFactory->getIcon(
-                        'actions-view',
-                        Icon::SIZE_SMALL
-                    ));
-                $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 50);
+                    $uid = reset(array_keys($controller->editconf[$tableName]));
+
+                    if ($controller->editconf[$tableName][$uid] !== 'edit') {
+                        continue;
+                    }
+                    
+                    $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
+                    \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($notification, __CLASS__ . ':' . __LINE__ . ' $notification');
+
+                    $iconFactory = Container::get(IconFactory::class);
+                    $backendUriBuilder = Container::get(BackendUriBuilder::class);
+
+                    /*
+                     * Unfortunately TYPO3 doesn't provide a public API to access
+                     * the module template and add an icon to it, so we need to
+                     * cheat a bit.
+                     */
+                    $reflection = new ReflectionClass($controller);
+                    $property = $reflection->getProperty('moduleTemplate');
+                    $property->setAccessible(true);
+
+                    /** @var ModuleTemplate $moduleTemplate */
+                    $moduleTemplate = $property->getValue($controller);
+
+                    $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+                    $button = $buttonBar->makeLinkButton()
+                        ->setShowLabelText(true)
+                        ->setHref($backendUriBuilder->uriFor('showDefinition'))
+                        ->setTitle('View details')
+                        ->setIcon($iconFactory->getIcon(
+                            'actions-view',
+                            Icon::SIZE_SMALL
+                        ));
+
+                    $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 50);
+                }
             }
         );
     }

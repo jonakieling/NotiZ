@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class NotificationFlexFormProcessor implements SingletonInterface
 {
     /**
+     * @todo make it dynamic
+     *
      * @var array
      */
     protected static $handledTables = [
