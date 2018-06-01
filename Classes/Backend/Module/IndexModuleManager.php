@@ -49,7 +49,8 @@ class IndexModuleManager extends ModuleManager
     /**
      * @param Definition $definition
      */
-    public function registerShowNotificationControllers(Definition $definition) {
+    public function registerShowNotificationControllers(Definition $definition)
+    {
         foreach ($definition->getNotifications() as $notification) {
             $controllerName = $this->controllerToShowNotification($notification);
 

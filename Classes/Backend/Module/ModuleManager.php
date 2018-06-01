@@ -56,7 +56,6 @@ abstract class ModuleManager implements SingletonInterface
      */
     public function uriFor($action, array $arguments = [])
     {
-
     }
 
     /**
