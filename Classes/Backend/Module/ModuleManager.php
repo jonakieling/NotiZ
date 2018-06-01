@@ -14,28 +14,16 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-namespace CuyZ\Notiz\Service;
+namespace CuyZ\Notiz\Backend\Module;
 
-use CuyZ\Notiz\Core\Support\NotizConstants;
+use CuyZ\Notiz\Backend\Module\Uri\UriBuilder;
+use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\Traits\ExtendedSelfInstantiateTrait;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
-class BackendUriBuilder implements SingletonInterface
+abstract class ModuleManager implements SingletonInterface
 {
     use ExtendedSelfInstantiateTrait;
-
-    const MODULE_ADMINISTRATION = 'Administration';
-
-    /**
-     * @var array
-     */
-    protected static $modules = [
-        self::MODULE_ADMINISTRATION => [
-            'controller' => 'Administration',
-            'module' => NotizConstants::BACKEND_MODULE_ADMINISTRATION,
-        ]
-    ];
 
     /**
      * @var UriBuilder
@@ -51,17 +39,33 @@ class BackendUriBuilder implements SingletonInterface
     }
 
     /**
+     * @return UriBuilder
+     */
+    public function getUriBuilder()
+    {
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = Container::get(UriBuilder::class);
+
+        return $uriBuilder->with($this);
+    }
+
+    /**
      * @param string $action
-     * @param string $module
+     * @param array $arguments
      * @return string
      */
-    public function uriFor($action, $module = self::MODULE_ADMINISTRATION)
+    public function uriFor($action, array $arguments = [])
     {
-        $config = self::$modules[$module];
 
-        return $this->uriBuilder
-            ->reset()
-            ->setArguments(['M' => $config['module']])
-            ->uriFor($action, [], 'Backend\\' . $config['controller'], NotizConstants::EXTENSION_KEY, $config['module']);
     }
+
+    /**
+     * @return string
+     */
+    abstract public static function getDefaultControllerName();
+
+    /**
+     * @return string
+     */
+    abstract public static function getModuleName();
 }

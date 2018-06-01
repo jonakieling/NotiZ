@@ -31,6 +31,9 @@ use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 
+/**
+ * @todo implement CanBeCreated / CanBeEdited interface with methods that return URI
+ */
 abstract class EntityNotification extends AbstractEntity implements Notification, MultipleChannelsNotification
 {
     /**

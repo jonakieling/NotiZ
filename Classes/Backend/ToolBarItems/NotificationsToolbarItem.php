@@ -16,8 +16,8 @@
 
 namespace CuyZ\Notiz\Backend\ToolBarItems;
 
+use CuyZ\Notiz\Backend\Module\AdministrationModuleManager;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
-use CuyZ\Notiz\Service\BackendUriBuilder;
 use CuyZ\Notiz\Service\ExtensionConfigurationService;
 use CuyZ\Notiz\Service\LocalizationService;
 use CuyZ\Notiz\Service\ViewService;
@@ -51,11 +51,6 @@ class NotificationsToolbarItem implements ToolbarItemInterface
     protected $extensionConfigurationService;
 
     /**
-     * @var BackendUriBuilder
-     */
-    protected $backendUriBuilder;
-
-    /**
      * @var ViewService
      */
     protected $viewService;
@@ -71,7 +66,6 @@ class NotificationsToolbarItem implements ToolbarItemInterface
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->definitionService = $objectManager->get(DefinitionService::class);
         $this->extensionConfigurationService = $objectManager->get(ExtensionConfigurationService::class);
-        $this->backendUriBuilder = $objectManager->get(BackendUriBuilder::class);
         $this->viewService = $objectManager->get(ViewService::class);
     }
 
@@ -143,7 +137,12 @@ class NotificationsToolbarItem implements ToolbarItemInterface
     {
         $view = $this->getFluidTemplateObject('Backend/ToolBar/NotificationToolBarDropDown');
 
-        $view->assign('showDefinitionUri', $this->backendUriBuilder->uriFor('showDefinition'));
+        $uri = AdministrationModuleManager::get()
+            ->getUriBuilder()
+            ->forAction('showDefinition')
+            ->build();
+
+        $view->assign('showDefinitionUri', $uri);
 
         if (!$this->definitionService->getValidationResult()->hasErrors()) {
             $definition = $this->definitionService->getDefinition();

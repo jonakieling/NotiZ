@@ -67,18 +67,6 @@ final class NotizConstants
     const DEFINITION_ROOT_PATH = self::EXTENSION_KEY;
 
     /**
-     * Identifier for the administration backend module. Can be used for:
-     *
-     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl
-     */
-    const BACKEND_MODULE_ADMINISTRATION = 'NotizNotiz_NotizNotizAdministration';
-
-    /**
-     * Identifier for the index backend module.
-     */
-    const BACKEND_MODULE_INDEX = 'NotizNotiz_NotizNotizIndex';
-
-    /**
      * The default format for event markers.
      *
      * @see \CuyZ\Notiz\Core\Event\Event

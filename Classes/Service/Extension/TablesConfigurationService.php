@@ -16,20 +16,12 @@
 
 namespace CuyZ\Notiz\Service\Extension;
 
+use CuyZ\Notiz\Backend\FormEngine\ButtonBar\ShowNotificationDetailsButton;
+use CuyZ\Notiz\Backend\Module\IndexModuleManager;
 use CuyZ\Notiz\Core\Definition\Builder\DefinitionBuilder;
-use CuyZ\Notiz\Core\Definition\DefinitionService;
-use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Support\NotizConstants;
-use CuyZ\Notiz\Domain\Notification\EntityNotification;
-use CuyZ\Notiz\Service\BackendUriBuilder;
-use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\Traits\SelfInstantiateTrait;
-use ReflectionClass;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -56,18 +48,12 @@ class TablesConfigurationService implements SingletonInterface
     protected $dispatcher;
 
     /**
-     * @var DefinitionService
-     */
-    protected $definitionService;
-
-    /**
      * Manual dependency injection.
      */
     public function __construct()
     {
         $this->extensionKey = NotizConstants::EXTENSION_KEY;
         $this->dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $this->definitionService = DefinitionService::get();
     }
 
     /**
@@ -139,80 +125,21 @@ class TablesConfigurationService implements SingletonInterface
         $this->dispatcher->connect(
             DefinitionBuilder::class,
             DefinitionBuilder::DEFINITION_BUILT_SIGNAL,
-            function (Definition $definition) {
-                foreach ($definition->getNotifications() as $notification) {
-                    $controllerName = 'Backend\\Notification\\Show' . ucfirst($notification->getIdentifier());
-
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][NotizConstants::BACKEND_MODULE_INDEX]['controllers'][$controllerName] = ['actions' => ['show', 'preview']];
-                }
-            }
+            IndexModuleManager::class,
+            'registerShowNotificationControllers'
         );
     }
 
     /**
-     * Adds a button "View details" to the button bar at the top of the screen
-     * when editing a notification record.
-     *
-     * @todo in external service class
+     * @see ShowNotificationDetailsButton
      */
     protected function registerDetailViewButton()
     {
         $this->dispatcher->connect(
             EditDocumentController::class,
             'initAfter',
-            function (EditDocumentController $controller) {
-                foreach ($this->definitionService->getDefinition()->getNotifications() as $notificationDefinition) {
-                    /** @var EntityNotification $className */
-                    $className = $notificationDefinition->getClassName();
-
-                    if (!in_array(EntityNotification::class, class_parents($className))) {
-                        continue;
-                    }
-
-                    $tableName = $className::getTableName();
-
-                    if (!isset($controller->editconf[$tableName])) {
-                        continue;
-                    }
-
-                    $uid = reset(array_keys($controller->editconf[$tableName]));
-
-                    if ($controller->editconf[$tableName][$uid] !== 'edit') {
-                        continue;
-                    }
-                    
-                    $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
-                    \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($notification, __CLASS__ . ':' . __LINE__ . ' $notification');
-
-                    $iconFactory = Container::get(IconFactory::class);
-                    $backendUriBuilder = Container::get(BackendUriBuilder::class);
-
-                    /*
-                     * Unfortunately TYPO3 doesn't provide a public API to access
-                     * the module template and add an icon to it, so we need to
-                     * cheat a bit.
-                     */
-                    $reflection = new ReflectionClass($controller);
-                    $property = $reflection->getProperty('moduleTemplate');
-                    $property->setAccessible(true);
-
-                    /** @var ModuleTemplate $moduleTemplate */
-                    $moduleTemplate = $property->getValue($controller);
-
-                    $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-                    $button = $buttonBar->makeLinkButton()
-                        ->setShowLabelText(true)
-                        ->setHref($backendUriBuilder->uriFor('showDefinition'))
-                        ->setTitle('View details')
-                        ->setIcon($iconFactory->getIcon(
-                            'actions-view',
-                            Icon::SIZE_SMALL
-                        ));
-
-                    $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 50);
-                }
-            }
+            ShowNotificationDetailsButton::class,
+            'addButton'
         );
     }
 }
