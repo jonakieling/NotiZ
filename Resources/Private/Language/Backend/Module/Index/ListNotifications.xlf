@@ -18,6 +18,10 @@
                 <source>Show details of the notification “%s”</source>
             </trans-unit>
 
+            <trans-unit id="notification_type_not_found">
+                <source>Notification of type “%s” was not found in the definition.</source>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

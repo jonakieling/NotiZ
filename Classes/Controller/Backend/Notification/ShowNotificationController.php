@@ -25,6 +25,8 @@ use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
 use CuyZ\Notiz\Core\Notification\Notification;
 use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
 use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
+use CuyZ\Notiz\Service\LocalizationService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 abstract class ShowNotificationController extends BackendController
@@ -45,39 +47,59 @@ abstract class ShowNotificationController extends BackendController
     protected $eventFactory;
 
     /**
-     * @todo
-     */
-    public function initializeAction()
-    {
-        $definition = $this->getDefinition();
-        $notificationDefinitionIdentifier = $this->getNotificationDefinitionIdentifier();
-
-        if (!$definition->hasNotification($notificationDefinitionIdentifier)) {
-            throw new \Exception('@todo'); // @todo
-        }
-
-        if ($this->request->hasArgument('notificationIdentifier')) {
-            $notificationIdentifier = $this->request->getArgument('notificationIdentifier');
-
-            $this->notificationDefinition = $definition->getNotification($notificationDefinitionIdentifier);
-            $this->notification = $this->notificationDefinition->getProcessor()->getNotificationFromIdentifier($notificationIdentifier);
-        }
-    }
-
-    /**
      * @param ViewInterface $view
      */
     public function initializeView(ViewInterface $view)
     {
+        $this->fetchNotification();
+
         $this->view->assign('notificationDefinition', $this->notificationDefinition);
         $this->view->assign('notification', $this->notification);
     }
 
     /**
-     * @param string $notificationIdentifier
+     * @todo
      */
-    public function showAction($notificationIdentifier)
+    protected function fetchNotification()
     {
+        $definition = $this->getDefinition();
+        $notificationDefinitionIdentifier = $this->getNotificationDefinitionIdentifier();
+
+        if (!$definition->hasNotification($notificationDefinitionIdentifier)) {
+            $this->addFlashMessage(
+                LocalizationService::localize('Backend/Module/Index/ListNotifications:notification_type_not_found', [$notificationDefinitionIdentifier]),
+                '',
+                AbstractMessage::ERROR
+            );
+
+            $this->forward('listNotificationTypes', 'Backend\\Index');
+        }
+
+        $this->notificationDefinition = $definition->getNotification($notificationDefinitionIdentifier);
+
+        if ($this->request->hasArgument('notificationIdentifier')) {
+            $notificationIdentifier = $this->request->getArgument('notificationIdentifier');
+
+            $this->notification = $this->notificationDefinition->getProcessor()->getNotificationFromIdentifier($notificationIdentifier);
+        }
+    }
+
+    /**
+     * @todo
+     */
+    public function showAction()
+    {
+        if (!$this->notification) {
+            $this->addFlashMessage(
+                // @todo
+                LocalizationService::localize('Backend/Module/Index/ListNotifications:notification_type_not_found', [$notificationDefinitionIdentifier]),
+                '',
+                AbstractMessage::ERROR
+            );
+
+
+            $this->forward('listNotificationTypes', 'Backend\\Index');
+        }
     }
 
     /**

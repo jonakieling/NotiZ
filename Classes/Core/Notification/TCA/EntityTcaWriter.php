@@ -221,6 +221,7 @@ abstract class EntityTcaWriter implements SingletonInterface
             ],
             'searchFields' => 'title,event',
             'iconfile' => $this->service->getNotificationIconPath(),
+            'rootLevel' => 1,
             DefaultEventFromGet::ENABLE_DEFAULT_VALUE => true,
         ];
     }

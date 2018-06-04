@@ -9,112 +9,100 @@
 
 <f:section name="Content">
     <div class="container">
-        <f:render partial="Backend/Notification/Show/Header" section="Content" arguments="{_all}" />
+        <f:render partial="Backend/Notification/Show/Header"
+                  section="Content"
+                  arguments="{notification: notification}" />
 
         <table class="table">
-            <thead>
-                <tr>
-                    <th colspan="3">General information about the notification</th>
-                </tr>
-            </thead>
+            <f:render partial="Backend/Notification/Show/GeneralInformation"
+                      section="Content"
+                      arguments="{notification: notification}" />
 
-            <tr>
-                <td>Event</td>
-                <td colspan="2">
-                    <f:link.action action="showEvent"
-                                   arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}"
-                                   title="{nz:t(key: 'Backend/Module/Index/Global:show_event_details', args: {0: notification.eventDefinition.label})}">
-                        {notification.eventDefinition.label} ({notification.eventDefinition.group.label})
-                    </f:link.action>
-                </td>
-            </tr>
-            <tr>
-                <td>Created by</td>
-                <td colspan="2">
-                    <b:avatar backendUser="{notification.backendUser.uid}" />
-                    <f:if condition="{notification.backendUser.realName}">
-                        <f:then>{notification.backendUser.realName}</f:then>
-                        <f:else>{notification.backendUser.userName}</f:else>
-                    </f:if>
-                </td>
-            </tr>
+            <f:render section="MailInformation" arguments="{_all}" />
 
-            <thead>
-                <tr>
-                    <th colspan="3">Information about the mail</th>
-                </tr>
-            </thead>
-
-            <tr>
-                <td rowspan="4">Recipients</td>
-            </tr>
-            <tr>
-                <td>To</td>
-                <td>{notification.sendTo}</td>
-            </tr>
-            <tr>
-                <td>Cc</td>
-                <td>{notification.sendCc}</td>
-            </tr>
-            <tr>
-                <td>Bcc</td>
-                <td>{notification.sendBcc}</td>
-            </tr>
-
-            <tr>
-                <td rowspan="4">Provided recipients</td>
-            </tr>
-            <tr>
-                <td>To</td>
-                <td>
-                    <f:if condition="{notification.selectedSendToProvided}">
-                        <ul>
-                            <f:for each="{notification.selectedSendToProvided}" as="recipient">
-                                <li>{recipient.label}</li>
-                            </f:for>
-                        </ul>
-                    </f:if>
-                </td>
-            </tr>
-            <tr>
-                <td>Cc</td>
-                <td>
-                    <f:if condition="{notification.selectedSendCcProvided}">
-                        <ul>
-                            <f:for each="{notification.selectedSendCcProvided}" as="recipient">
-                                <li>{recipient.label}</li>
-                            </f:for>
-                        </ul>
-                    </f:if>
-                </td>
-            </tr>
-            <tr>
-                <td>Bcc</td>
-                <td>
-                    <f:if condition="{notification.selectedSendBccProvided}">
-                        <ul>
-                            <f:for each="{notification.selectedSendBccProvided}" as="recipient">
-                                <li>{recipient.label}</li>
-                            </f:for>
-                        </ul>
-                    </f:if>
-                </td>
-            </tr>
-
-            <thead>
-                <tr>
-                    <th colspan="3">Preview</th>
-                </tr>
-            </thead>
-
-            <tr>
-                <td colspan="3">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item"
-                                src="{f:uri.action(action: 'preview', arguments: {notificationIdentifier: notification.uid})}"></iframe>
-                    </div>
-                </td>
-            </tr>
+            <f:render section="Preview" arguments="{_all}" />
         </table>
     </div>
+</f:section>
+
+--------------------------------------------------------------------------------
+General information about the mail notification.
+--------------------------------------------------------------------------------
+<f:section name="MailInformation">
+    <thead>
+        <tr>
+            <th colspan="2">Information about the mail</th>
+        </tr>
+    </thead>
+
+    <tr>
+        <td>Recipients</td>
+        <td>
+            <dl>
+                <dt>To</dt>
+                <dd>{notification.sendTo}</dd>
+
+                <dt>Cc</dt>
+                <dd>{notification.sendCc}</dd>
+
+                <dt>Bcc</dt>
+                <dd>{notification.sendBcc}</dd>
+            </dl>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Provided recipients</td>
+        <td>
+            <dl>
+                <dt>To</dt>
+                <dd>
+                    <f:render section="ProvidedRecipients" arguments="{recipients: notification.selectedSendToProvided}" />
+                </dd>
+
+                <dt>Cc</dt>
+                <dd>
+                    <f:render section="ProvidedRecipients" arguments="{recipients: notification.selectedSendCcProvided}" />
+                </dd>
+
+                <dt>Bcc</dt>
+                <dd>
+                    <f:render section="ProvidedRecipients" arguments="{recipients: notification.selectedSendBccProvided}" />
+                </dd>
+            </dl>
+        </td>
+    </tr>
+</f:section>
+
+--------------------------------------------------------------------------------
+Preview of the whole mail body.
+--------------------------------------------------------------------------------
+<f:section name="Preview">
+    <thead>
+        <tr>
+            <th colspan="2">Preview</th>
+        </tr>
+    </thead>
+
+    <tr>
+        <td colspan="3">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item"
+                        src="{f:uri.action(action: 'preview', arguments: {notificationIdentifier: notification.uid})}"></iframe>
+            </div>
+        </td>
+    </tr>
+</f:section>
+
+--------------------------------------------------------------------------------
+@todo
+--------------------------------------------------------------------------------
+<f:section name="ProvidedRecipients">
+    <f:if condition="{recipients}">
+        <ul>
+            <f:for each="{recipients}" as="recipient">
+                <li>{recipient.label}</li>
+            </f:for>
+        </ul>
+    </f:if>
 </f:section>

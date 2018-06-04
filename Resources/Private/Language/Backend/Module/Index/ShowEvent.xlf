@@ -15,6 +15,10 @@
                 <source>Notifications bound to this event</source>
             </trans-unit>
 
+            <trans-unit id="event_not_found">
+                <source>The event “%s” was not found in the definition.</source>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

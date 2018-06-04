@@ -16,13 +16,13 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
+use CuyZ\Notiz\Service\LocalizationService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class IndexController extends BackendController
 {
     /**
-     * @todo
-     *
      * @param ViewInterface $view
      */
     public function initializeView(ViewInterface $view)
@@ -30,32 +30,45 @@ class IndexController extends BackendController
         $this->view->assign('definition', $this->getDefinition());
     }
 
+    /**
+     * Lists all the existing notification types (email, log, Slack, etc.).
+     */
     public function listNotificationTypesAction()
     {
-        $this->view->assign('user', $GLOBALS['BE_USER']->user);
     }
 
     /**
+     * Lists all notifications entries belonging to a given type.
+     *
      * @param string $notificationIdentifier
-     * @param string $filterEvent
-     * @throws \Exception
      */
-    public function listNotificationsAction($notificationIdentifier, $filterEvent = null)
+    public function listNotificationsAction($notificationIdentifier)
     {
         $definition = $this->getDefinition();
 
         if (!$definition->hasNotification($notificationIdentifier)) {
-            throw new \Exception('@todo'); // @todo
+            $this->addFlashMessage(
+                LocalizationService::localize('Backend/Module/Index/ListNotifications:notification_type_not_found', [$notificationIdentifier]),
+                '',
+                AbstractMessage::ERROR
+            );
+
+            $this->forward('listNotificationTypes');
         }
 
         $this->view->assign('notificationDefinition', $definition->getNotification($notificationIdentifier));
     }
 
+    /**
+     * Lists all registered events.
+     */
     public function listEventsAction()
     {
     }
 
     /**
+     * Show detailed information about a given event.
+     *
      * @param string $eventIdentifier
      */
     public function showEventAction($eventIdentifier)
@@ -63,7 +76,13 @@ class IndexController extends BackendController
         $definition = $this->getDefinition();
 
         if (!$definition->hasEventFromFullIdentifier($eventIdentifier)) {
-            throw new \Exception('@todo'); // @todo
+            $this->addFlashMessage(
+                LocalizationService::localize('Backend/Module/Index/ShowEvent:event_not_found', [$eventIdentifier]),
+                '',
+                AbstractMessage::ERROR
+            );
+
+            $this->forward('listEvents');
         }
 
         $eventDefinition = $definition->getEventFromFullIdentifier($eventIdentifier);
