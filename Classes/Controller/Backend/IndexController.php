@@ -80,11 +80,4 @@ class IndexController extends BackendController
         $this->view->assign('eventDefinition', $eventDefinition);
         $this->view->assign('notifications', $notifications);
     }
-
-    /**
-     * @todo
-     */
-    protected function definitionError()
-    {
-    }
 }

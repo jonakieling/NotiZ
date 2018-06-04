@@ -19,6 +19,7 @@ namespace CuyZ\Notiz\Backend\FormEngine\ButtonBar;
 use CuyZ\Notiz\Backend\Module\IndexModuleManager;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Domain\Notification\EntityNotification;
+use CuyZ\Notiz\Service\LocalizationService;
 use ReflectionClass;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -68,6 +69,10 @@ class ShowNotificationDetailsButton implements SingletonInterface
      */
     public function addButton(EditDocumentController $controller)
     {
+        if ($this->definitionService->getValidationResult()->hasErrors()) {
+            return;
+        }
+
         foreach ($this->definitionService->getDefinition()->getNotifications() as $notificationDefinition) {
             /** @var EntityNotification $className */
             $className = $notificationDefinition->getClassName();
@@ -93,19 +98,17 @@ class ShowNotificationDetailsButton implements SingletonInterface
             /** @var EntityNotification $notification */
             $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
 
-            $this->qsd($controller, $notification);
+            $this->addButtonForNotification($controller, $notification);
 
             break;
         }
     }
 
     /**
-     * @todo
-     *
      * @param EditDocumentController $controller
      * @param EntityNotification $notification
      */
-    protected function qsd(EditDocumentController $controller, EntityNotification $notification)
+    protected function addButtonForNotification(EditDocumentController $controller, EntityNotification $notification)
     {
         $moduleTemplate = $this->getModuleTemplate($controller);
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -120,7 +123,7 @@ class ShowNotificationDetailsButton implements SingletonInterface
         $button = $buttonBar->makeLinkButton()
             ->setShowLabelText(true)
             ->setHref($uri)
-            ->setTitle('View details') // @todo translate
+            ->setTitle(LocalizationService::localize('Notification/Entity/ButtonBar:view_details'))
             ->setIcon($this->iconFactory->getIcon(
                 'actions-view',
                 Icon::SIZE_SMALL

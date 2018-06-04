@@ -118,7 +118,7 @@ class TablesConfigurationService implements SingletonInterface
     }
 
     /**
-     * @todo
+     * @see IndexModuleManager::registerShowNotificationControllers
      */
     protected function registerShowNotificationControllers()
     {

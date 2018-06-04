@@ -17,8 +17,14 @@
 namespace CuyZ\Notiz\Controller\Backend\Notification;
 
 use CuyZ\Notiz\Controller\Backend\BackendController;
+use CuyZ\Notiz\Core\Channel\Payload;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
+use CuyZ\Notiz\Core\Event\Event;
+use CuyZ\Notiz\Core\Event\Service\EventFactory;
+use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
 use CuyZ\Notiz\Core\Notification\Notification;
+use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
+use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 abstract class ShowNotificationController extends BackendController
@@ -34,9 +40,12 @@ abstract class ShowNotificationController extends BackendController
     protected $notification;
 
     /**
+     * @var EventFactory
+     */
+    protected $eventFactory;
+
+    /**
      * @todo
-     *
-     * @throws \Exception
      */
     public function initializeAction()
     {
@@ -77,9 +86,38 @@ abstract class ShowNotificationController extends BackendController
     abstract public function getNotificationDefinitionIdentifier();
 
     /**
-     * @todo
+     * @return Payload
      */
-    protected function definitionError()
+    protected function getPreviewPayload()
     {
+        $fakeEvent = $this->eventFactory->create($this->notification->getEventDefinition(), $this->notification);
+
+        if ($fakeEvent instanceof ProvidesExampleMarkers) {
+            $this->signalSlotDispatcher->connect(
+                PropertyFactory::class,
+                PropertyFactory::SIGNAL_PROPERTY_FILLING,
+                function (PropertyContainer $container, Event $event) use ($fakeEvent) {
+                    if ($event === $fakeEvent) {
+                        $exampleMarkers = $fakeEvent->getExampleMarkers();
+
+                        foreach ($container->getEntries() as $marker) {
+                            if (isset($exampleMarkers[$marker->getName()])) {
+                                $marker->setValue($exampleMarkers[$marker->getName()]);
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        return new Payload($this->notification, $this->notificationDefinition, $fakeEvent);
+    }
+
+    /**
+     * @param EventFactory $eventFactory
+     */
+    public function injectEventFactory(EventFactory $eventFactory)
+    {
+        $this->eventFactory = $eventFactory;
     }
 }

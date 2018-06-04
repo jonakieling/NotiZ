@@ -50,15 +50,6 @@ abstract class ModuleManager implements SingletonInterface
     }
 
     /**
-     * @param string $action
-     * @param array $arguments
-     * @return string
-     */
-    public function uriFor($action, array $arguments = [])
-    {
-    }
-
-    /**
      * @return string
      */
     abstract public static function getDefaultControllerName();

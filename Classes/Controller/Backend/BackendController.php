@@ -51,7 +51,10 @@ abstract class BackendController extends ActionController
      *
      * @return void
      */
-    abstract protected function definitionError();
+    protected function definitionError()
+    {
+        $this->forward('showDefinition', 'Backend\\Administration');
+    }
 
     /**
      * @param DefinitionService $definitionService

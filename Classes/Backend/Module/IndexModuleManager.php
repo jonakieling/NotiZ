@@ -47,6 +47,9 @@ class IndexModuleManager extends ModuleManager
     }
 
     /**
+     * Dynamically registers the controllers for every notification type that
+     * can be displayed in the backend module.
+     *
      * @param Definition $definition
      */
     public function registerShowNotificationControllers(Definition $definition)

@@ -16,12 +16,6 @@
 
 namespace CuyZ\Notiz\Controller\Backend\Notification;
 
-use CuyZ\Notiz\Core\Channel\Payload;
-use CuyZ\Notiz\Core\Event\Event;
-use CuyZ\Notiz\Core\Event\Service\EventFactory;
-use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
-use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
-use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service\EntityEmailTemplateBuilder;
 use CuyZ\Notiz\Domain\Property\Email;
@@ -34,11 +28,6 @@ class ShowEntityEmailController extends ShowNotificationController
     protected $notification;
 
     /**
-     * @var EventFactory
-     */
-    protected $eventFactory;
-
-    /**
      * @param string $notificationIdentifier
      */
     public function showAction($notificationIdentifier)
@@ -48,48 +37,22 @@ class ShowEntityEmailController extends ShowNotificationController
         $eventDefinition = $this->notification->getEventDefinition();
         $emailProperties = $eventDefinition->getPropertyDefinition(Email::class, $this->notification);
 
-        $aze = $this->notification->getSendToProvided();
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($aze, __CLASS__ . ':' . __LINE__ . ' $aze!!');
-
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($emailProperties, __CLASS__ . ':' . __LINE__ . ' $emailProperties');
         $this->view->assign('emailProperties', $emailProperties);
     }
 
     /**
-     * This action is called to show a preview of the given email notification.
+     * This action is called to show a preview of the shown email notification.
      *
      * An event is simulated in order to render the original Fluid template used
      * by the notification. Example values may be added to simulate fake markers
      * in the view.
      *
-     * @param string $notificationIdentifier
+     * @return string
      */
-    public function previewAction($notificationIdentifier)
+    public function previewAction()
     {
-        $fakeEvent = $this->eventFactory->create($this->notification->getEventDefinition(), $this->notification);
-
-        if ($fakeEvent instanceof ProvidesExampleMarkers) {
-            $this->signalSlotDispatcher->connect(
-                PropertyFactory::class,
-                PropertyFactory::SIGNAL_PROPERTY_FILLING,
-                function (PropertyContainer $container, Event $event) use ($fakeEvent) {
-                    if ($event === $fakeEvent) {
-                        $exampleMarkers = $fakeEvent->getExampleMarkers();
-
-                        foreach ($container->getEntries() as $marker) {
-                            if (isset($exampleMarkers[$marker->getName()])) {
-                                $marker->setValue($exampleMarkers[$marker->getName()]);
-                            }
-                        }
-                    }
-                }
-            );
-        }
-
-        $payload = new Payload($this->notification, $this->notificationDefinition, $fakeEvent);
-
         /** @var EntityEmailTemplateBuilder $entityEmailTemplateBuilder */
-        $entityEmailTemplateBuilder = $this->objectManager->get(EntityEmailTemplateBuilder::class, $payload);
+        $entityEmailTemplateBuilder = $this->objectManager->get(EntityEmailTemplateBuilder::class, $this->getPreviewPayload());
 
         return $entityEmailTemplateBuilder->getBody();
     }
@@ -99,14 +62,6 @@ class ShowEntityEmailController extends ShowNotificationController
      */
     public function getNotificationDefinitionIdentifier()
     {
-        return EntityEmailNotification::getNotificationIdentifier();
-    }
-
-    /**
-     * @param EventFactory $eventFactory
-     */
-    public function injectEventFactory(EventFactory $eventFactory)
-    {
-        $this->eventFactory = $eventFactory;
+        return EntityEmailNotification::getDefinitionIdentifier();
     }
 }

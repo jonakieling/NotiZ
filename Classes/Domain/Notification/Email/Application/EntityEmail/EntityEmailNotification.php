@@ -328,14 +328,6 @@ class EntityEmailNotification extends EntityNotification implements EmailNotific
     }
 
     /**
-     * @return string
-     */
-    public static function getNotificationIdentifier()
-    {
-        return 'entityEmail';
-    }
-
-    /**
      * @param string $providedRecipients
      * @return Email[]
      */

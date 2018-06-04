@@ -77,10 +77,6 @@ abstract class EntityTcaWriter implements SingletonInterface
      */
     final public function getTcaArray($tableName)
     {
-        if ($this->service->definitionHasErrors()) {
-            return [];
-        }
-
         $this->tableName = $tableName;
 
         if ($this->service->definitionHasErrors()) {
@@ -129,6 +125,10 @@ abstract class EntityTcaWriter implements SingletonInterface
      */
     private function getEventConfiguration()
     {
+        if ($this->service->definitionHasErrors()) {
+            return [];
+        }
+
         $configuration = [];
         $displayConditions = [];
 
