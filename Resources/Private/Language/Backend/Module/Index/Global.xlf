@@ -19,6 +19,10 @@
                 <source>Go back to list view</source>
             </trans-unit>
 
+            <trans-unit id="open_new_tab">
+                <source>Open in a new tab</source>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

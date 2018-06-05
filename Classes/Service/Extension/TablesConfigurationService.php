@@ -18,7 +18,6 @@ namespace CuyZ\Notiz\Service\Extension;
 
 use CuyZ\Notiz\Backend\FormEngine\ButtonBar\ShowNotificationDetailsButton;
 use CuyZ\Notiz\Backend\Module\IndexModuleManager;
-use CuyZ\Notiz\Core\Definition\Builder\DefinitionBuilder;
 use CuyZ\Notiz\Core\Support\NotizConstants;
 use CuyZ\Notiz\Service\Traits\SelfInstantiateTrait;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
@@ -62,8 +61,9 @@ class TablesConfigurationService implements SingletonInterface
     public function process()
     {
         $this->registerBackendModule();
-        $this->registerShowNotificationControllers();
         $this->registerDetailViewButton();
+
+        IndexModuleManager::get()->registerShowNotificationControllers();
     }
 
     /**
@@ -114,19 +114,6 @@ class TablesConfigurationService implements SingletonInterface
                 'icon' => NotizConstants::EXTENSION_ICON_MODULE_PATH,
                 'labels' => "LLL:EXT:{$this->extensionKey}/Resources/Private/Language/Backend/Module/Administration/Module.xlf",
             ]
-        );
-    }
-
-    /**
-     * @see IndexModuleManager::registerShowNotificationControllers
-     */
-    protected function registerShowNotificationControllers()
-    {
-        $this->dispatcher->connect(
-            DefinitionBuilder::class,
-            DefinitionBuilder::DEFINITION_BUILT_SIGNAL,
-            IndexModuleManager::class,
-            'registerShowNotificationControllers'
         );
     }
 

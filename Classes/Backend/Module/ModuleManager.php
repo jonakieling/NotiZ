@@ -17,6 +17,7 @@
 namespace CuyZ\Notiz\Backend\Module;
 
 use CuyZ\Notiz\Backend\Module\Uri\UriBuilder;
+use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Service\Container;
 use CuyZ\Notiz\Service\Traits\ExtendedSelfInstantiateTrait;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -26,15 +27,22 @@ abstract class ModuleManager implements SingletonInterface
     use ExtendedSelfInstantiateTrait;
 
     /**
+     * @var DefinitionService
+     */
+    protected $definitionService;
+
+    /**
      * @var UriBuilder
      */
     protected $uriBuilder;
 
     /**
+     * @param DefinitionService $definitionService
      * @param UriBuilder $uriBuilder
      */
-    public function __construct(UriBuilder $uriBuilder)
+    public function __construct(DefinitionService $definitionService, UriBuilder $uriBuilder)
     {
+        $this->definitionService = $definitionService;
         $this->uriBuilder = $uriBuilder;
     }
 

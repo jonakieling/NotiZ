@@ -16,7 +16,6 @@
 
 namespace CuyZ\Notiz\Backend\Module;
 
-use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 
 class IndexModuleManager extends ModuleManager
@@ -49,12 +48,14 @@ class IndexModuleManager extends ModuleManager
     /**
      * Dynamically registers the controllers for every notification type that
      * can be displayed in the backend module.
-     *
-     * @param Definition $definition
      */
-    public function registerShowNotificationControllers(Definition $definition)
+    public function registerShowNotificationControllers()
     {
-        foreach ($definition->getNotifications() as $notification) {
+        if ($this->definitionService->getValidationResult()->hasErrors()) {
+            return;
+        }
+
+        foreach ($this->definitionService->getDefinition()->getNotifications() as $notification) {
             $controllerName = $this->controllerToShowNotification($notification);
 
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][IndexModuleManager::getModuleName()]['controllers'][$controllerName] = ['actions' => ['show', 'preview']];
