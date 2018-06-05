@@ -11,6 +11,7 @@
         <td>Event</td>
         <td>
             <f:link.action action="showEvent"
+                           controller="Backend\Index"
                            arguments="{eventIdentifier: notification.eventDefinition.fullIdentifier}"
                            title="{nz:t(key: 'Backend/Module/Index/Global:show_event_details', args: {0: notification.eventDefinition.label})}">
                 {notification.eventDefinition.label} ({notification.eventDefinition.group.label})
