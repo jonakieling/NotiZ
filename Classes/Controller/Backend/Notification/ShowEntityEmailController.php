@@ -70,7 +70,6 @@ class ShowEntityEmailController extends ShowNotificationController
      */
     public function previewErrorAction()
     {
-
     }
 
     /**
