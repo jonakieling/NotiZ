@@ -1,0 +1,21 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+
+<f:layout name="Backend/Minimal" />
+
+<f:section name="Content">
+    <p>An error occurred during the generation of the preview.</p>
+
+    <p>Click on the button below to have more details about the error.</p>
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
+            Show error details
+        </button>
+    </div>
+
+    <div class="collapse" id="errorDetails">
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="{f:uri.action(action: 'previewError')}" class="embed-responsive-item"></iframe>
+        </div>
+    </div>
+</f:section>

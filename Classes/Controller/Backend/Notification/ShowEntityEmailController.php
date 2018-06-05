@@ -19,6 +19,8 @@ namespace CuyZ\Notiz\Controller\Backend\Notification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification;
 use CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\Service\EntityEmailTemplateBuilder;
 use CuyZ\Notiz\Domain\Property\Email;
+use Error;
+use Exception;
 
 class ShowEntityEmailController extends ShowNotificationController
 {
@@ -51,10 +53,24 @@ class ShowEntityEmailController extends ShowNotificationController
      */
     public function previewAction()
     {
-        /** @var EntityEmailTemplateBuilder $entityEmailTemplateBuilder */
-        $entityEmailTemplateBuilder = $this->objectManager->get(EntityEmailTemplateBuilder::class, $this->getPreviewPayload());
+        try {
+            /** @var EntityEmailTemplateBuilder $entityEmailTemplateBuilder */
+            $entityEmailTemplateBuilder = $this->objectManager->get(EntityEmailTemplateBuilder::class, $this->getPreviewPayload());
 
-        return $entityEmailTemplateBuilder->getBody();
+            return $entityEmailTemplateBuilder->getBody();
+        } catch (Exception $e) {
+        } catch (Error $e) {
+        }
+
+        return null;
+    }
+
+    /**
+     * @todo
+     */
+    public function previewErrorAction()
+    {
+
     }
 
     /**
