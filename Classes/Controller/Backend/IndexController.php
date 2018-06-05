@@ -16,8 +16,6 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
-use CuyZ\Notiz\Service\LocalizationService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class IndexController extends BackendController
@@ -47,10 +45,9 @@ class IndexController extends BackendController
         $definition = $this->getDefinition();
 
         if (!$definition->hasNotification($notificationIdentifier)) {
-            $this->addFlashMessage(
-                LocalizationService::localize('Backend/Module/Index/ListNotifications:notification_type_not_found', [$notificationIdentifier]),
-                '',
-                AbstractMessage::ERROR
+            $this->addErrorMessage(
+                'Backend/Module/Index/ListNotifications:notification_type_not_found',
+                $notificationIdentifier
             );
 
             $this->forward('listNotificationTypes');
@@ -76,10 +73,9 @@ class IndexController extends BackendController
         $definition = $this->getDefinition();
 
         if (!$definition->hasEventFromFullIdentifier($eventIdentifier)) {
-            $this->addFlashMessage(
-                LocalizationService::localize('Backend/Module/Index/ShowEvent:event_not_found', [$eventIdentifier]),
-                '',
-                AbstractMessage::ERROR
+            $this->addErrorMessage(
+                'Backend/Module/Index/ShowEvent:event_not_found',
+                $eventIdentifier
             );
 
             $this->forward('listEvents');

@@ -34,8 +34,17 @@ General information about the log notification.
     </thead>
 
     <tr>
-        <td>To</td>
-        <td>{notification.sendTo}</td>
+        <td>
+            <nz:t key="Notification/Log/Entity:field.level" />
+        </td>
+        <td>
+            <dl>
+                <dt>{notification.level}</dt>
+                <dd>
+                    <nz:t key="Notification/Log/Entity:level.{notification.level -> f:format.case(mode: 'upper')}" />
+                </dd>
+            </dl>
+        </td>
     </tr>
 </f:section>
 

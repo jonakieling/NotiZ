@@ -18,6 +18,8 @@ namespace CuyZ\Notiz\Controller\Backend;
 
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
+use CuyZ\Notiz\Service\LocalizationService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 abstract class BackendController extends ActionController
@@ -54,6 +56,19 @@ abstract class BackendController extends ActionController
     protected function definitionError()
     {
         $this->forward('showDefinition', 'Backend\\Administration');
+    }
+
+    /**
+     * @param string $key
+     * @param mixed ...$arguments
+     */
+    protected function addErrorMessage($key, ...$arguments)
+    {
+        $this->addFlashMessage(
+            LocalizationService::localize($key, $arguments),
+            '',
+            AbstractMessage::ERROR
+        );
     }
 
     /**

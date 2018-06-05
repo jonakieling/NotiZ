@@ -25,8 +25,6 @@ use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
 use CuyZ\Notiz\Core\Notification\Notification;
 use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
 use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
-use CuyZ\Notiz\Service\LocalizationService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 abstract class ShowNotificationController extends BackendController
@@ -58,7 +56,35 @@ abstract class ShowNotificationController extends BackendController
     }
 
     /**
-     * @todo
+     * Main action that will show details for the current notification entry.
+     */
+    public function showAction()
+    {
+        if (!$this->notification) {
+            $this->addErrorMessage(
+                'Backend/Module/Index/ListNotifications:notification_not_found',
+                $this->notificationDefinition->getLabel(),
+                $this->request->getArgument('notificationIdentifier')
+            );
+
+
+            $this->forward(
+                'listNotifications',
+                'Backend\\Index',
+                null,
+                ['notificationIdentifier' => $this->notificationDefinition->getIdentifier()]
+            );
+        }
+    }
+
+    /**
+     * @return string
+     */
+    abstract public function getNotificationDefinitionIdentifier();
+
+    /**
+     * Checks that an argument `notificationIdentifier` exists for the request,
+     * and fetches the correct notification entry.
      */
     protected function fetchNotification()
     {
@@ -66,10 +92,9 @@ abstract class ShowNotificationController extends BackendController
         $notificationDefinitionIdentifier = $this->getNotificationDefinitionIdentifier();
 
         if (!$definition->hasNotification($notificationDefinitionIdentifier)) {
-            $this->addFlashMessage(
-                LocalizationService::localize('Backend/Module/Index/ListNotifications:notification_type_not_found', [$notificationDefinitionIdentifier]),
-                '',
-                AbstractMessage::ERROR
+            $this->addErrorMessage(
+                'Backend/Module/Index/ListNotifications:notification_type_not_found',
+                $notificationDefinitionIdentifier
             );
 
             $this->forward('listNotificationTypes', 'Backend\\Index');
@@ -83,29 +108,6 @@ abstract class ShowNotificationController extends BackendController
             $this->notification = $this->notificationDefinition->getProcessor()->getNotificationFromIdentifier($notificationIdentifier);
         }
     }
-
-    /**
-     * @todo
-     */
-    public function showAction()
-    {
-        if (!$this->notification) {
-            $this->addFlashMessage(
-                // @todo
-                LocalizationService::localize('Backend/Module/Index/ListNotifications:notification_type_not_found', [$notificationDefinitionIdentifier]),
-                '',
-                AbstractMessage::ERROR
-            );
-
-
-            $this->forward('listNotificationTypes', 'Backend\\Index');
-        }
-    }
-
-    /**
-     * @return string
-     */
-    abstract public function getNotificationDefinitionIdentifier();
 
     /**
      * @return Payload

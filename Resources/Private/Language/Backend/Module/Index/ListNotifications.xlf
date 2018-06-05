@@ -21,6 +21,9 @@
             <trans-unit id="notification_type_not_found">
                 <source>Notification of type “%s” was not found in the definition.</source>
             </trans-unit>
+            <trans-unit id="notification_not_found">
+                <source>Notification of type “%s” with identifier “%s” could not be found.</source>
+            </trans-unit>
 
         </body>
     </file>

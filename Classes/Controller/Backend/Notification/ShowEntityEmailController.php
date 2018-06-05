@@ -28,11 +28,11 @@ class ShowEntityEmailController extends ShowNotificationController
     protected $notification;
 
     /**
-     * @param string $notificationIdentifier
+     * @inheritdoc
      */
-    public function showAction($notificationIdentifier)
+    public function showAction()
     {
-        parent::showAction($notificationIdentifier);
+        parent::showAction();
 
         $eventDefinition = $this->notification->getEventDefinition();
         $emailProperties = $eventDefinition->getPropertyDefinition(Email::class, $this->notification);

@@ -27,11 +27,11 @@ class ShowEntityLogController extends ShowNotificationController
     protected $notification;
 
     /**
-     * @param string $notificationIdentifier
+     * @inheritdoc
      */
-    public function showAction($notificationIdentifier)
+    public function showAction()
     {
-        parent::showAction($notificationIdentifier);
+        parent::showAction();
 
         $this->view->assign('preview', $this->getPreview());
     }
