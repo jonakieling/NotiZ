@@ -47,22 +47,37 @@
             <nz:t key="Backend/Module/Index/ShowEvent:notifications_bound_to_event" />
         </h2>
 
-        <ul class="list-unstyled">
+        <table class="table table-striped table-hover">
             <f:for each="{notifications}" as="notification">
-                <li>
-                    <f:link.action action="listNotifications"
-                                   title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_notifications_bound_to_event', args: '{0: notification.definition.label}')}"
-                                   arguments="{notificationIdentifier: notification.definition.identifier, filterEvent: eventDefinition.identifier}">
+                <tr>
+                    <td width="32">
                         <core:icon identifier="{notification.definition.iconIdentifier}" />
+                    </td>
 
-                        {notification.definition.label}
+                    <td>
+                        <f:link.action action="listNotifications"
+                                       arguments="{notificationIdentifier: notification.definition.identifier, filterEvent: eventDefinition.identifier}"
+                                       title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_notifications_bound_to_event', args: '{0: notification.definition.label}')}">
+                            {notification.definition.label}
 
-                        <f:if condition="{notification.count}">
-                            ({notification.count})
-                        </f:if>
-                    </f:link.action>
-                </li>
+                            <f:if condition="{notification.count}">
+                                ({notification.count})
+                            </f:if>
+                        </f:link.action>
+                    </td>
+
+                    <td align="right">
+                        <div class="btn-group" role="group">
+                            <f:link.action action="listNotifications"
+                                           arguments="{notificationIdentifier: notification.definition.identifier, filterEvent: eventDefinition.identifier}"
+                                           class="btn btn-default"
+                                           title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_notifications_bound_to_event', args: '{0: notification.definition.label}')}">
+                                <core:icon identifier="actions-view" />
+                            </f:link.action>
+                        </div>
+                    </td>
+                </tr>
             </f:for>
-        </ul>
+        </table>
     </div>
 </f:section>

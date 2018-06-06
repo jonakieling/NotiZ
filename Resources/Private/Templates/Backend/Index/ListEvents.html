@@ -23,44 +23,70 @@
             </nz:format.nl2brTrim>
         </f:be.infobox>
 
-        <ul class="list-unstyled">
-            <f:for each="{definition.eventGroups}" as="eventGroup">
-                <li>
-                    {eventGroup.label}
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped table-hover">
+                    <f:for each="{definition.eventGroups}" as="eventGroup">
+                        <thead>
+                            <tr>
+                                <th colspan="3">{eventGroup.label}</th>
+                            </tr>
+                        </thead>
 
-                    <ul>
                         <f:for each="{eventGroup.events}" as="event">
-                            <li class="{f:if(condition: event.notificationNumber, else: 'text-muted')}">
-                                <f:spaceless>
-                                    <a href="#"
-                                       title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}"
-                                       class="link-create-notification"
-                                       data-toggle="modal"
-                                       data-target="#create-notification"
-                                       data-event-identifier="{event.fullIdentifier}">
+                            <tr>
+                                <td>
+                                    <f:link.action action="showEvent"
+                                                   arguments="{eventIdentifier: event.fullIdentifier}"
+                                                   title="{nz:t(key: 'Backend/Module/Index/ListEvents:show_event_details')}">
 
-                                        <core:icon identifier="actions-add" />
-                                    </a>
-                                </f:spaceless>
+                                        {event.label}
+                                        <f:if condition="{event.notificationNumber}">
+                                            ({event.notificationNumber})
+                                        </f:if>
+                                    </f:link.action>
+                                </td>
 
-                                <f:if condition="{event.notificationNumber}">
-                                    <f:then>
+                                <td>
+                                    <div class="collapse" id="eventDetails-{eventGroup.identifier}-{event.identifier}">
+                                        {event.description}
+                                    </div>
+                                </td>
+
+                                <td align="right">
+                                    <div class="btn-group" role="group">
+                                        <a href="#"
+                                           title="@todo"
+                                           class="btn btn-default"
+                                           type="button"
+                                           data-toggle="collapse"
+                                           data-target="#eventDetails-{eventGroup.identifier}-{event.identifier}"
+                                           aria-expanded="false"
+                                           aria-controls="eventDetails-{eventGroup.identifier}-{event.identifier}">
+                                            <core:icon identifier="actions-document-info" />
+                                        </a>
+                                        <a href="#"
+                                           title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}"
+                                           class="link-create-notification btn btn-default"
+                                           data-toggle="modal"
+                                           data-target="#create-notification"
+                                           data-event-identifier="{event.fullIdentifier}">
+                                            <core:icon identifier="actions-add" />
+                                        </a>
+
                                         <f:link.action action="showEvent"
                                                        arguments="{eventIdentifier: event.fullIdentifier}"
+                                                       class="btn btn-default"
                                                        title="{nz:t(key: 'Backend/Module/Index/ListEvents:show_event_details')}">
-
-                                            {event.label}&nbsp;({event.notificationNumber})
+                                            <core:icon identifier="actions-view" />
                                         </f:link.action>
-                                    </f:then>
-                                    <f:else>
-                                        {event.label}
-                                    </f:else>
-                                </f:if>
-                            </li>
+                                    </div>
+                                </td>
+                            </tr>
                         </f:for>
-                    </ul>
-                </li>
-            </f:for>
-        </ul>
+                    </f:for>
+                </table>
+            </div>
+        </div>
     </div>
 </f:section>
