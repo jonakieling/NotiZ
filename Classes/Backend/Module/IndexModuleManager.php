@@ -16,8 +16,6 @@
 
 namespace CuyZ\Notiz\Backend\Module;
 
-use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
-
 class IndexModuleManager extends ModuleManager
 {
     /**
@@ -37,28 +35,27 @@ class IndexModuleManager extends ModuleManager
     }
 
     /**
-     * @param NotificationDefinition $notificationDefinition
-     * @return string
+     * Dynamically registers the controllers for existing entity notifications.
      */
-    public function controllerToShowNotification(NotificationDefinition $notificationDefinition)
-    {
-        return 'Backend\\Notification\\Show' . ucfirst($notificationDefinition->getIdentifier());
-    }
-
-    /**
-     * Dynamically registers the controllers for every notification type that
-     * can be displayed in the backend module.
-     */
-    public function registerShowNotificationControllers()
+    public function registerEntityNotificationControllers()
     {
         if ($this->definitionService->getValidationResult()->hasErrors()) {
             return;
         }
 
-        foreach ($this->definitionService->getDefinition()->getNotifications() as $notification) {
-            $controllerName = $this->controllerToShowNotification($notification);
+        $controllers = [
+            'Backend\\Notification\\ShowEntityEmail' => [
+                'show',
+                'preview',
+                'previewError',
+            ],
+            'Backend\\Notification\\ShowEntityLog' => [
+                'show',
+            ],
+        ];
 
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][IndexModuleManager::getModuleName()]['controllers'][$controllerName] = ['actions' => ['show', 'preview', 'previewError']];
+        foreach ($controllers as $controller => $actions) {
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][self::getModuleName()]['controllers'][$controller] = ['actions' => $actions];
         }
     }
 }

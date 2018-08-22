@@ -18,9 +18,7 @@ namespace CuyZ\Notiz\ViewHelpers\Backend\Notification;
 
 use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
-use CuyZ\Notiz\Domain\Notification\EntityNotification;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use CuyZ\Notiz\Core\Notification\CanBeCreated;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 class CreateLinkViewHelper extends AbstractTagBasedViewHelper
@@ -67,35 +65,25 @@ class CreateLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var NotificationDefinition $notificationDefinition */
         $notificationDefinition = $this->arguments['notificationDefinition'];
 
-        /** @var EventDefinition $eventDefinition */
-        $eventDefinition = $this->arguments['eventDefinition'];
-
-        /** @var EntityNotification $className */
+        /** @var CanBeCreated $className */
         $className = $notificationDefinition->getClassName();
 
-        if (!in_array(EntityNotification::class, class_parents($className))) {
+        if (!in_array(CanBeCreated::class, class_implements($className))) {
             return '';
         }
 
-        $tableName = $className::getTableName();
-
-        $href = BackendUtility::getModuleUrl(
-            'record_edit',
-            [
-                "edit[$tableName][0]" => 'new',
-                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
-            ]
-        );
-
-        if ($eventDefinition) {
-            $href .= "&selectedEvent={$eventDefinition->getFullIdentifier()}";
-        }
-
         if ($this->arguments['addUriTemplate']) {
-            $this->tag->addAttribute('data-href', $href . '&selectedEvent=#EVENT#');
+            $this->tag->addAttribute('data-href', $className::getCreationUri('#EVENT#'));
         }
 
-        $this->tag->addAttribute('href', $href);
+        /** @var EventDefinition $eventDefinition */
+        $eventDefinition = $this->arguments['eventDefinition'];
+
+        $selectedEvent = $eventDefinition
+            ? $eventDefinition->getFullIdentifier()
+            : null;
+
+        $this->tag->addAttribute('href', $className::getCreationUri($selectedEvent));
         $this->tag->setContent($this->renderChildren());
 
         return $this->tag->render();

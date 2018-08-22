@@ -16,11 +16,11 @@
 
 namespace CuyZ\Notiz\ViewHelpers\Backend\Notification;
 
-use CuyZ\Notiz\Core\Notification\CanBeEdited;
+use CuyZ\Notiz\Core\Notification\CanBeDetailed;
 use CuyZ\Notiz\Core\Notification\Notification;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
-class EditLinkViewHelper extends AbstractTagBasedViewHelper
+class ShowLinkViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string
@@ -42,6 +42,12 @@ class EditLinkViewHelper extends AbstractTagBasedViewHelper
             '',
             true
         );
+
+        $this->registerArgument(
+            'graceful',
+            'bool',
+            'If the link can not be generated, the content will still be displayed without the link.'
+        );
     }
 
     /**
@@ -52,11 +58,15 @@ class EditLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var Notification $notification */
         $notification = $this->arguments['notification'];
 
-        if (!$notification instanceof CanBeEdited) {
-            return '';
+        if (!$notification instanceof CanBeDetailed) {
+            if ($this->arguments['graceful']) {
+                return $this->renderChildren();
+            } else {
+                return '';
+            }
         }
 
-        $this->tag->addAttribute('href', $notification->getEditionUri());
+        $this->tag->addAttribute('href', $notification->getDetailsUri());
         $this->tag->setContent($this->renderChildren());
 
         return $this->tag->render();

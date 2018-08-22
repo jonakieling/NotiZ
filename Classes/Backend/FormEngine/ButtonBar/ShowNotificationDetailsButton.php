@@ -16,8 +16,8 @@
 
 namespace CuyZ\Notiz\Backend\FormEngine\ButtonBar;
 
-use CuyZ\Notiz\Backend\Module\IndexModuleManager;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
+use CuyZ\Notiz\Core\Notification\CanBeDetailed;
 use CuyZ\Notiz\Domain\Notification\EntityNotification;
 use CuyZ\Notiz\Service\LocalizationService;
 use ReflectionClass;
@@ -48,20 +48,13 @@ class ShowNotificationDetailsButton implements SingletonInterface
     protected $iconFactory;
 
     /**
-     * @var IndexModuleManager
-     */
-    protected $indexModuleManager;
-
-    /**
      * @param DefinitionService $definitionService
      * @param IconFactory $iconFactory
-     * @param IndexModuleManager $indexModuleManager
      */
-    public function __construct(DefinitionService $definitionService, IconFactory $iconFactory, IndexModuleManager $indexModuleManager)
+    public function __construct(DefinitionService $definitionService, IconFactory $iconFactory)
     {
         $this->definitionService = $definitionService;
         $this->iconFactory = $iconFactory;
-        $this->indexModuleManager = $indexModuleManager;
     }
 
     /**
@@ -74,11 +67,14 @@ class ShowNotificationDetailsButton implements SingletonInterface
         }
 
         foreach ($this->definitionService->getDefinition()->getNotifications() as $notificationDefinition) {
-            /** @var EntityNotification $className */
+            /** @var EntityNotification|CanBeDetailed $className */
             $className = $notificationDefinition->getClassName();
 
             // Works only with TYPO3 entity notifications.
-            if (!in_array(EntityNotification::class, class_parents($className))) {
+            // @todo
+            if (!in_array(CanBeDetailed::class, class_implements($className))
+                || !in_array(EntityNotification::class, class_parents($className))
+            ) {
                 continue;
             }
 
@@ -95,7 +91,7 @@ class ShowNotificationDetailsButton implements SingletonInterface
                 continue;
             }
 
-            /** @var EntityNotification $notification */
+            /** @var CanBeDetailed $notification */
             $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
 
             $this->addButtonForNotification($controller, $notification);
@@ -106,19 +102,15 @@ class ShowNotificationDetailsButton implements SingletonInterface
 
     /**
      * @param EditDocumentController $controller
-     * @param EntityNotification $notification
+     * @param CanBeDetailed $notification
      */
-    protected function addButtonForNotification(EditDocumentController $controller, EntityNotification $notification)
+    protected function addButtonForNotification(EditDocumentController $controller, CanBeDetailed $notification)
     {
-        $moduleTemplate = $this->getModuleTemplate($controller);
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->getModuleTemplate($controller)
+            ->getDocHeaderComponent()
+            ->getButtonBar();
 
-        $uri = $this->indexModuleManager
-            ->getUriBuilder()
-            ->forController($this->indexModuleManager->controllerToShowNotification($notification->getNotificationDefinition()))
-            ->forAction('show')
-            ->withArguments(['notificationIdentifier' => $notification->getUid()])
-            ->build();
+        $uri = $notification->getDetailsUri();
 
         $button = $buttonBar->makeLinkButton()
             ->setShowLabelText(true)

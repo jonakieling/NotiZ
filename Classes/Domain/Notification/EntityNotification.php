@@ -16,6 +16,7 @@
 
 namespace CuyZ\Notiz\Domain\Notification;
 
+use CuyZ\Notiz\Backend\Module\IndexModuleManager;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
@@ -24,6 +25,7 @@ use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 use CuyZ\Notiz\Core\Notification\MultipleChannelsNotification;
 use CuyZ\Notiz\Core\Notification\Notification;
 use CuyZ\Notiz\Service\Container;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -31,9 +33,6 @@ use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 
-/**
- * @todo implement CanBeCreated / CanBeEdited interface with methods that return URI
- */
 abstract class EntityNotification extends AbstractEntity implements Notification, MultipleChannelsNotification
 {
     /**
@@ -154,6 +153,66 @@ abstract class EntityNotification extends AbstractEntity implements Notification
         }
 
         return $this->eventConfiguration;
+    }
+
+    /**
+     * @param string $selectedEvent
+     * @return string
+     */
+    public static function getCreationUri($selectedEvent = null)
+    {
+        $tableName = static::getTableName();
+
+        $href = BackendUtility::getModuleUrl(
+            'record_edit',
+            [
+                "edit[$tableName][0]" => 'new',
+                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
+            ]
+        );
+
+        if ($selectedEvent) {
+            $href .= "&selectedEvent=$selectedEvent";
+        }
+
+        return $href;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditionUri()
+    {
+        $identifier = $this->getNotificationDefinition()->getIdentifier();
+        $tableName = static::getTableName();
+        $uid = $this->getUid();
+
+        return BackendUtility::getModuleUrl(
+            'record_edit',
+            [
+                "edit[$tableName][$uid]" => 'edit',
+                'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . "#$identifier-$uid",
+            ]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetailsUri()
+    {
+        $notificationDefinition = $this->getNotificationDefinition();
+
+        $controller = 'Backend\\Notification\\Show' . ucfirst($notificationDefinition->getIdentifier());
+
+        $indexModuleManager = Container::get(IndexModuleManager::class);
+
+        return $indexModuleManager
+            ->getUriBuilder()
+            ->forController($controller)
+            ->forAction('show')
+            ->withArguments(['notificationIdentifier' => $this->getUid()])
+            ->build();
     }
 
     /**

@@ -63,7 +63,8 @@ class TablesConfigurationService implements SingletonInterface
         $this->registerBackendModule();
         $this->registerDetailViewButton();
 
-        IndexModuleManager::get()->registerShowNotificationControllers();
+        // @todo
+        IndexModuleManager::get()->registerEntityNotificationControllers();
     }
 
     /**
