@@ -16,6 +16,16 @@
                 ]]></source>
             </trans-unit>
 
+            <trans-unit id="no_notification_type_found">
+                <source><![CDATA[
+                    No notification type was found.
+
+                    Maybe something was wrong, or your definition contains error.
+
+                    If the problem persists, contact your administrator.
+                ]]></source>
+            </trans-unit>
+
             <trans-unit id="notification.no_description">
                 <source>No description available…</source>
             </trans-unit>

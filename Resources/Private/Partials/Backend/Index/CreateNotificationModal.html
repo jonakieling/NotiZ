@@ -10,11 +10,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
 
-                    <h4 class="modal-title" id="create-notification-label">Create new event</h4>
+                    <h4 class="modal-title" id="create-notification-label">
+                        <nz:t key="Backend/Module/Index/CreateNotification:create_new_notification" />
+                    </h4>
                 </div>
 
                 <div class="modal-body">
-                    <p>Choose your notification type:</p>
+                    <p>
+                        <nz:t key="Backend/Module/Index/CreateNotification:choose_notification_type" />
+                    </p>
 
                     <f:for each="{definition.notifications}" as="notificationDefinition">
                         <div class="center-block">
@@ -22,7 +26,7 @@
                                                                 eventDefinition="{eventDefinition}"
                                                                 addUriTemplate="true"
                                                                 class="btn btn-default btn-block link-create-notification-event"
-                                                                title="@todo">
+                                                                title="{notificationDefinition.label}">
                                 <core:icon identifier="{notificationDefinition.iconIdentifier}" />
                                 {notificationDefinition.label}
                             </nz:backend.notification.createLink>

@@ -58,7 +58,7 @@ class IndexModuleManager extends ModuleManager
         foreach ($this->definitionService->getDefinition()->getNotifications() as $notification) {
             $controllerName = $this->controllerToShowNotification($notification);
 
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][IndexModuleManager::getModuleName()]['controllers'][$controllerName] = ['actions' => ['show', 'preview']];
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['Notiz']['modules'][IndexModuleManager::getModuleName()]['controllers'][$controllerName] = ['actions' => ['show', 'preview', 'previewError']];
         }
     }
 }

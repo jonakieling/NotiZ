@@ -3,13 +3,15 @@
 <f:layout name="Backend/Minimal" />
 
 <f:section name="Content">
-    <p>An error occurred during the generation of the preview.</p>
-
-    <p>Click on the button below to have more details about the error.</p>
+    <f:be.infobox state="1">
+        <nz:format.nl2brTrim>
+            <nz:t key="Backend/Module/Index/Preview:preview_error" />
+        </nz:format.nl2brTrim>
+    </f:be.infobox>
 
     <div class="text-center">
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
-            Show error details
+            <nz:t key="Backend/Module/Index/Preview:show_error_details" />
         </button>
     </div>
 

@@ -1,0 +1,7 @@
+.list-events tr:not(:hover) .event-description {
+    visibility: hidden;
+}
+
+.list-events .event-description {
+    font-style: italic;
+}

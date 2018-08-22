@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en">
+        <header/>
+        <body>
+
+            <trans-unit id="create_new_notification">
+                <source>Create a new notification</source>
+            </trans-unit>
+
+            <trans-unit id="choose_notification_type">
+                <source>Choose the type of the notification:</source>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>

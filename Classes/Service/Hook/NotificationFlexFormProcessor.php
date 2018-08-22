@@ -29,13 +29,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class NotificationFlexFormProcessor implements SingletonInterface
 {
     /**
-     * @todo make it dynamic
-     *
      * @var array
      */
     protected static $handledTables = [
         'tx_notiz_domain_model_entityemailnotification' => 'event_configuration_flex',
-        'tx_notiz_domain_model_entitylognotification' => 'event_configuration_flex'
+        'tx_notiz_domain_model_entitylognotification' => 'event_configuration_flex',
+        'tx_notiz_domain_model_entityslacknotification' => 'event_configuration_flex',
     ];
 
     /**

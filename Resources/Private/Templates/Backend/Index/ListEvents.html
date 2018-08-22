@@ -25,7 +25,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover list-events">
                     <f:for each="{definition.eventGroups}" as="eventGroup">
                         <thead>
                             <tr>
@@ -48,23 +48,13 @@
                                 </td>
 
                                 <td>
-                                    <div class="collapse" id="eventDetails-{eventGroup.identifier}-{event.identifier}">
+                                    <div class="text-left event-description">
                                         {event.description}
                                     </div>
                                 </td>
 
                                 <td align="right">
                                     <div class="btn-group" role="group">
-                                        <a href="#"
-                                           title="@todo"
-                                           class="btn btn-default"
-                                           type="button"
-                                           data-toggle="collapse"
-                                           data-target="#eventDetails-{eventGroup.identifier}-{event.identifier}"
-                                           aria-expanded="false"
-                                           aria-controls="eventDetails-{eventGroup.identifier}-{event.identifier}">
-                                            <core:icon identifier="actions-document-info" />
-                                        </a>
                                         <a href="#"
                                            title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}"
                                            class="link-create-notification btn btn-default"

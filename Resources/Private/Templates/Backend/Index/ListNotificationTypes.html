@@ -10,7 +10,8 @@
 --------------------------------------------------------------------------------
 Main section of this view.
 
-@todo
+Lists all existing notification types: emails, logs, Slack… For each entry, a
+link is added to list all the notifications.
 --------------------------------------------------------------------------------
 <f:section name="Content">
     <div class="container">
@@ -36,7 +37,9 @@ Main section of this view.
                 <f:else>
                     <f:be.infobox state="-1">
                         <p>
-                            TODO!
+                            <nz:format.nl2brTrim>
+                                <nz:t key="Backend/Module/Index/ListNotificationTypes:no_notification_type_found" />
+                            </nz:format.nl2brTrim>
                         </p>
                     </f:be.infobox>
                 </f:else>
@@ -46,7 +49,7 @@ Main section of this view.
 </f:section>
 
 --------------------------------------------------------------------------------
-TODO
+A block that shows information about a given notification type.
 --------------------------------------------------------------------------------
 <f:section name="Notification">
     <div class="col-md-6">
