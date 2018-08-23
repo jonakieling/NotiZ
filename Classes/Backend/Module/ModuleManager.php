@@ -47,6 +47,20 @@ abstract class ModuleManager implements SingletonInterface
     }
 
     /**
+     * Returns the manager class for the given module.
+     *
+     * @param string $module
+     * @return ModuleManager
+     */
+    public static function for($module)
+    {
+        /** @var ModuleManager $className */
+        $className = __NAMESPACE__ . '\\' . $module . 'ModuleManager';
+
+        return $className::get();
+    }
+
+    /**
      * @return UriBuilder
      */
     public function getUriBuilder()

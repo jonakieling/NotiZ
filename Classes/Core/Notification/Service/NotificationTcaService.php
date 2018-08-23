@@ -96,12 +96,6 @@ abstract class NotificationTcaService implements SingletonInterface
     {
         $view = $this->viewService->getStandaloneView('Backend/TCA/DefinitionErrorMessage');
 
-        $uri = AdministrationModuleManager::get()
-            ->getUriBuilder()
-            ->forAction('showDefinition')
-            ->build();
-
-        $view->assign('showDefinitionUri', $uri);
         $view->assign('result', $this->definitionService->getValidationResult());
 
         return $view->render();

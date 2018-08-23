@@ -137,13 +137,6 @@ class NotificationsToolbarItem implements ToolbarItemInterface
     {
         $view = $this->getFluidTemplateObject('Backend/ToolBar/NotificationToolBarDropDown');
 
-        $uri = AdministrationModuleManager::get()
-            ->getUriBuilder()
-            ->forAction('showDefinition')
-            ->build();
-
-        $view->assign('showDefinitionUri', $uri);
-
         if (!$this->definitionService->getValidationResult()->hasErrors()) {
             $definition = $this->definitionService->getDefinition();
             $notifications = [];
