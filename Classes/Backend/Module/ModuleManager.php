@@ -19,13 +19,10 @@ namespace CuyZ\Notiz\Backend\Module;
 use CuyZ\Notiz\Backend\Module\Uri\UriBuilder;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Service\Container;
-use CuyZ\Notiz\Service\Traits\ExtendedSelfInstantiateTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 
 abstract class ModuleManager implements SingletonInterface
 {
-    use ExtendedSelfInstantiateTrait;
-
     /**
      * @var DefinitionService
      */
@@ -38,26 +35,25 @@ abstract class ModuleManager implements SingletonInterface
 
     /**
      * @param DefinitionService $definitionService
-     * @param UriBuilder $uriBuilder
      */
-    public function __construct(DefinitionService $definitionService, UriBuilder $uriBuilder)
+    public function __construct(DefinitionService $definitionService)
     {
         $this->definitionService = $definitionService;
-        $this->uriBuilder = $uriBuilder;
+        $this->uriBuilder = Container::get(UriBuilder::class, $this);
     }
 
     /**
-     * Returns the manager class for the given module.
+     * Returns the manager instance for the given module.
      *
      * @param string $module
      * @return ModuleManager
      */
     public static function for($module)
     {
-        /** @var ModuleManager $className */
-        $className = __NAMESPACE__ . '\\' . $module . 'ModuleManager';
+        /** @var ModuleManager $moduleManager */
+        $moduleManager = Container::get(__NAMESPACE__ . '\\' . $module . 'ModuleManager');
 
-        return $className::get();
+        return $moduleManager;
     }
 
     /**
@@ -65,19 +61,16 @@ abstract class ModuleManager implements SingletonInterface
      */
     public function getUriBuilder()
     {
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = Container::get(UriBuilder::class);
-
-        return $uriBuilder->with($this);
+        return $this->uriBuilder;
     }
 
     /**
      * @return string
      */
-    abstract public static function getDefaultControllerName();
+    abstract public function getDefaultControllerName();
 
     /**
      * @return string
      */
-    abstract public static function getModuleName();
+    abstract public function getModuleName();
 }

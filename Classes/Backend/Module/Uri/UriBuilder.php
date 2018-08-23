@@ -18,10 +18,9 @@ namespace CuyZ\Notiz\Backend\Module\Uri;
 
 use CuyZ\Notiz\Backend\Module\ModuleManager;
 use CuyZ\Notiz\Core\Support\NotizConstants;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExbaseUriBuilder;
 
-class UriBuilder implements SingletonInterface
+class UriBuilder
 {
     /**
      * @var string
@@ -50,13 +49,10 @@ class UriBuilder implements SingletonInterface
 
     /**
      * @param ModuleManager $moduleManager
-     * @return UriBuilder
      */
-    public function with(ModuleManager $moduleManager)
+    public function __construct(ModuleManager $moduleManager)
     {
         $this->moduleManager = $moduleManager;
-
-        return $this;
     }
 
     /**
@@ -97,8 +93,8 @@ class UriBuilder implements SingletonInterface
      */
     public function build()
     {
-        $module = $this->moduleManager::getModuleName();
-        $controller = $this->controller ?: $this->moduleManager::getDefaultControllerName();
+        $module = $this->moduleManager->getModuleName();
+        $controller = $this->controller ?: $this->moduleManager->getDefaultControllerName();
 
         return $this->uriBuilder
             ->reset()

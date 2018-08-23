@@ -21,7 +21,7 @@ class AdministrationModuleManager extends ModuleManager
     /**
      * @return string
      */
-    public static function getDefaultControllerName()
+    public function getDefaultControllerName()
     {
         return 'Backend\\Administration';
     }
@@ -29,7 +29,7 @@ class AdministrationModuleManager extends ModuleManager
     /**
      * @return string
      */
-    public static function getModuleName()
+    public function getModuleName()
     {
         return 'NotizNotiz_NotizNotizAdministration';
     }

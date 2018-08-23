@@ -16,12 +16,16 @@
 
 namespace CuyZ\Notiz\Backend\Module;
 
+use CuyZ\Notiz\Service\Traits\ExtendedSelfInstantiateTrait;
+
 class IndexModuleManager extends ModuleManager
 {
+    use ExtendedSelfInstantiateTrait;
+
     /**
      * @return string
      */
-    public static function getDefaultControllerName()
+    public function getDefaultControllerName()
     {
         return 'Backend\\Index';
     }
@@ -29,7 +33,7 @@ class IndexModuleManager extends ModuleManager
     /**
      * @return string
      */
-    public static function getModuleName()
+    public function getModuleName()
     {
         return 'NotizNotiz_NotizNotizIndex';
     }
