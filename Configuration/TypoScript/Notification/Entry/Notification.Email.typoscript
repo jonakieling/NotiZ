@@ -4,8 +4,6 @@ notiz {
             label = Notification/Email/Entity:title
             description = Notification/Email/Entity:description
 
-            description = Notification/Email/Entity:description
-
             className = CuyZ\Notiz\Domain\Notification\Email\Application\EntityEmail\EntityEmailNotification
 
             iconPath = EXT:notiz/Resources/Public/Icon/Notification/notification-email-entity-typo3.svg

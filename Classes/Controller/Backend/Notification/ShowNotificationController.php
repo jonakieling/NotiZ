@@ -121,13 +121,15 @@ abstract class ShowNotificationController extends BackendController
                 PropertyFactory::class,
                 PropertyFactory::SIGNAL_PROPERTY_FILLING,
                 function (PropertyContainer $container, Event $event) use ($fakeEvent) {
-                    if ($event === $fakeEvent) {
-                        $exampleMarkers = $fakeEvent->getExampleMarkers();
+                    if ($event !== $fakeEvent) {
+                        return;
+                    }
 
-                        foreach ($container->getEntries() as $marker) {
-                            if (isset($exampleMarkers[$marker->getName()])) {
-                                $marker->setValue($exampleMarkers[$marker->getName()]);
-                            }
+                    $exampleMarkers = $fakeEvent->getExampleMarkers();
+
+                    foreach ($container->getEntries() as $marker) {
+                        if (isset($exampleMarkers[$marker->getName()])) {
+                            $marker->setValue($exampleMarkers[$marker->getName()]);
                         }
                     }
                 }
