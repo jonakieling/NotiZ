@@ -14,17 +14,17 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-namespace CuyZ\Notiz\Core\Event\Support;
+namespace CuyZ\Notiz\Core\Notification;
 
 /**
- * @todo
+ * This interface can be implemented by notifications that can be created by an
+ * editor.
  */
-interface ProvidesExampleMarkers
+interface Creatable
 {
     /**
-     * @todo
-     *
-     * @return array
+     * @param string $selectedEvent
+     * @return string
      */
-    public function getExampleMarkers();
+    public static function getCreationUri($selectedEvent = null);
 }

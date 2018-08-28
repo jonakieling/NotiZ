@@ -17,14 +17,13 @@
 namespace CuyZ\Notiz\Core\Notification;
 
 /**
- * This interface can be implemented by notifications that can be created by an
- * editor.
+ * This interface can be implemented by notifications that can have a detail
+ * view in the backend module.
  */
-interface CanBeCreated
+interface Viewable
 {
     /**
-     * @param string $selectedEvent
      * @return string
      */
-    public static function getCreationUri($selectedEvent = null);
+    public function getViewUri();
 }

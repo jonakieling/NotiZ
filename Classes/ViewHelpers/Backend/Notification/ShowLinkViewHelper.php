@@ -16,7 +16,7 @@
 
 namespace CuyZ\Notiz\ViewHelpers\Backend\Notification;
 
-use CuyZ\Notiz\Core\Notification\CanBeDetailed;
+use CuyZ\Notiz\Core\Notification\Viewable;
 use CuyZ\Notiz\Core\Notification\Notification;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -58,7 +58,7 @@ class ShowLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var Notification $notification */
         $notification = $this->arguments['notification'];
 
-        if (!$notification instanceof CanBeDetailed) {
+        if (!$notification instanceof Viewable) {
             if ($this->arguments['graceful']) {
                 return $this->renderChildren();
             } else {
@@ -66,7 +66,7 @@ class ShowLinkViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        $this->tag->addAttribute('href', $notification->getDetailsUri());
+        $this->tag->addAttribute('href', $notification->getViewUri());
         $this->tag->setContent($this->renderChildren());
 
         return $this->tag->render();

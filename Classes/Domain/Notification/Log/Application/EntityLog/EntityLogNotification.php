@@ -16,14 +16,14 @@
 
 namespace CuyZ\Notiz\Domain\Notification\Log\Application\EntityLog;
 
-use CuyZ\Notiz\Core\Notification\CanBeCreated;
-use CuyZ\Notiz\Core\Notification\CanBeDetailed;
-use CuyZ\Notiz\Core\Notification\CanBeEdited;
+use CuyZ\Notiz\Core\Notification\Creatable;
+use CuyZ\Notiz\Core\Notification\Viewable;
+use CuyZ\Notiz\Core\Notification\Editable;
 use CuyZ\Notiz\Domain\Notification\EntityNotification;
 use CuyZ\Notiz\Domain\Notification\Log\Application\EntityLog\Processor\EntityLogNotificationProcessor;
 use CuyZ\Notiz\Domain\Notification\Log\LogNotification;
 
-class EntityLogNotification extends EntityNotification implements LogNotification, CanBeCreated, CanBeEdited, CanBeDetailed
+class EntityLogNotification extends EntityNotification implements LogNotification, Creatable, Editable, Viewable
 {
     /**
      * @var string

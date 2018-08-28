@@ -18,7 +18,7 @@ namespace CuyZ\Notiz\ViewHelpers\Backend\Notification;
 
 use CuyZ\Notiz\Core\Definition\Tree\EventGroup\Event\EventDefinition;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
-use CuyZ\Notiz\Core\Notification\CanBeCreated;
+use CuyZ\Notiz\Core\Notification\Creatable;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 class CreateLinkViewHelper extends AbstractTagBasedViewHelper
@@ -65,10 +65,10 @@ class CreateLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var NotificationDefinition $notificationDefinition */
         $notificationDefinition = $this->arguments['notificationDefinition'];
 
-        /** @var CanBeCreated $className */
+        /** @var Creatable $className */
         $className = $notificationDefinition->getClassName();
 
-        if (!in_array(CanBeCreated::class, class_implements($className))) {
+        if (!in_array(Creatable::class, class_implements($className))) {
             return '';
         }
 

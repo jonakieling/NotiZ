@@ -199,7 +199,7 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     /**
      * @return string
      */
-    public function getDetailsUri()
+    public function getViewUri()
     {
         $notificationDefinition = $this->getNotificationDefinition();
 

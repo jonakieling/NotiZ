@@ -21,7 +21,7 @@ use CuyZ\Notiz\Core\Channel\Payload;
 use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 use CuyZ\Notiz\Core\Event\Event;
 use CuyZ\Notiz\Core\Event\Service\EventFactory;
-use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
+use CuyZ\Notiz\Core\Event\Support\ProvidesExampleProperties;
 use CuyZ\Notiz\Core\Notification\Notification;
 use CuyZ\Notiz\Core\Property\Factory\PropertyContainer;
 use CuyZ\Notiz\Core\Property\Factory\PropertyFactory;
@@ -116,7 +116,7 @@ abstract class ShowNotificationController extends BackendController
     {
         $fakeEvent = $this->eventFactory->create($this->notification->getEventDefinition(), $this->notification);
 
-        if ($fakeEvent instanceof ProvidesExampleMarkers) {
+        if ($fakeEvent instanceof ProvidesExampleProperties) {
             $this->signalSlotDispatcher->connect(
                 PropertyFactory::class,
                 PropertyFactory::SIGNAL_PROPERTY_FILLING,
@@ -125,11 +125,11 @@ abstract class ShowNotificationController extends BackendController
                         return;
                     }
 
-                    $exampleMarkers = $fakeEvent->getExampleMarkers();
+                    $exampleProperties = $fakeEvent->getExampleProperties();
 
-                    foreach ($container->getEntries() as $marker) {
-                        if (isset($exampleMarkers[$marker->getName()])) {
-                            $marker->setValue($exampleMarkers[$marker->getName()]);
+                    foreach ($container->getEntries() as $property) {
+                        if (isset($exampleProperties[$property->getName()])) {
+                            $property->setValue($exampleProperties[$property->getName()]);
                         }
                     }
                 }

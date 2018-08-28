@@ -17,13 +17,13 @@
 namespace CuyZ\Notiz\Core\Notification;
 
 /**
- * This interface can be implemented by notifications that can have a detail
- * view in the backend module.
+ * This interface can be implemented by notifications that can be edited by an
+ * editor.
  */
-interface CanBeDetailed
+interface Editable
 {
     /**
      * @return string
      */
-    public function getDetailsUri();
+    public function getEditionUri();
 }

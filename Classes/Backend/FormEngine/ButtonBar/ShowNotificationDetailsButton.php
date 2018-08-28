@@ -17,7 +17,7 @@
 namespace CuyZ\Notiz\Backend\FormEngine\ButtonBar;
 
 use CuyZ\Notiz\Core\Definition\DefinitionService;
-use CuyZ\Notiz\Core\Notification\CanBeDetailed;
+use CuyZ\Notiz\Core\Notification\Viewable;
 use CuyZ\Notiz\Domain\Notification\EntityNotification;
 use CuyZ\Notiz\Service\LocalizationService;
 use ReflectionClass;
@@ -67,12 +67,12 @@ class ShowNotificationDetailsButton implements SingletonInterface
         }
 
         foreach ($this->definitionService->getDefinition()->getNotifications() as $notificationDefinition) {
-            /** @var EntityNotification|CanBeDetailed $className */
+            /** @var EntityNotification|Viewable $className */
             $className = $notificationDefinition->getClassName();
 
             // Works only with TYPO3 entity notifications.
             // @todo
-            if (!in_array(CanBeDetailed::class, class_implements($className))
+            if (!in_array(Viewable::class, class_implements($className))
                 || !in_array(EntityNotification::class, class_parents($className))
             ) {
                 continue;
@@ -91,7 +91,7 @@ class ShowNotificationDetailsButton implements SingletonInterface
                 continue;
             }
 
-            /** @var CanBeDetailed $notification */
+            /** @var Viewable $notification */
             $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
 
             $this->addButtonForNotification($controller, $notification);
@@ -102,15 +102,15 @@ class ShowNotificationDetailsButton implements SingletonInterface
 
     /**
      * @param EditDocumentController $controller
-     * @param CanBeDetailed $notification
+     * @param Viewable $notification
      */
-    protected function addButtonForNotification(EditDocumentController $controller, CanBeDetailed $notification)
+    protected function addButtonForNotification(EditDocumentController $controller, Viewable $notification)
     {
         $buttonBar = $this->getModuleTemplate($controller)
             ->getDocHeaderComponent()
             ->getButtonBar();
 
-        $uri = $notification->getDetailsUri();
+        $uri = $notification->getViewUri();
 
         $button = $buttonBar->makeLinkButton()
             ->setShowLabelText(true)

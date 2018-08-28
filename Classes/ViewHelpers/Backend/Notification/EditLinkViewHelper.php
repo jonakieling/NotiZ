@@ -16,7 +16,7 @@
 
 namespace CuyZ\Notiz\ViewHelpers\Backend\Notification;
 
-use CuyZ\Notiz\Core\Notification\CanBeEdited;
+use CuyZ\Notiz\Core\Notification\Editable;
 use CuyZ\Notiz\Core\Notification\Notification;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -52,7 +52,7 @@ class EditLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var Notification $notification */
         $notification = $this->arguments['notification'];
 
-        if (!$notification instanceof CanBeEdited) {
+        if (!$notification instanceof Editable) {
             return '';
         }
 

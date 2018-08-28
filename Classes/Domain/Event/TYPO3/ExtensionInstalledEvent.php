@@ -17,14 +17,14 @@
 namespace CuyZ\Notiz\Domain\Event\TYPO3;
 
 use CuyZ\Notiz\Core\Event\AbstractEvent;
-use CuyZ\Notiz\Core\Event\Support\ProvidesExampleMarkers;
+use CuyZ\Notiz\Core\Event\Support\ProvidesExampleProperties;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
  * Event triggered when an extension is installed via the extension manager.
  */
-class ExtensionInstalledEvent extends AbstractEvent implements ProvidesExampleMarkers
+class ExtensionInstalledEvent extends AbstractEvent implements ProvidesExampleProperties
 {
     /**
      * @label Event/TYPO3/ExtensionInstalled:marker.key
@@ -59,26 +59,6 @@ class ExtensionInstalledEvent extends AbstractEvent implements ProvidesExampleMa
     protected $version;
 
     /**
-     * @label Test 1
-     * @email
-     *
-     * @todo remove
-     *
-     * @var string
-     */
-    protected $test;
-
-    /**
-     * @label Test 2
-     * @email
-     *
-     * @todo remove
-     *
-     * @var string
-     */
-    protected $test2;
-
-    /**
      * @var ListUtility
      */
     protected $listUtility;
@@ -94,8 +74,6 @@ class ExtensionInstalledEvent extends AbstractEvent implements ProvidesExampleMa
         $this->title = $extension['title'];
         $this->version = $extension['version'];
         $this->description = $extension['description'];
-
-        $this->test = 'test@test.com';
     }
 
     /**
@@ -127,10 +105,13 @@ class ExtensionInstalledEvent extends AbstractEvent implements ProvidesExampleMa
     /**
      * @return array
      */
-    public function getExampleMarkers()
+    public function getExampleProperties()
     {
         return [
             'key' => 'my_extension',
+            'title' => 'My Extension',
+            'description' => 'Some random description that gives details about my extension.',
+            'version' => '1.0.42',
         ];
     }
 }
