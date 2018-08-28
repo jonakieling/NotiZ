@@ -43,10 +43,6 @@ class IndexModuleManager extends ModuleManager
      */
     public function registerEntityNotificationControllers()
     {
-        if ($this->definitionService->getValidationResult()->hasErrors()) {
-            return;
-        }
-
         $controllers = [
             'Backend\\Notification\\ShowEntityEmail' => [
                 'show',

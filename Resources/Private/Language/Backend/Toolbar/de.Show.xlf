@@ -12,6 +12,9 @@
                 <target>NotiZ-Information</target>
             </trans-unit>
 
+            <trans-unit id="body.list_notifications">
+                <target>TODO DE: List notifications</target>
+            </trans-unit>
             <trans-unit id="body.show_definition">
                 <target>Aktuelle Definition anzeigen</target>
             </trans-unit>
