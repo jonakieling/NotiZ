@@ -1,3 +1,5 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+
 <f:section name="Buttons">
     <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/Layout:show_notifications\')}'}">
         <f:link.action controller="Backend\Index"
@@ -5,7 +7,7 @@
                        class="btn btn-default"
                        title="{label}">
             <strong>
-                <core:icon identifier="tx-notiz-icon" />&nbsp;{label}
+                <nz:core.icon identifier="tx-notiz-icon" />&nbsp;{label}
             </strong>
         </f:link.action>
     </f:alias>
@@ -13,7 +15,7 @@
     <f:alias map="{label: '{nz:t(key: \'Backend/Module/Index/Layout:show_events\')}'}">
         <f:link.action action="listEvents" controller="Backend\Index" class="btn btn-default" title="{label}">
             <strong>
-                <core:icon identifier="module-system" />&nbsp;{label}
+                <nz:core.icon identifier="module-system" />&nbsp;{label}
             </strong>
         </f:link.action>
     </f:alias>

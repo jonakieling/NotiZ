@@ -11,7 +11,7 @@
     <div class="container">
         <div class="page-header">
             <h1>
-                <core:icon identifier="{notificationDefinition.iconIdentifier}" size="default" />
+                <nz:core.icon identifier="{notificationDefinition.iconIdentifier}" size="default" />
                 {notificationDefinition.label}
             </h1>
         </div>
@@ -20,14 +20,14 @@
             <f:link.action controller="Backend\Index"
                            action="listNotificationTypes"
                            class="btn btn-default">
-                <core:icon identifier="actions-view-go-back" />
+                <nz:core.icon identifier="actions-view-go-back" />
                 <nz:t key="Backend/Module/Index/Global:show_notification_types" />
             </f:link.action>
 
             <nz:backend.notification.createLink notificationDefinition="{notificationDefinition}"
                                                 class="btn btn-default"
                                                 title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}">
-                <core:icon identifier="actions-add" />
+                <nz:core.icon identifier="actions-add" />
                 <nz:t key="Backend/Module/Index/Global:create_notification" />
             </nz:backend.notification.createLink>
         </p>
@@ -87,13 +87,13 @@
                                     <nz:backend.notification.editLink notification="{notification}"
                                                                       class="btn btn-default"
                                                                       title="{nz:t(key: 'Backend/Module/Index/Global:edit_notification')}">
-                                        <core:icon identifier="actions-open" />
+                                        <nz:core.icon identifier="actions-open" />
                                     </nz:backend.notification.editLink>
 
                                     <nz:backend.notification.showLink notification="{notification}"
                                                                       class="btn btn-default"
                                                                       title="{nz:t(key: 'Backend/Module/Index/ListNotifications:action.show', args: {0: notification.title})}">
-                                        <core:icon identifier="actions-view" />
+                                        <nz:core.icon identifier="actions-view" />
                                     </nz:backend.notification.showLink>
                                 </div>
                             </td>

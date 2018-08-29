@@ -59,7 +59,7 @@ A block that shows information about a given notification type.
                     <f:link.action action="listNotifications"
                                    title="{nz:t(key: 'Backend/Module/Index/ListNotificationTypes:show_notifications', args: {0: notification.processor.totalNumber})}"
                                    arguments="{notificationIdentifier: notification.identifier}">
-                        <core:icon identifier="{notification.iconIdentifier}" size="default" />
+                        <nz:core.icon identifier="{notification.iconIdentifier}" size="default" />
                         {notification.label}
                     </f:link.action>
                 </h2>
@@ -82,7 +82,7 @@ A block that shows information about a given notification type.
                 <nz:backend.notification.createLink notificationDefinition="{notification}"
                                                     class="btn btn-default"
                                                     title="{nz:t(key: 'Backend/Module/Index/Global:create_notification')}">
-                    <core:icon identifier="actions-add" />
+                    <nz:core.icon identifier="actions-add" />
                     <nz:t key="Backend/Module/Index/Global:create_notification" />
                 </nz:backend.notification.createLink>
 
@@ -93,7 +93,7 @@ A block that shows information about a given notification type.
                                        title="{label}"
                                        arguments="{notificationIdentifier: notification.identifier}">
 
-                            <core:icon identifier="actions-system-list-open" />
+                            <nz:core.icon identifier="actions-system-list-open" />
                             {label}
                         </f:link.action>
                     </f:alias>

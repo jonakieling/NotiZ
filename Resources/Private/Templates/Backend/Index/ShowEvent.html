@@ -23,7 +23,7 @@
             <f:link.action action="listEvents"
                            controller="Backend\Index"
                            class="btn btn-default">
-                <core:icon identifier="actions-view-go-back" />
+                <nz:core.icon identifier="actions-view-go-back" />
                 <nz:t key="Backend/Module/Index/Global:show_list_view" />
             </f:link.action>
 
@@ -32,7 +32,7 @@
                data-toggle="modal"
                data-target="#create-notification">
 
-                <core:icon identifier="actions-add" />
+                <nz:core.icon identifier="actions-add" />
                 <nz:t key="Backend/Module/Index/Global:create_notification" />
             </a>
         </p>
@@ -51,7 +51,7 @@
             <f:for each="{notifications}" as="notification">
                 <tr>
                     <td width="32">
-                        <core:icon identifier="{notification.definition.iconIdentifier}" />
+                        <nz:core.icon identifier="{notification.definition.iconIdentifier}" />
                     </td>
 
                     <td>
@@ -72,7 +72,7 @@
                                            arguments="{notificationIdentifier: notification.definition.identifier, filterEvent: eventDefinition.identifier}"
                                            class="btn btn-default"
                                            title="{nz:t(key: 'Backend/Module/Index/ShowEvent:show_notifications_bound_to_event', args: '{0: notification.definition.label}')}">
-                                <core:icon identifier="actions-view" />
+                                <nz:core.icon identifier="actions-view" />
                             </f:link.action>
                         </div>
                     </td>
