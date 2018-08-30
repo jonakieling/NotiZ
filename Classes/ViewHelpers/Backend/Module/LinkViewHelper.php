@@ -72,7 +72,16 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $uri = ModuleManager::for($this->arguments['module'])
+        $content = $this->renderChildren();
+
+        // @todo cleanup
+        $moduleManager = ModuleManager::for($this->arguments['module']);
+
+        if (!$moduleManager->canBeAccessed()) {
+            return $content;
+        }
+
+        $uri = $moduleManager
             ->getUriBuilder()
             ->forController($this->arguments['controller'])
             ->forAction($this->arguments['action'])
@@ -85,7 +94,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $this->tag->addAttribute('onclick', "TYPO3.ModuleMenu.App.openInContentFrame('$uri');");
         }
 
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent($content);
 
         return $this->tag->render();
     }

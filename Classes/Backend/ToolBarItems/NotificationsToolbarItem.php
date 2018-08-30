@@ -17,6 +17,7 @@
 namespace CuyZ\Notiz\Backend\ToolBarItems;
 
 use CuyZ\Notiz\Backend\Module\AdministrationModuleManager;
+use CuyZ\Notiz\Backend\Module\IndexModuleManager;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Service\ExtensionConfigurationService;
 use CuyZ\Notiz\Service\LocalizationService;
@@ -56,6 +57,11 @@ class NotificationsToolbarItem implements ToolbarItemInterface
     protected $viewService;
 
     /**
+     * @var IndexModuleManager
+     */
+    protected $indexModuleManager;
+
+    /**
      * Manual dependency injection.
      */
     public function __construct()
@@ -67,6 +73,7 @@ class NotificationsToolbarItem implements ToolbarItemInterface
         $this->definitionService = $objectManager->get(DefinitionService::class);
         $this->extensionConfigurationService = $objectManager->get(ExtensionConfigurationService::class);
         $this->viewService = $objectManager->get(ViewService::class);
+        $this->indexModuleManager = $objectManager->get(IndexModuleManager::class);
     }
 
     /**
@@ -74,7 +81,7 @@ class NotificationsToolbarItem implements ToolbarItemInterface
      */
     public function checkAccess()
     {
-        return true;
+        return $this->indexModuleManager->canBeAccessed();
     }
 
     /**

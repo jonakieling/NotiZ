@@ -78,10 +78,11 @@ class TablesConfigurationService implements SingletonInterface
             '',
             [],
             [
-                'access' => 'user,group',
+                'access' => '',
                 'icon' => '',
                 'iconIdentifier' => 'tx-notiz-icon-main-module',
                 'labels' => "LLL:EXT:{$this->extensionKey}/Resources/Private/Language/Backend/Module/Main/Module.xlf",
+                'sub' => []
             ]
         );
 

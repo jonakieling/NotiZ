@@ -19,6 +19,7 @@ namespace CuyZ\Notiz\Backend\Module;
 use CuyZ\Notiz\Backend\Module\Uri\UriBuilder;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Service\Container;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 
 abstract class ModuleManager implements SingletonInterface
@@ -65,6 +66,14 @@ abstract class ModuleManager implements SingletonInterface
     }
 
     /**
+     * @return bool
+     */
+    public function canBeAccessed()
+    {
+        return $this->getBackendUser()->modAccess($GLOBALS['TBE_MODULES']['_configuration'][$this->getModuleName()], false);
+    }
+
+    /**
      * @return string
      */
     abstract public function getDefaultControllerName();
@@ -73,4 +82,12 @@ abstract class ModuleManager implements SingletonInterface
      * @return string
      */
     abstract public function getModuleName();
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }
