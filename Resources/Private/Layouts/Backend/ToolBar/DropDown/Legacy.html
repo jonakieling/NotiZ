@@ -1,3 +1,5 @@
+{namespace nz=CuyZ\Notiz\ViewHelpers}
+
 <f:comment>
     Layout used for TYPO3 7.6
 </f:comment>
@@ -52,11 +54,21 @@
                 </f:else>
             </f:if>
 
-            <li class="divider"></li>
+            <f:if condition="{nz:backend.module.hasAccess(module: 'Index')}">
+                <li class="divider"></li>
 
-            <li>
-                <f:render section="BodyDefinitionLink" />
-            </li>
+                <li>
+                    <f:render section="BodyNotificationsLink" />
+                </li>
+            </f:if>
+
+            <f:if condition="{nz:backend.module.hasAccess(module: 'Administration')}">
+                <li class="divider"></li>
+
+                <li>
+                    <f:render section="BodyDefinitionLink" />
+                </li>
+            </f:if>
         </f:else>
     </f:if>
 </ul>

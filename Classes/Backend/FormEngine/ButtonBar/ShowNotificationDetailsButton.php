@@ -17,6 +17,7 @@
 namespace CuyZ\Notiz\Backend\FormEngine\ButtonBar;
 
 use CuyZ\Notiz\Core\Definition\DefinitionService;
+use CuyZ\Notiz\Core\Definition\Tree\Notification\NotificationDefinition;
 use CuyZ\Notiz\Core\Notification\Viewable;
 use CuyZ\Notiz\Domain\Notification\EntityNotification;
 use CuyZ\Notiz\Service\LocalizationService;
@@ -67,37 +68,49 @@ class ShowNotificationDetailsButton implements SingletonInterface
         }
 
         foreach ($this->definitionService->getDefinition()->getNotifications() as $notificationDefinition) {
-            /** @var EntityNotification|Viewable $className */
-            $className = $notificationDefinition->getClassName();
+            $notification = $this->getNotification($notificationDefinition, $controller);
 
-            // Works only with TYPO3 entity notifications.
-            // @todo
-            if (!in_array(Viewable::class, class_implements($className))
-                || !in_array(EntityNotification::class, class_parents($className))
-            ) {
-                continue;
+            if ($notification) {
+                $this->addButtonForNotification($controller, $notification);
+
+                break;
             }
-
-            $tableName = $className::getTableName();
-
-            if (!isset($controller->editconf[$tableName])) {
-                continue;
-            }
-
-            $uid = reset(array_keys($controller->editconf[$tableName]));
-
-            // We show the button only for existing records being edited.
-            if ($controller->editconf[$tableName][$uid] !== 'edit') {
-                continue;
-            }
-
-            /** @var Viewable $notification */
-            $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
-
-            $this->addButtonForNotification($controller, $notification);
-
-            break;
         }
+    }
+
+    /**
+     * @param NotificationDefinition $notificationDefinition
+     * @param EditDocumentController $controller
+     * @return Viewable
+     */
+    protected function getNotification(NotificationDefinition $notificationDefinition, EditDocumentController $controller)
+    {
+        /** @var EntityNotification|Viewable $className */
+        $className = $notificationDefinition->getClassName();
+
+        if (!in_array(Viewable::class, class_implements($className))
+            || !in_array(EntityNotification::class, class_parents($className))
+        ) {
+            return null;
+        }
+
+        $tableName = $className::getTableName();
+
+        if (!isset($controller->editconf[$tableName])) {
+            return null;
+        }
+
+        $uid = reset(array_keys($controller->editconf[$tableName]));
+
+        // We show the button only for existing records being edited.
+        if ($controller->editconf[$tableName][$uid] !== 'edit') {
+            return null;
+        }
+
+        /** @var Viewable $notification */
+        $notification = $notificationDefinition->getProcessor()->getNotificationFromIdentifier($uid);
+
+        return $notification;
     }
 
     /**

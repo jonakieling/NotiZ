@@ -74,7 +74,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     {
         $content = $this->renderChildren();
 
-        // @todo cleanup
         $moduleManager = ModuleManager::for($this->arguments['module']);
 
         if (!$moduleManager->canBeAccessed()) {

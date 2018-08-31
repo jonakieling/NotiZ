@@ -50,10 +50,21 @@
             </f:else>
         </f:if>
 
-        <hr />
 
-        <p class="dropdown-text">
-            <f:render section="BodyDefinitionLink" />
-        </p>
+        <f:if condition="{nz:backend.module.hasAccess(module: 'Index')}">
+            <hr />
+
+            <p class="dropdown-text">
+                <f:render section="BodyNotificationsLink" />
+            </p>
+        </f:if>
+
+        <f:if condition="{nz:backend.module.hasAccess(module: 'Administration')}">
+            <hr />
+
+            <p class="dropdown-text">
+                <f:render section="BodyDefinitionLink" />
+            </p>
+        </f:if>
     </f:else>
 </f:if>
