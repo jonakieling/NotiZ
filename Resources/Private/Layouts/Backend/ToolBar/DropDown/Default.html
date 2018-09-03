@@ -12,11 +12,13 @@
             </span>
         </p>
 
-        <hr />
+        <f:if condition="{nz:backend.module.hasAccess(module: 'Administration')}">
+            <hr />
 
-        <p class="dropdown-text">
-            <f:render section="BodyErrorsLink" />
-        </p>
+            <p class="dropdown-text">
+                <f:render section="BodyErrorsLink" />
+            </p>
+        </f:if>
     </f:then>
     <f:else>
         <f:if condition="{filledNotifications}">

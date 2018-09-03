@@ -62,7 +62,14 @@
 ********************************************************************************
 
 <f:section name="BodyErrorsDescription">
-    <nz:t key="Backend/Toolbar/Error:body.errors_description" />
+    <f:if condition="{nz:backend.module.hasAccess(module: 'Administration')}">
+        <f:then>
+            <nz:t key="Backend/Toolbar/Error:body.errors_description" />
+        </f:then>
+        <f:else>
+            <nz:t key="Backend/Toolbar/Error:body.editor.errors_description" />
+        </f:else>
+    </f:if>
 </f:section>
 
 <f:section name="BodyErrorsLink">

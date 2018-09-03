@@ -25,7 +25,9 @@ class IndexController extends BackendController
      */
     public function initializeView(ViewInterface $view)
     {
-        $this->view->assign('definition', $this->getDefinition());
+        if (!$this->definitionService->getValidationResult()->hasErrors()) {
+            $this->view->assign('definition', $this->getDefinition());
+        }
     }
 
     /**

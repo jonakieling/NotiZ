@@ -58,6 +58,8 @@ class AdministrationController extends BackendController
     }
 
     /**
+     * @todo remove
+     *
      * Shows an interface where notifications can be added/edited.
      */
     public function indexAction()

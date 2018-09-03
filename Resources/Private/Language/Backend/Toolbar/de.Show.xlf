@@ -9,7 +9,7 @@
             <!--##################################-->
 
             <trans-unit id="title">
-                <target>NotiZ-Information</target>
+                <target>TODO DE: Notifications information</target>
             </trans-unit>
 
             <trans-unit id="body.list_notifications">

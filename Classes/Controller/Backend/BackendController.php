@@ -16,6 +16,7 @@
 
 namespace CuyZ\Notiz\Controller\Backend;
 
+use CuyZ\Notiz\Backend\Module\AdministrationModuleManager;
 use CuyZ\Notiz\Core\Definition\DefinitionService;
 use CuyZ\Notiz\Core\Definition\Tree\Definition;
 use CuyZ\Notiz\Service\LocalizationService;
@@ -30,6 +31,11 @@ abstract class BackendController extends ActionController
     protected $definitionService;
 
     /**
+     * @var AdministrationModuleManager
+     */
+    protected $administrationModuleManager;
+
+    /**
      * Checking if the definition contains errors.
      */
     public function initializeAction()
@@ -37,6 +43,14 @@ abstract class BackendController extends ActionController
         if ($this->definitionService->getValidationResult()->hasErrors()) {
             $this->definitionError();
         }
+    }
+
+    /**
+     * @todo
+     */
+    public function definitionErrorAction()
+    {
+
     }
 
     /**
@@ -55,7 +69,12 @@ abstract class BackendController extends ActionController
      */
     protected function definitionError()
     {
-        $this->forward('showDefinition', 'Backend\\Administration');
+
+        if ($this->administrationModuleManager->canBeAccessed()) {
+            $this->forward('showDefinition', 'Backend\\Administration');
+        } elseif ('definitionError' !== $this->request->getControllerActionName()) {
+            $this->forward('definitionError');
+        }
     }
 
     /**
@@ -77,5 +96,13 @@ abstract class BackendController extends ActionController
     public function injectDefinitionService(DefinitionService $definitionService)
     {
         $this->definitionService = $definitionService;
+    }
+
+    /**
+     * @param AdministrationModuleManager $administrationModuleManager
+     */
+    public function injectAdministrationModuleManager(AdministrationModuleManager $administrationModuleManager)
+    {
+        $this->administrationModuleManager = $administrationModuleManager;
     }
 }

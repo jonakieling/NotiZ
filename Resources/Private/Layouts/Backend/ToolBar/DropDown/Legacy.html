@@ -17,12 +17,14 @@
                 <f:render section="BodyErrorsDescription" />
             </li>
 
-            <li class="divider"></li>
+            <f:if condition="{nz:backend.module.hasAccess(module: 'Administration')}">
+                <li class="divider"></li>
 
-            <li>
-                <f:render section="BodyErrorsLink" />
+                <li>
+                    <f:render section="BodyErrorsLink" />
 
-            </li>
+                </li>
+            </f:if>
         </f:then>
         <f:else>
             <f:if condition="{filledNotifications}">
