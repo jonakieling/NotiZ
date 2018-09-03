@@ -50,7 +50,6 @@ abstract class BackendController extends ActionController
      */
     public function definitionErrorAction()
     {
-
     }
 
     /**
@@ -69,7 +68,6 @@ abstract class BackendController extends ActionController
      */
     protected function definitionError()
     {
-
         if ($this->administrationModuleManager->canBeAccessed()) {
             $this->forward('showDefinition', 'Backend\\Administration');
         } elseif ('definitionError' !== $this->request->getControllerActionName()) {
