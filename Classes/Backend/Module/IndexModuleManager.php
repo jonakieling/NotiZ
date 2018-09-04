@@ -52,6 +52,9 @@ class IndexModuleManager extends ModuleManager
             'Backend\\Notification\\ShowEntityLog' => [
                 'show',
             ],
+            'Backend\\Notification\\ShowEntitySlack' => [
+                'show',
+            ],
         ];
 
         foreach ($controllers as $controller => $actions) {
