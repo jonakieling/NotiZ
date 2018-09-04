@@ -108,6 +108,11 @@ abstract class EntityTcaWriter implements SingletonInterface
     abstract protected function getNotificationTcaServiceClass();
 
     /**
+     * @return string
+     */
+    abstract protected function getEntityTitle();
+
+    /**
      * This method returns the LLL string to use for the `channel` column.
      *
      * @return string
@@ -202,6 +207,8 @@ abstract class EntityTcaWriter implements SingletonInterface
     protected function getDefaultCtrl()
     {
         return [
+            'title' => $this->getEntityTitle(),
+
             'label' => 'title',
             'tstamp' => 'tstamp',
             'crdate' => 'crdate',
