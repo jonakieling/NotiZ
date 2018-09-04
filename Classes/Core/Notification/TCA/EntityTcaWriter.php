@@ -210,12 +210,12 @@ abstract class EntityTcaWriter implements SingletonInterface
             'title' => $this->getEntityTitle(),
 
             'label' => 'title',
+            'descriptionColumn' => 'description',
             'tstamp' => 'tstamp',
             'crdate' => 'crdate',
             'cruser_id' => 'cruser_id',
             'dividers2tabs' => true,
 
-            'descriptionColumn' => 'description',
             'security' => [
                 'ignoreWebMountRestriction' => true,
                 'ignoreRootLevelRestriction' => true,
@@ -352,13 +352,11 @@ abstract class EntityTcaWriter implements SingletonInterface
 
             'description' => [
                 'exclude' => 1,
-                'label' => self::LLL_FIELDS . ":field.title",
+                'label' => self::LLL_FIELDS . ":field.description",
                 'config' => [
                     'type' => 'text',
                     'cols' => 40,
-                    'rows' => 15,
-                    'enableRichtext' => true,
-                    'richtextConfiguration' => 'default',
+                    'rows' => 2,
                 ],
             ],
 

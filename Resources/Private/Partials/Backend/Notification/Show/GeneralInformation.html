@@ -1,6 +1,7 @@
 {namespace nz=CuyZ\Notiz\ViewHelpers}
 
 <f:section name="Content">
+    <f:comment>@todo: LLL</f:comment>
     <thead>
         <tr>
             <th colspan="2">General information about the notification</th>
@@ -28,4 +29,12 @@
             </f:if>
         </td>
     </tr>
+    <f:if condition="{notification.description}">
+        <tr>
+            <td>Description</td>
+            <td>
+                <f:format.nl2br>{notification.description}</f:format.nl2br>
+            </td>
+        </tr>
+    </f:if>
 </f:section>

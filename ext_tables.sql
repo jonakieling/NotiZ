@@ -62,6 +62,7 @@ CREATE TABLE tx_notiz_domain_model_entitylognotification (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
 	event varchar(255) DEFAULT '' NOT NULL,
 	event_configuration_flex text NOT NULL,
 	channel varchar(255) DEFAULT '' NOT NULL,
@@ -107,6 +108,7 @@ CREATE TABLE tx_notiz_domain_model_entityslacknotification (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
 	event varchar(255) DEFAULT '' NOT NULL,
 	event_configuration_flex text NOT NULL,
 	channel varchar(255) DEFAULT '' NOT NULL,
