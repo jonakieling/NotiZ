@@ -20,7 +20,7 @@
 
             <f:render section="SlackInformation" arguments="{_all}" />
 
-            <f:render section="Message" arguments="{_all}" />
+            <f:render section="Preview" arguments="{_all}" />
         </table>
     </div>
 </f:section>
@@ -65,18 +65,18 @@ General information about the slack notification.
 --------------------------------------------------------------------------------
 Slack message
 --------------------------------------------------------------------------------
-<f:section name="Message">
+<f:section name="Preview">
     <thead>
         <tr>
             <th colspan="2">
-                Message
+                Preview
             </th>
         </tr>
     </thead>
 
     <tr>
         <td colspan="3">
-            <f:format.nl2br>{notification.message}</f:format.nl2br>
+            <f:format.nl2br>{message}</f:format.nl2br>
         </td>
     </tr>
 </f:section>

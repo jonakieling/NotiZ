@@ -16,10 +16,36 @@
 
 namespace CuyZ\Notiz\Controller\Backend\Notification;
 
+use CuyZ\Notiz\Core\Event\Support\ProvidesExampleProperties;
 use CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\EntitySlackNotification;
+use CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\Service\EntitySlackMessageBuilder;
+use CuyZ\Notiz\Domain\Notification\Slack\SlackNotification;
 
 class ShowEntitySlackController extends ShowNotificationController
 {
+    /**
+     * @var SlackNotification
+     */
+    protected $notification;
+
+    /**
+     * @inheritdoc
+     */
+    public function showAction()
+    {
+        parent::showAction();
+
+        $payload = $this->getPreviewPayload();
+        $message = $this->notification->getMessage();
+
+        if ($payload->getEvent() instanceof ProvidesExampleProperties) {
+            $builder = $this->objectManager->get(EntitySlackMessageBuilder::class, $payload);
+            $message = $builder->getMessage();
+        }
+
+        $this->view->assign('message', $message);
+    }
+
     /**
      * @return string
      */
