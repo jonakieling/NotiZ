@@ -156,6 +156,14 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
+     * @return bool
+     */
+    public static function canBeCreated()
+    {
+        return Container::getBackendUser()->check('tables_modify', self::getTableName());
+    }
+
+    /**
      * @param string $selectedEvent
      * @return string
      */
@@ -179,6 +187,16 @@ abstract class EntityNotification extends AbstractEntity implements Notification
     }
 
     /**
+     * @todo same canBeCreated()
+     *
+     * @return bool
+     */
+    public function canBeEdited()
+    {
+        return $this->canBeCreated();
+    }
+
+    /**
      * @return string
      */
     public function getEditionUri()
@@ -194,6 +212,24 @@ abstract class EntityNotification extends AbstractEntity implements Notification
                 'returnUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . "#$identifier-$uid",
             ]
         );
+    }
+
+    /**
+     * @return bool
+     */
+    public static function canBeListed()
+    {
+        return Container::getBackendUser()->check('tables_select', self::getTableName());
+    }
+
+    /**
+     * @todo same canBeListed()
+     *
+     * @return bool
+     */
+    public function canBeViewed()
+    {
+        return self::canBeListed();
     }
 
     /**

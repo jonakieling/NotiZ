@@ -23,6 +23,11 @@ namespace CuyZ\Notiz\Core\Notification;
 interface Editable
 {
     /**
+     * @return bool
+     */
+    public function canBeEdited();
+
+    /**
      * @return string
      */
     public function getEditionUri();

@@ -22,6 +22,10 @@ config.tx_extbase.persistence.classes {
     CuyZ\Notiz\Domain\Notification\Slack\Application\EntitySlack\EntitySlackNotification {
         mapping {
             tableName = tx_notiz_domain_model_entityslacknotification
+
+            columns {
+                cruser_id.mapOnProperty = backendUser
+            }
         }
     }
 }

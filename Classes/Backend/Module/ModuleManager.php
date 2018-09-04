@@ -70,7 +70,7 @@ abstract class ModuleManager implements SingletonInterface
      */
     public function canBeAccessed()
     {
-        return $this->getBackendUser()->modAccess($GLOBALS['TBE_MODULES']['_configuration'][$this->getModuleName()], false);
+        return Container::getBackendUser()->modAccess($GLOBALS['TBE_MODULES']['_configuration'][$this->getModuleName()], false);
     }
 
     /**
@@ -82,12 +82,4 @@ abstract class ModuleManager implements SingletonInterface
      * @return string
      */
     abstract public function getModuleName();
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
 }

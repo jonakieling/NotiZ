@@ -18,6 +18,13 @@
                 <source>Show details of the notification “%s”</source>
             </trans-unit>
 
+            <trans-unit id="no_notification_found">
+                <source>No notification of type “%s” was found.</source>
+            </trans-unit>
+            <trans-unit id="notification_listing">
+                <source>Below are listed all the notifications of type “%s”.</source>
+            </trans-unit>
+
             <trans-unit id="notification_type_not_found">
                 <source>Notification of type “%s” was not found in the definition.</source>
             </trans-unit>

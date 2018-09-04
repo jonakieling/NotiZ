@@ -29,6 +29,7 @@ use Romm\ConfigurationObject\Service\Items\DataPreProcessor\DataPreProcessorInte
 use Romm\ConfigurationObject\Service\ServiceFactory;
 use Romm\ConfigurationObject\Service\ServiceInterface;
 use Romm\ConfigurationObject\Traits\ConfigurationObject\ArrayConversionTrait;
+use function array_filter;
 
 /**
  * Root object for the whole definition object tree.
@@ -138,6 +139,19 @@ class Definition extends AbstractDefinitionComponent implements ConfigurationObj
     public function getNotifications()
     {
         return $this->notifications;
+    }
+
+    /**
+     * @return NotificationDefinition[]
+     */
+    public function getListableNotifications()
+    {
+        return array_filter(
+            $this->notifications,
+            function (NotificationDefinition $notificationDefinition) {
+                return $notificationDefinition->canBeListed();
+            }
+        );
     }
 
     /**

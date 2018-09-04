@@ -215,6 +215,12 @@ abstract class EntityTcaWriter implements SingletonInterface
             'cruser_id' => 'cruser_id',
             'dividers2tabs' => true,
 
+            'descriptionColumn' => 'description',
+            'security' => [
+                'ignoreWebMountRestriction' => true,
+                'ignoreRootLevelRestriction' => true,
+            ],
+
             'requestUpdate' => 'event',
 
             'languageField' => 'sys_language_uid',
@@ -228,7 +234,7 @@ abstract class EntityTcaWriter implements SingletonInterface
             ],
             'searchFields' => 'title,event',
             'iconfile' => $this->service->getNotificationIconPath(),
-            'rootLevel' => 1,
+            'rootLevel' => -1,
             DefaultEventFromGet::ENABLE_DEFAULT_VALUE => true,
         ];
     }
@@ -341,6 +347,18 @@ abstract class EntityTcaWriter implements SingletonInterface
                     'type' => 'input',
                     'size' => 30,
                     'eval' => 'trim,required',
+                ],
+            ],
+
+            'description' => [
+                'exclude' => 1,
+                'label' => self::LLL_FIELDS . ":field.title",
+                'config' => [
+                    'type' => 'text',
+                    'cols' => 40,
+                    'rows' => 15,
+                    'enableRichtext' => true,
+                    'richtextConfiguration' => 'default',
                 ],
             ],
 

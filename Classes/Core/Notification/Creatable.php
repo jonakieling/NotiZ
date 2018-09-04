@@ -23,6 +23,11 @@ namespace CuyZ\Notiz\Core\Notification;
 interface Creatable
 {
     /**
+     * @return bool
+     */
+    public static function canBeCreated();
+
+    /**
      * @param string $selectedEvent
      * @return string
      */

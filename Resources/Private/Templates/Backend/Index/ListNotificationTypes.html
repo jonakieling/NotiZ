@@ -1,5 +1,5 @@
 {namespace nz=CuyZ\Notiz\ViewHelpers}
-{namespace b = TYPO3\CMS\Backend\ViewHelpers}
+{namespace b=TYPO3\CMS\Backend\ViewHelpers}
 
 <f:layout name="Backend/Default" />
 
@@ -22,7 +22,7 @@ link is added to list all the notifications.
         </div>
 
         <div class="row">
-            <f:if condition="{definition.notifications}">
+            <f:if condition="{definition.listableNotifications}">
                 <f:then>
                     <f:be.infobox>
                         <nz:format.nl2brTrim>
@@ -30,7 +30,7 @@ link is added to list all the notifications.
                         </nz:format.nl2brTrim>
                     </f:be.infobox>
 
-                    <f:for each="{definition.notifications}" as="notification">
+                    <f:for each="{definition.listableNotifications}" as="notification">
                         <f:render section="Notification" arguments="{notification: notification}" />
                     </f:for>
                 </f:then>

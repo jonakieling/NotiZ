@@ -23,6 +23,16 @@ namespace CuyZ\Notiz\Core\Notification;
 interface Viewable
 {
     /**
+     * @return bool
+     */
+    public static function canBeListed();
+
+    /**
+     * @return bool
+     */
+    public function canBeViewed();
+
+    /**
      * @return string
      */
     public function getViewUri();

@@ -52,7 +52,9 @@ class EditLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var Notification $notification */
         $notification = $this->arguments['notification'];
 
-        if (!$notification instanceof Editable) {
+        if (!$notification instanceof Editable
+            || !$notification->canBeEdited()
+        ) {
             return '';
         }
 

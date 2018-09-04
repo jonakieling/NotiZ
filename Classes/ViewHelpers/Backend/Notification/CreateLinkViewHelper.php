@@ -68,7 +68,9 @@ class CreateLinkViewHelper extends AbstractTagBasedViewHelper
         /** @var Creatable $className */
         $className = $notificationDefinition->getClassName();
 
-        if (!in_array(Creatable::class, class_implements($className))) {
+        if (!in_array(Creatable::class, class_implements($className))
+            || !$className::canBeCreated()
+        ) {
             return '';
         }
 
